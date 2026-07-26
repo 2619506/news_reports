@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Retro News Broadcast</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Using a retro VCR/digital font -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Outer TV Bezel -->
+    <div class="tv-bezel">
+        <!-- Inner CRT Screen -->
+        <div class="crt-screen">
+            
+            <!-- Scanlines & Flicker Overlay (Pure CSS) -->
+            <div class="scanlines"></div>
+            <div class="flicker"></div>
+            
+            <!-- LIVE Indicator -->
+            <div class="live-indicator">
+                <div class="red-dot"></div>
+                LIVE
+            </div>
+
+            <!-- Lower Third News Graphic -->
+            <div class="lower-third">
+                <div class="category-badge" id="news-category">LOADING...</div>
+                <div class="headline-container">
+                    <h1 id="news-headline">Establishing satellite link...</h1>
+                    <div class="timestamp" id="news-time">00:00</div>
+                </div>
+            </div>
+
+            <!-- Scrolling Ticker Tape -->
+            <div class="ticker-tape">
+                <div class="ticker-text" id="ticker-text">
+                    INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
