@@ -1,0 +1,173 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: #0a0a0a;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    font-family: 'Teko', sans-serif;
+}
+
+/* The physical TV box */
+.tv-bezel {
+    width: 100%;
+    max-width: 900px;
+    aspect-ratio: 4 / 3;
+    background: #1a1a1a;
+    border-radius: 40px;
+    padding: 30px;
+    box-shadow: inset 0 0 20px #000, 0 20px 50px rgba(0,0,0,0.8);
+    position: relative;
+}
+
+/* The curved glass screen */
+.crt-screen {
+    width: 100%;
+    height: 100%;
+    background-color: #051424; /* Deep broadcast blue */
+    border-radius: 30px; /* Gives the tube curve */
+    position: relative;
+    overflow: hidden;
+    box-shadow: inset 0 0 60px rgba(0,0,0,0.9);
+}
+
+/* --- CRT EFFECTS --- */
+.scanlines {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
+                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 4px, 6px 100%;
+    z-index: 10;
+    pointer-events: none;
+}
+
+.flicker {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.02);
+    z-index: 11;
+    pointer-events: none;
+    animation: crt-flicker 0.15s infinite;
+}
+
+@keyframes crt-flicker {
+    0% { opacity: 0.9; }
+    50% { opacity: 0.1; }
+    100% { opacity: 1; }
+}
+
+/* --- BROADCAST GRAPHICS --- */
+.live-indicator {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    color: #fff;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 5;
+    text-shadow: 2px 2px 0 #000;
+}
+
+.red-dot {
+    width: 12px;
+    height: 12px;
+    background-color: #ff0000;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff0000;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
+}
+
+/* Lower Third */
+.lower-third {
+    position: absolute;
+    bottom: 40px; /* Sits above the ticker */
+    left: 5%;
+    width: 90%;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+}
+
+.category-badge {
+    background-color: #cc0000;
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 600;
+    padding: 5px 20px;
+    width: fit-content;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    box-shadow: 2px 2px 0 #000;
+}
+
+.headline-container {
+    background: rgba(20, 20, 50, 0.9);
+    border-left: 5px solid #cc0000;
+    padding: 15px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
+}
+
+#news-headline {
+    color: #ffffff;
+    font-size: 2.5rem;
+    font-weight: 400;
+    line-height: 1.1;
+    margin: 0;
+    width: 80%;
+    text-shadow: 1px 1px 0px #ff0000, -1px -1px 0px #00ffff; /* Chromatic aberration */
+}
+
+.timestamp {
+    color: #00ffcc;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px #00ffcc;
+}
+
+/* Bottom Ticker */
+.ticker-tape {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #000;
+    border-top: 2px solid #333;
+    display: flex;
+    align-items: center;
+    overflow: hidden;
+    z-index: 5;
+}
+
+.ticker-text {
+    color: #ffcc00;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    animation: scroll-ticker 20s linear infinite;
+    text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+}
+
+@keyframes scroll-ticker {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
