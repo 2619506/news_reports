@@ -3,86 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KNN - Khwaja News Network</title>
+    <title>SmartNews Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <!-- Modern, clean broadcast fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body>
 
-    <!-- HD Broadcast Monitor Frame -->
-    <div class="broadcast-frame">
-        
-        <!-- Subtle Scanlines for Vibe (High Clarity) -->
-        <div class="scanlines"></div>
-
-        <!-- Top Header Navigation Bar -->
-        <header class="top-bar">
-            <div class="brand">
-                <span class="live-badge"><i class="fa-solid fa-circle"></i> LIVE</span>
-                <span class="station-name">KNN // GLOBAL NEWSROOM</span>
-            </div>
-            <div class="header-right">
-                <span class="feed-count" id="feed-count">SYNCING FEEDS...</span>
-                <div class="clock" id="live-clock">00:00:00 UTC</div>
-            </div>
-        </header>
-
-        <!-- Main Studio Grid Layout -->
-        <main class="studio-grid">
+    <!-- Outer TV Bezel - Now Widescreen -->
+    <div class="tv-bezel">
+        <div class="crt-screen">
             
-            <!-- Left Side: Featured "Inshorts" Article Card -->
-            <section class="hero-news-card" id="hero-card">
-                <div class="media-container">
-                    <img id="news-image" src="" alt="News Image" class="news-img" />
-                    <div class="image-overlay"></div>
-                    <span class="category-badge" id="news-category">GENERAL</span>
-                </div>
+            <!-- Lightened Screen Effects -->
+            <div class="scanlines"></div>
+            <div class="glare"></div>
+            
+            <div class="live-indicator">
+                <div class="red-dot"></div>
+                LIVE AGGREGATOR
+            </div>
 
-                <div class="card-content">
-                    <div class="meta-row">
-                        <span class="source-tag" id="news-source"><i class="fa-solid fa-newspaper"></i> BBC News</span>
-                        <span class="time-tag" id="news-time">10 mins ago</span>
-                    </div>
-
-                    <h1 class="news-title" id="news-title">Loading global news feed...</h1>
-                    <p class="news-snippet" id="news-snippet">Gathering top stories from global networks. Please standby for satellite data transmission...</p>
-
-                    <div class="card-footer">
-                        <a id="news-link" href="#" target="_blank" class="read-btn">
-                            READ FULL STORY <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        </a>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar" id="progress-bar"></div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Right Side: Up Next / Live Feed Queue -->
-            <aside class="sidebar-queue">
-                <div class="queue-header">
-                    <h3><i class="fa-solid fa-list-ul"></i> BROADCAST QUEUE</h3>
-                    <span class="queue-subtitle">AUTO-CYCLES EVERY 10S</span>
-                </div>
+            <!-- Main Widescreen Layout -->
+            <div class="broadcast-layout">
                 
-                <div class="queue-list" id="queue-list">
-                    <!-- Dynamic Queue Cards Injected via JS -->
+                <!-- Left: Main Story Feature -->
+                <div class="main-story">
+                    <div class="story-image-container">
+                        <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
+                        <div class="image-overlay"></div>
+                    </div>
+                    
+                    <div class="story-content">
+                        <div class="meta-tags">
+                            <span class="category-badge" id="news-category">LOADING</span>
+                            <span class="source-badge" id="news-source">NETWORK</span>
+                        </div>
+                        <h1 id="news-headline">Establishing satellite link...</h1>
+                        <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
+                        <div class="timestamp" id="news-time">00:00</div>
+                    </div>
                 </div>
-            </aside>
 
-        </main>
+                <!-- Right: Upcoming News Queue -->
+                <div class="sidebar">
+                    <div class="sidebar-header">
+                        <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
+                    </div>
+                    <div class="upcoming-list" id="upcoming-list">
+                        <!-- Populated by JS -->
+                        <div class="upcoming-item">Loading data...</div>
+                    </div>
+                </div>
 
-        <!-- Bottom Breaking News Ticker -->
-        <footer class="ticker-bar">
-            <div class="ticker-label"><i class="fa-solid fa-bolt"></i> BREAKING</div>
-            <div class="ticker-wrap">
-                <div class="ticker-move" id="ticker-text">
-                    INITIALIZING REAL-TIME RSS ENGINE // AGGREGATING SOURCES // BBC // GUARDIAN // TECHCRUNCH // CNBC
+            </div>
+
+            <!-- Scrolling Ticker Tape (Slowed Down) -->
+            <div class="ticker-tape">
+                <div class="ticker-text" id="ticker-text">
+                    INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
                 </div>
             </div>
-        </footer>
 
+        </div>
     </div>
 
     <script src="script.js"></script>
