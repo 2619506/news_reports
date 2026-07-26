@@ -1,170 +1,121 @@
-// Reliable news sources aggregated via rss2json API
-const RSS_FEEDS = [
-    { name: "BBC News", category: "WORLD", url: "http://feeds.bbci.co.uk/news/world/rss.xml" },
-    { name: "The Guardian", category: "GLOBAL", url: "https://www.theguardian.com/world/rss" },
-    { name: "TechCrunch", category: "TECH", url: "https://techcrunch.com/feed/" },
-    { name: "CNBC", category: "FINANCE", url: "https://search.cnbc.com/rs/search/combinedrender.py?partnerId=2000&keywords=finance&target=all" }
+// Upgraded feeds with Source Names attached
+const feeds = [
+    { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC NEWS' },
+    { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml', category: 'SCIENCE', source: 'NY TIMES' },
+    { url: 'https://www.espn.com/espn/rss/news', category: 'SPORTS', source: 'ESPN' }
 ];
 
-const RSS2JSON_API = 'https://api.rss2json.com/v1/api.json?rss_url=';
-
-let newsArticles = [];
+let newsLibrary = [];
 let currentIndex = 0;
-let cycleTimer = null;
-let progressTimer = null;
-const CYCLE_INTERVAL = 10000; // 10 seconds per story
+const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-// Fallback high-res news placeholders if RSS feed has no image
-const FALLBACK_IMAGES = [
-    'https://images.unsplash.com/photo-1585829365295-ab7cd400c167?w=800&q=80',
-    'https://images.unsplash.com/photo-1504711434969-e33886168f5c?w=800&q=80',
-    'https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=800&q=80'
-];
+// Fallback image if a news source doesn't provide one
+const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
 
-async function loadAllFeeds() {
-    let combinedItems = [];
+async function fetchAllNews() {
+    try {
+        let allArticles = [];
 
-    for (let feed of RSS_FEEDS) {
-        try {
-            const res = await fetch(RSS2JSON_API + encodeURIComponent(feed.url));
-            const data = await res.json();
-
+        for (let feed of feeds) {
+            const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
+            const data = await response.json();
+            
             if (data.status === 'ok') {
-                const parsed = data.items.slice(0, 5).map(item => {
-                    // Extract image from thumbnail, enclosure, or regex inside HTML content
-                    let imageUrl = item.thumbnail || (item.enclosure && item.enclosure.link);
-                    if (!imageUrl && item.description) {
-                        const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
-                        if (imgMatch) imageUrl = imgMatch[1];
-                    }
-                    if (!imageUrl) {
-                        imageUrl = FALLBACK_IMAGES[Math.floor(Math.random() * FALLBACK_IMAGES.length)];
-                    }
-
-                    // Clean raw HTML tags out of snippet for crisp Inshorts summary text
-                    let cleanSnippet = item.description ? item.description.replace(/<[^>]*>?/gm, '').trim() : '';
-                    if (cleanSnippet.length > 180) {
-                        cleanSnippet = cleanSnippet.substring(0, 180) + '...';
-                    }
+                const articles = data.items.slice(0, 5).map(item => {
+                    // Extract image from RSS data
+                    let imgUrl = item.thumbnail || item.enclosure.link || defaultImage;
+                    
+                    // Clean description text (strip HTML tags)
+                    let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
+                    if(cleanDesc.length > 250) cleanDesc = cleanDesc.substring(0, 250) + '...';
 
                     return {
                         title: item.title,
-                        snippet: cleanSnippet || "Click below to read the full report from source.",
-                        link: item.link,
-                        source: feed.name,
+                        description: cleanDesc || "No description provided by source.",
+                        image: imgUrl,
                         category: feed.category,
-                        image: imageUrl,
-                        pubDate: new Date(item.pubDate)
+                        source: feed.source,
+                        date: new Date(item.pubDate)
                     };
                 });
-                combinedItems = combinedItems.concat(parsed);
+                allArticles = allArticles.concat(articles);
             }
-        } catch (err) {
-            console.error("Feed error:", err);
         }
-    }
 
-    // Shuffle articles for dynamic broadcast feel
-    newsArticles = combinedItems.sort(() => Math.random() - 0.5);
+        // Shuffle array for variety
+        newsLibrary = allArticles.sort(() => Math.random() - 0.5);
+        
+        setupTicker(newsLibrary);
+        startBroadcast();
 
-    if (newsArticles.length > 0) {
-        document.getElementById('feed-count').innerText = `${newsArticles.length} STORIES LIVE`;
-        renderSidebarQueue();
-        updateTicker();
-        selectArticle(0);
-    } else {
-        document.getElementById('news-title').innerText = "SIGNAL TEMPORARILY LOST";
-        document.getElementById('news-snippet').innerText = "Unable to reach satellite RSS relays. Retrying shortly...";
+    } catch (error) {
+        console.error("Signal lost:", error);
+        document.getElementById('news-headline').innerText = "SIGNAL LOST. RETRYING...";
     }
 }
 
-function selectArticle(index) {
-    currentIndex = index;
-    const item = newsArticles[currentIndex];
-
-    // Update main featured display
-    document.getElementById('news-image').src = item.image;
-    document.getElementById('news-category').innerText = item.category;
-    document.getElementById('news-source').innerHTML = `<i class="fa-solid fa-newspaper"></i> ${item.source}`;
-    document.getElementById('news-time').innerText = getRelativeTime(item.pubDate);
-    document.getElementById('news-title').innerText = item.title;
-    document.getElementById('news-snippet').innerText = item.snippet;
-    document.getElementById('news-link').href = item.link;
-
-    // Highlight active queue item
-    const queueCards = document.querySelectorAll('.queue-item');
-    queueCards.forEach((card, idx) => {
-        if (idx === currentIndex) {
-            card.classList.add('active');
-            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-            card.classList.remove('active');
-        }
-    });
-
-    // Reset progress bar & timer
-    resetTimers();
+function setupTicker(articles) {
+    // Join headlines for the slow bottom ticker
+    const tickerContent = articles.map(a => `${a.source.toUpperCase()}: ${a.title}`).join('  ///  ');
+    document.getElementById('ticker-text').innerText = `LIVE UPDATES ///  ${tickerContent}`;
 }
 
-function renderSidebarQueue() {
-    const list = document.getElementById('queue-list');
-    list.innerHTML = '';
+function updateSidebar() {
+    const sidebar = document.getElementById('upcoming-list');
+    sidebar.innerHTML = ''; // clear current
 
-    newsArticles.forEach((item, idx) => {
-        const div = document.createElement('div');
-        div.className = `queue-item ${idx === 0 ? 'active' : ''}`;
-        div.onclick = () => selectArticle(idx);
+    // Show the next 4 articles in the queue
+    for(let i = 1; i <= 4; i++) {
+        let nextIndex = (currentIndex + i) % newsLibrary.length;
+        let article = newsLibrary[nextIndex];
+        
+        // Highlight the immediate next article
+        let isNextClass = (i === 1) ? 'next-up' : '';
 
-        div.innerHTML = `
-            <img src="${item.image}" class="queue-thumb" alt="Thumb" />
-            <div class="queue-details">
-                <span class="queue-source">${item.source} • ${item.category}</span>
-                <h4 class="queue-title">${item.title}</h4>
+        sidebar.innerHTML += `
+            <div class="upcoming-item ${isNextClass}">
+                <div class="up-meta">${article.category} | <span>${article.source}</span></div>
+                <div class="up-title">${article.title}</div>
             </div>
         `;
-        list.appendChild(div);
-    });
+    }
 }
 
-function updateTicker() {
-    const tickerContainer = document.getElementById('ticker-text');
-    const tickerText = newsArticles.map(a => `[${a.source}] ${a.title}`).join('   ///   ');
-    tickerContainer.innerText = `LIVE BROADCAST: ${tickerText}`;
+function updateScreen() {
+    if (newsLibrary.length === 0) return;
+
+    const article = newsLibrary[currentIndex];
+
+    // Fade effect for image transition
+    const imgEl = document.getElementById('news-image');
+    imgEl.style.opacity = 0;
+    
+    setTimeout(() => {
+        imgEl.src = article.image;
+        imgEl.style.opacity = 0.6;
+    }, 300); // match CSS transition time
+
+    // Update main text elements
+    document.getElementById('news-category').innerText = article.category;
+    document.getElementById('news-source').innerText = article.source;
+    document.getElementById('news-headline').innerText = article.title;
+    document.getElementById('news-description').innerText = article.description;
+    
+    const timeString = article.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('news-time').innerText = timeString;
+
+    // Update the sidebar queue
+    updateSidebar();
+
+    // Move to next article
+    currentIndex = (currentIndex + 1) % newsLibrary.length;
 }
 
-function resetTimers() {
-    clearInterval(cycleTimer);
-    clearInterval(progressTimer);
-
-    const progressBar = document.getElementById('progress-bar');
-    let elapsed = 0;
-    progressBar.style.width = '0%';
-
-    progressTimer = setInterval(() => {
-        elapsed += 100;
-        const pct = (elapsed / CYCLE_INTERVAL) * 100;
-        progressBar.style.width = `${pct}%`;
-    }, 100);
-
-    cycleTimer = setInterval(() => {
-        currentIndex = (currentIndex + 1) % newsArticles.length;
-        selectArticle(currentIndex);
-    }, CYCLE_INTERVAL);
+function startBroadcast() {
+    updateScreen();
+    // Rotates every 12 seconds
+    setInterval(updateScreen, 12000);
 }
 
-function getRelativeTime(date) {
-    const diffMins = Math.floor((new Date() - date) / 60000);
-    if (diffMins < 60) return `${diffMins}m ago`;
-    const diffHours = Math.floor(diffMins / 60);
-    if (diffHours < 24) return `${diffHours}h ago`;
-    return `${Math.floor(diffHours / 24)}d ago`;
-}
-
-// Live Clock
-setInterval(() => {
-    const now = new Date();
-    document.getElementById('live-clock').innerText = now.toUTCString().split(' ')[4] + ' UTC';
-}, 1000);
-
-// Boot
-loadAllFeeds();
+fetchAllNews();
