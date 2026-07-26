@@ -5,169 +5,376 @@
 }
 
 body {
-    background-color: #0a0a0a;
+    background-color: #05070f;
+    color: #f1f5f9;
+    font-family: 'Outfit', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+/* Widescreen Frame */
+.broadcast-frame {
+    width: 100%;
     height: 100vh;
-    overflow: hidden;
-    font-family: 'Teko', sans-serif;
-}
-
-/* The physical TV box */
-.tv-bezel {
-    width: 100%;
-    max-width: 900px;
-    aspect-ratio: 4 / 3;
-    background: #1a1a1a;
-    border-radius: 40px;
-    padding: 30px;
-    box-shadow: inset 0 0 20px #000, 0 20px 50px rgba(0,0,0,0.8);
-    position: relative;
-}
-
-/* The curved glass screen */
-.crt-screen {
-    width: 100%;
-    height: 100%;
-    background-color: #051424; /* Deep broadcast blue */
-    border-radius: 30px; /* Gives the tube curve */
+    background: radial-gradient(circle at center, #0b1120 0%, #030712 100%);
+    display: flex;
+    flex-direction: column;
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 60px rgba(0,0,0,0.9);
 }
 
-/* --- CRT EFFECTS --- */
+/* Clear, Low-Opacity CRT Overlay */
 .scanlines {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-    background-size: 100% 4px, 6px 100%;
-    z-index: 10;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+    background-size: 100% 4px;
+    z-index: 99;
     pointer-events: none;
+    opacity: 0.6;
 }
 
-.flicker {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(255, 255, 255, 0.02);
-    z-index: 11;
-    pointer-events: none;
-    animation: crt-flicker 0.15s infinite;
-}
-
-@keyframes crt-flicker {
-    0% { opacity: 0.9; }
-    50% { opacity: 0.1; }
-    100% { opacity: 1; }
-}
-
-/* --- BROADCAST GRAPHICS --- */
-.live-indicator {
-    position: absolute;
-    top: 30px;
-    right: 40px;
-    color: #fff;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.2rem;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    z-index: 5;
-    text-shadow: 2px 2px 0 #000;
-}
-
-.red-dot {
-    width: 12px;
-    height: 12px;
-    background-color: #ff0000;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff0000;
-    animation: pulse 1s infinite alternate;
-}
-
-@keyframes pulse {
-    from { opacity: 1; }
-    to { opacity: 0.3; }
-}
-
-/* Lower Third */
-.lower-third {
-    position: absolute;
-    bottom: 40px; /* Sits above the ticker */
-    left: 5%;
-    width: 90%;
-    z-index: 5;
-    display: flex;
-    flex-direction: column;
-}
-
-.category-badge {
-    background-color: #cc0000;
-    color: #fff;
-    font-size: 1.8rem;
-    font-weight: 600;
-    padding: 5px 20px;
-    width: fit-content;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    box-shadow: 2px 2px 0 #000;
-}
-
-.headline-container {
-    background: rgba(20, 20, 50, 0.9);
-    border-left: 5px solid #cc0000;
-    padding: 15px 25px;
+/* Top Bar */
+.top-bar {
+    height: 50px;
+    background: rgba(15, 23, 42, 0.8);
+    border-bottom: 1px solid rgba(56, 189, 248, 0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 5px 5px 0 rgba(0,0,0,0.5);
-    backdrop-filter: blur(4px);
+    padding: 0 25px;
+    backdrop-filter: blur(10px);
 }
 
-#news-headline {
-    color: #ffffff;
-    font-size: 2.5rem;
-    font-weight: 400;
-    line-height: 1.1;
-    margin: 0;
-    width: 80%;
-    text-shadow: 1px 1px 0px #ff0000, -1px -1px 0px #00ffff; /* Chromatic aberration */
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 15px;
 }
 
-.timestamp {
-    color: #00ffcc;
+.live-badge {
+    background: #ef4444;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 0 10px rgba(239, 68, 68, 0.5);
+}
+
+.live-badge i {
+    font-size: 0.5rem;
+    animation: blink 1s infinite alternate;
+}
+
+@keyframes blink { from { opacity: 1; } to { opacity: 0.2; } }
+
+.station-name {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.95rem;
+    letter-spacing: 2px;
+    color: #38bdf8;
+    font-weight: 700;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
     font-family: 'Share Tech Mono', monospace;
-    font-size: 1.5rem;
-    text-shadow: 0 0 10px #00ffcc;
+    font-size: 0.9rem;
+    color: #94a3b8;
+}
+
+.clock {
+    color: #38bdf8;
+    font-weight: bold;
+}
+
+/* Main Grid Layout */
+.studio-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    padding: 20px;
+    height: calc(100vh - 90px);
+    overflow: hidden;
+}
+
+/* Left Hero Card */
+.hero-news-card {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+}
+
+.media-container {
+    height: 52%;
+    position: relative;
+    overflow: hidden;
+    background: #020617;
+}
+
+.news-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.image-overlay {
+    position: absolute;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: linear-gradient(to top, rgba(15, 23, 42, 1) 0%, rgba(15, 23, 42, 0) 70%);
+}
+
+.category-badge {
+    position: absolute;
+    top: 15px; left: 20px;
+    background: #0284c7;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.card-content {
+    padding: 20px 25px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.meta-row {
+    display: flex;
+    gap: 15px;
+    font-size: 0.85rem;
+    color: #38bdf8;
+    margin-bottom: 8px;
+    font-weight: 600;
+}
+
+.news-title {
+    font-size: 1.6rem;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #f8fafc;
+    margin-bottom: 10px;
+}
+
+.news-snippet {
+    font-size: 0.95rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.read-btn {
+    color: #38bdf8;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: color 0.2s;
+}
+
+.read-btn:hover { color: #0284c7; }
+
+.progress-bar-container {
+    width: 120px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    width: 0%;
+    height: 100%;
+    background: #0284c7;
+    transition: width 0.1s linear;
+}
+
+/* Sidebar Queue */
+.sidebar-queue {
+    background: rgba(15, 23, 42, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    backdrop-filter: blur(8px);
+}
+
+.queue-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 10px;
+    margin-bottom: 12px;
+}
+
+.queue-header h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.85rem;
+    color: #f8fafc;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.queue-subtitle {
+    font-size: 0.65rem;
+    color: #64748b;
+    font-family: 'Share Tech Mono', monospace;
+    margin-top: 2px;
+    display: block;
+}
+
+.queue-list {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding-right: 4px;
+}
+
+.queue-list::-webkit-scrollbar { width: 4px; }
+.queue-list::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 2px; }
+
+.queue-item {
+    display: flex;
+    gap: 12px;
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid transparent;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.queue-item:hover {
+    background: rgba(30, 41, 59, 0.9);
+    border-color: rgba(56, 189, 248, 0.3);
+}
+
+.queue-item.active {
+    background: rgba(2, 132, 199, 0.15);
+    border-color: #0284c7;
+}
+
+.queue-thumb {
+    width: 60px;
+    height: 60px;
+    border-radius: 6px;
+    object-fit: cover;
+    background: #090d16;
+}
+
+.queue-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.queue-source {
+    font-size: 0.7rem;
+    color: #38bdf8;
+    font-weight: 600;
+}
+
+.queue-title {
+    font-size: 0.8rem;
+    color: #e2e8f0;
+    line-height: 1.2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin-top: 2px;
 }
 
 /* Bottom Ticker */
-.ticker-tape {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
+.ticker-bar {
     height: 40px;
-    background-color: #000;
-    border-top: 2px solid #333;
+    background: #020617;
+    border-top: 1px solid rgba(56, 189, 248, 0.2);
     display: flex;
     align-items: center;
     overflow: hidden;
-    z-index: 5;
 }
 
-.ticker-text {
-    color: #ffcc00;
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 1.2rem;
+.ticker-label {
+    background: #0284c7;
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 0 15px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 10;
     white-space: nowrap;
-    animation: scroll-ticker 20s linear infinite;
-    text-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
 }
 
-@keyframes scroll-ticker {
-    0% { transform: translateX(100%); }
-    100% { transform: translateX(-100%); }
+.ticker-wrap {
+    flex: 1;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.ticker-move {
+    display: inline-block;
+    white-space: nowrap;
+    padding-left: 100%;
+    animation: ticker 35s linear infinite;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+    color: #fbbf24;
+}
+
+@keyframes ticker {
+    0% { transform: translate3d(0, 0, 0); }
+    100% { transform: translate3d(-100%, 0, 0); }
+}
+
+@media (max-width: 850px) {
+    .studio-grid { grid-template-columns: 1fr; }
+    .sidebar-queue { display: none; }
 }
