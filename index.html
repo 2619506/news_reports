@@ -3,45 +3,86 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Retro News Broadcast</title>
+    <title>KNN - Khwaja News Network</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Using a retro VCR/digital font -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
 
-    <!-- Outer TV Bezel -->
-    <div class="tv-bezel">
-        <!-- Inner CRT Screen -->
-        <div class="crt-screen">
-            
-            <!-- Scanlines & Flicker Overlay (Pure CSS) -->
-            <div class="scanlines"></div>
-            <div class="flicker"></div>
-            
-            <!-- LIVE Indicator -->
-            <div class="live-indicator">
-                <div class="red-dot"></div>
-                LIVE
-            </div>
+    <!-- HD Broadcast Monitor Frame -->
+    <div class="broadcast-frame">
+        
+        <!-- Subtle Scanlines for Vibe (High Clarity) -->
+        <div class="scanlines"></div>
 
-            <!-- Lower Third News Graphic -->
-            <div class="lower-third">
-                <div class="category-badge" id="news-category">LOADING...</div>
-                <div class="headline-container">
-                    <h1 id="news-headline">Establishing satellite link...</h1>
-                    <div class="timestamp" id="news-time">00:00</div>
+        <!-- Top Header Navigation Bar -->
+        <header class="top-bar">
+            <div class="brand">
+                <span class="live-badge"><i class="fa-solid fa-circle"></i> LIVE</span>
+                <span class="station-name">KNN // GLOBAL NEWSROOM</span>
+            </div>
+            <div class="header-right">
+                <span class="feed-count" id="feed-count">SYNCING FEEDS...</span>
+                <div class="clock" id="live-clock">00:00:00 UTC</div>
+            </div>
+        </header>
+
+        <!-- Main Studio Grid Layout -->
+        <main class="studio-grid">
+            
+            <!-- Left Side: Featured "Inshorts" Article Card -->
+            <section class="hero-news-card" id="hero-card">
+                <div class="media-container">
+                    <img id="news-image" src="" alt="News Image" class="news-img" />
+                    <div class="image-overlay"></div>
+                    <span class="category-badge" id="news-category">GENERAL</span>
+                </div>
+
+                <div class="card-content">
+                    <div class="meta-row">
+                        <span class="source-tag" id="news-source"><i class="fa-solid fa-newspaper"></i> BBC News</span>
+                        <span class="time-tag" id="news-time">10 mins ago</span>
+                    </div>
+
+                    <h1 class="news-title" id="news-title">Loading global news feed...</h1>
+                    <p class="news-snippet" id="news-snippet">Gathering top stories from global networks. Please standby for satellite data transmission...</p>
+
+                    <div class="card-footer">
+                        <a id="news-link" href="#" target="_blank" class="read-btn">
+                            READ FULL STORY <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </a>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="progress-bar"></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Side: Up Next / Live Feed Queue -->
+            <aside class="sidebar-queue">
+                <div class="queue-header">
+                    <h3><i class="fa-solid fa-list-ul"></i> BROADCAST QUEUE</h3>
+                    <span class="queue-subtitle">AUTO-CYCLES EVERY 10S</span>
+                </div>
+                
+                <div class="queue-list" id="queue-list">
+                    <!-- Dynamic Queue Cards Injected via JS -->
+                </div>
+            </aside>
+
+        </main>
+
+        <!-- Bottom Breaking News Ticker -->
+        <footer class="ticker-bar">
+            <div class="ticker-label"><i class="fa-solid fa-bolt"></i> BREAKING</div>
+            <div class="ticker-wrap">
+                <div class="ticker-move" id="ticker-text">
+                    INITIALIZING REAL-TIME RSS ENGINE // AGGREGATING SOURCES // BBC // GUARDIAN // TECHCRUNCH // CNBC
                 </div>
             </div>
+        </footer>
 
-            <!-- Scrolling Ticker Tape -->
-            <div class="ticker-tape">
-                <div class="ticker-text" id="ticker-text">
-                    INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
-                </div>
-            </div>
-
-        </div>
     </div>
 
     <script src="script.js"></script>
