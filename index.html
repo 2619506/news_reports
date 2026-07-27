@@ -15,16 +15,10 @@
             
             <div class="scanlines"></div>
             <div class="glare"></div>
-            
-            <!-- Stays locked to the Top Right -->
-            <div class="live-indicator">
-                <div class="red-dot"></div>
-                LIVE AGGREGATOR
-            </div>
 
             <div class="broadcast-layout">
                 
-                <!-- LEFT SIDE: Upcoming News Queue -->
+                <!-- LEFT SIDEBAR NOW ENFORCED -->
                 <div class="sidebar">
                     <div class="sidebar-header">
                         <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
@@ -34,8 +28,14 @@
                     </div>
                 </div>
 
-                <!-- RIGHT SIDE: Main Story Feature -->
+                <!-- RIGHT MAIN STORY -->
                 <div class="main-story">
+                    <!-- LIVE indicator moved INSIDE main story so it never overlaps sidebar -->
+                    <div class="live-indicator">
+                        <div class="red-dot"></div>
+                        LIVE AGGREGATOR
+                    </div>
+
                     <div class="story-image-container">
                         <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
                         <div class="image-overlay"></div>
@@ -51,7 +51,6 @@
                         <div class="timestamp" id="news-time">00:00</div>
                     </div>
 
-                    <!-- Corner Source Citation -->
                     <div class="source-citation" id="source-citation">
                         Authenticating source data...
                     </div>
@@ -59,6 +58,7 @@
 
             </div>
 
+            <!-- Ticker Tape -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
                     INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
