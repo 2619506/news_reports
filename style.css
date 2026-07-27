@@ -55,13 +55,14 @@ body {
 
 .broadcast-layout {
     display: flex;
-    flex-direction: row; /* FORCES Sidebar to Left, Main to Right */
+    flex-direction: row; 
     height: calc(100% - 45px); 
     width: 100%;
 }
 
+/* EXTENDED SIDEBAR STYLES */
 .sidebar {
-    width: 300px;
+    width: 320px;
     background: rgba(10, 15, 25, 0.85);
     border-right: 1px solid rgba(255,255,255,0.1); 
     z-index: 5;
@@ -86,27 +87,40 @@ body {
     flex-direction: column;
     padding: 10px 20px;
     gap: 15px;
-    overflow: hidden;
+    flex: 1; /* Pushes list all the way down */
+    overflow-y: auto; /* Allows scrolling if queue gets big */
 }
 
+/* Custom slick scrollbar for the queue */
+.upcoming-list::-webkit-scrollbar { width: 6px; }
+.upcoming-list::-webkit-scrollbar-track { background: transparent; }
+.upcoming-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+/* INTERACTIVE QUEUE ITEMS */
 .upcoming-item {
     border-left: 2px solid #334155;
-    padding-left: 12px;
-    transition: border-color 0.3s;
+    padding: 4px 0 4px 12px;
+    transition: all 0.3s ease;
+    cursor: pointer; /* Shows the user they can click it */
 }
 
-.upcoming-item.next-up {
+.upcoming-item:hover {
+    border-left-color: #94a3b8;
+    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
+}
+
+.upcoming-item.current-active {
     border-left-color: #00ffcc;
+    background: linear-gradient(90deg, rgba(0,255,204,0.05) 0%, transparent 100%);
 }
 
 .up-meta {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #94a3b8;
     text-transform: uppercase;
     font-family: 'Orbitron', sans-serif;
     margin-bottom: 4px;
 }
-
 .up-meta span { color: #fff; font-weight: bold; }
 
 .up-title {
@@ -129,7 +143,6 @@ body {
     z-index: 5;
 }
 
-/* LIVE BUTTON MOVED HERE TO PREVENT OVERLAP */
 .live-indicator {
     position: absolute;
     top: 20px; right: 20px;
@@ -214,6 +227,7 @@ body {
     text-transform: uppercase;
 }
 
+/* INTERACTIVE CLICKABLE HEADLINE */
 #news-headline {
     color: #ffffff;
     font-family: 'Teko', sans-serif;
@@ -222,6 +236,13 @@ body {
     line-height: 1.1;
     margin: 0 0 10px 0;
     text-shadow: 2px 2px 5px rgba(0,0,0,1); 
+    cursor: pointer;
+    transition: color 0.2s ease, text-shadow 0.2s ease;
+}
+
+#news-headline:hover {
+    color: #00ffcc;
+    text-shadow: 0 0 15px rgba(0,255,204,0.6);
 }
 
 #news-description {
@@ -272,7 +293,6 @@ body {
     font-family: 'Orbitron', sans-serif;
     font-size: 1rem;
     white-space: nowrap;
-    /* Controlled animation speed */
     animation: scroll-ticker 200s linear infinite;
     letter-spacing: 1px;
 }
