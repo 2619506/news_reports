@@ -1,4 +1,4 @@
-// Vastly expanded feeds to create a true aggregator
+// Expanded to 12 massive global sources across all categories
 const feeds = [
     { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC NEWS' },
     { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
@@ -6,7 +6,12 @@ const feeds = [
     { url: 'https://www.espn.com/espn/rss/news', category: 'SPORTS', source: 'ESPN' },
     { url: 'https://www.theguardian.com/world/rss', category: 'GLOBAL', source: 'THE GUARDIAN' },
     { url: 'https://techcrunch.com/feed/', category: 'TECH', source: 'TECHCRUNCH' },
-    { url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'WORLD', source: 'AL JAZEERA' }
+    { url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'WORLD', source: 'AL JAZEERA' },
+    { url: 'https://www.cnbc.com/id/100003114/device/rss/rss.html', category: 'MARKETS', source: 'CNBC' },
+    { url: 'https://rss.cnn.com/rss/edition_world.rss', category: 'WORLD', source: 'CNN' },
+    { url: 'https://www.theverge.com/rss/index.xml', category: 'TECHNOLOGY', source: 'THE VERGE' },
+    { url: 'https://www.space.com/feeds/all', category: 'SPACE', source: 'SPACE.COM' },
+    { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' }
 ];
 
 let newsLibrary = [];
@@ -24,11 +29,10 @@ async function fetchAllNews() {
             const data = await response.json();
             
             if (data.status === 'ok') {
-                const articles = data.items.slice(0, 5).map(item => {
-                    // Extract image safely
+                // INCREASED: Now fetching the top 10 articles from EACH of the 12 sources
+                const articles = data.items.slice(0, 10).map(item => {
                     let imgUrl = item.thumbnail || (item.enclosure && item.enclosure.link) || defaultImage;
                     
-                    // Clean description text
                     let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
                     if(cleanDesc.length > 250) cleanDesc = cleanDesc.substring(0, 250) + '...';
 
@@ -45,7 +49,7 @@ async function fetchAllNews() {
             }
         }
 
-        // Shuffle array so feeds intermix beautifully
+        // Shuffle all 120 articles so feeds intermix beautifully
         newsLibrary = allArticles.sort(() => Math.random() - 0.5);
         
         setupTicker(newsLibrary);
@@ -86,22 +90,19 @@ function updateScreen() {
 
     const article = newsLibrary[currentIndex];
 
-    // Fade effect for image transition
     const imgEl = document.getElementById('news-image');
     imgEl.style.opacity = 0;
     
     setTimeout(() => {
         imgEl.src = article.image;
-        imgEl.style.opacity = 1; // Full brightness now
+        imgEl.style.opacity = 1; 
     }, 500); 
 
-    // Update main text elements
     document.getElementById('news-category').innerText = article.category;
     document.getElementById('news-source').innerText = article.source;
     document.getElementById('news-headline').innerText = article.title;
     document.getElementById('news-description').innerText = article.description;
     
-    // Update Corner Citation
     document.getElementById('source-citation').innerText = `Verified data sourced in real-time from: ${article.source}`;
 
     const timeString = article.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -114,7 +115,6 @@ function updateScreen() {
 
 function startBroadcast() {
     updateScreen();
-    // Keeps a 12 second rotation for the main image
     setInterval(updateScreen, 12000);
 }
 
