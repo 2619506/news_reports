@@ -53,47 +53,17 @@ body {
     pointer-events: none;
 }
 
-.live-indicator {
-    position: absolute;
-    top: 20px; right: 20px;
-    color: #fff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    z-index: 20;
-    background: rgba(0,0,0,0.5);
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
-}
-
-.red-dot {
-    width: 10px; height: 10px;
-    background-color: #ff003c;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff003c;
-    animation: pulse 1.5s infinite alternate;
-}
-
-@keyframes pulse {
-    from { opacity: 1; }
-    to { opacity: 0.3; }
-}
-
 .broadcast-layout {
     display: flex;
+    flex-direction: row; /* FORCES Sidebar to Left, Main to Right */
     height: calc(100% - 45px); 
     width: 100%;
 }
 
-/* SIDEBAR NOW ON THE LEFT */
 .sidebar {
     width: 300px;
     background: rgba(10, 15, 25, 0.85);
-    border-right: 1px solid rgba(255,255,255,0.1); /* Changed to border-right */
+    border-right: 1px solid rgba(255,255,255,0.1); 
     z-index: 5;
     display: flex;
     flex-direction: column;
@@ -149,7 +119,6 @@ body {
     overflow: hidden;
 }
 
-/* MAIN STORY NOW ON THE RIGHT */
 .main-story {
     flex: 1;
     position: relative;
@@ -158,6 +127,37 @@ body {
     justify-content: flex-end;
     padding: 30px;
     z-index: 5;
+}
+
+/* LIVE BUTTON MOVED HERE TO PREVENT OVERLAP */
+.live-indicator {
+    position: absolute;
+    top: 20px; right: 20px;
+    color: #fff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 20;
+    background: rgba(0,0,0,0.5);
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+.red-dot {
+    width: 10px; height: 10px;
+    background-color: #ff003c;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #ff003c;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from { opacity: 1; }
+    to { opacity: 0.3; }
 }
 
 .story-image-container {
@@ -272,12 +272,12 @@ body {
     font-family: 'Orbitron', sans-serif;
     font-size: 1rem;
     white-space: nowrap;
-    /* Massive 900-second duration ensures the huge news list crawls very slowly */
-    animation: scroll-ticker 900s linear infinite;
+    /* Controlled animation speed */
+    animation: scroll-ticker 200s linear infinite;
     letter-spacing: 1px;
 }
 
 @keyframes scroll-ticker {
-    0% { transform: translateX(100%); }
+    0% { transform: translateX(100vw); }
     100% { transform: translateX(-100%); }
 }
