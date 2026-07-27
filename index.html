@@ -18,19 +18,17 @@
 
             <div class="broadcast-layout">
                 
-                <!-- LEFT SIDEBAR NOW ENFORCED -->
+                <!-- EXTENDED & INTERACTIVE SIDEBAR -->
                 <div class="sidebar">
                     <div class="sidebar-header">
-                        <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
+                        <span><i class="fa-solid fa-list"></i> BROADCAST QUEUE</span>
                     </div>
                     <div class="upcoming-list" id="upcoming-list">
-                        <div class="upcoming-item">Loading data...</div>
+                        <!-- Populated by JS -->
                     </div>
                 </div>
 
-                <!-- RIGHT MAIN STORY -->
                 <div class="main-story">
-                    <!-- LIVE indicator moved INSIDE main story so it never overlaps sidebar -->
                     <div class="live-indicator">
                         <div class="red-dot"></div>
                         LIVE AGGREGATOR
@@ -46,7 +44,10 @@
                             <span class="category-badge" id="news-category">LOADING</span>
                             <span class="source-badge" id="news-source">NETWORK</span>
                         </div>
-                        <h1 id="news-headline">Establishing satellite link...</h1>
+                        
+                        <!-- HEADLINE IS NOW CLICKABLE -->
+                        <h1 id="news-headline" onclick="openFullArticle()" title="Click to read full article on publisher's site">Establishing satellite link...</h1>
+                        
                         <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
                         <div class="timestamp" id="news-time">00:00</div>
                     </div>
@@ -58,7 +59,6 @@
 
             </div>
 
-            <!-- Ticker Tape -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
                     INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
