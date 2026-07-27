@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Khwaja News Broadcast</title>
+    <title>Modern News Broadcast</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
@@ -16,6 +16,7 @@
             <div class="scanlines"></div>
             <div class="glare"></div>
             
+            <!-- Stays locked to the Top Right -->
             <div class="live-indicator">
                 <div class="red-dot"></div>
                 LIVE AGGREGATOR
@@ -23,7 +24,17 @@
 
             <div class="broadcast-layout">
                 
-                <!-- Left: Main Story Feature -->
+                <!-- LEFT SIDE: Upcoming News Queue -->
+                <div class="sidebar">
+                    <div class="sidebar-header">
+                        <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
+                    </div>
+                    <div class="upcoming-list" id="upcoming-list">
+                        <div class="upcoming-item">Loading data...</div>
+                    </div>
+                </div>
+
+                <!-- RIGHT SIDE: Main Story Feature -->
                 <div class="main-story">
                     <div class="story-image-container">
                         <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
@@ -40,19 +51,9 @@
                         <div class="timestamp" id="news-time">00:00</div>
                     </div>
 
-                    <!-- NEW: Corner Source Citation -->
+                    <!-- Corner Source Citation -->
                     <div class="source-citation" id="source-citation">
                         Authenticating source data...
-                    </div>
-                </div>
-
-                <!-- Right: Upcoming News Queue -->
-                <div class="sidebar">
-                    <div class="sidebar-header">
-                        <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
-                    </div>
-                    <div class="upcoming-list" id="upcoming-list">
-                        <div class="upcoming-item">Loading data...</div>
                     </div>
                 </div>
 
