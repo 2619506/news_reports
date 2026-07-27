@@ -3,18 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SmartNews Broadcast</title>
+    <title>Khwaja News Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Modern, clean broadcast fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
 
-    <!-- Outer TV Bezel - Now Widescreen -->
     <div class="tv-bezel">
         <div class="crt-screen">
             
-            <!-- Lightened Screen Effects -->
             <div class="scanlines"></div>
             <div class="glare"></div>
             
@@ -23,7 +21,6 @@
                 LIVE AGGREGATOR
             </div>
 
-            <!-- Main Widescreen Layout -->
             <div class="broadcast-layout">
                 
                 <!-- Left: Main Story Feature -->
@@ -42,6 +39,11 @@
                         <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
                         <div class="timestamp" id="news-time">00:00</div>
                     </div>
+
+                    <!-- NEW: Corner Source Citation -->
+                    <div class="source-citation" id="source-citation">
+                        Authenticating source data...
+                    </div>
                 </div>
 
                 <!-- Right: Upcoming News Queue -->
@@ -50,14 +52,12 @@
                         <span><i class="fa-solid fa-list"></i> UPCOMING IN QUEUE</span>
                     </div>
                     <div class="upcoming-list" id="upcoming-list">
-                        <!-- Populated by JS -->
                         <div class="upcoming-item">Loading data...</div>
                     </div>
                 </div>
 
             </div>
 
-            <!-- Scrolling Ticker Tape (Slowed Down) -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
                     INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
