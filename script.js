@@ -1,3 +1,4 @@
+// ADDED 10 MORE GLOBAL CHANNELS
 const feeds = [
     { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC NEWS' },
     { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
@@ -10,14 +11,38 @@ const feeds = [
     { url: 'https://rss.cnn.com/rss/edition_world.rss', category: 'WORLD', source: 'CNN' },
     { url: 'https://www.theverge.com/rss/index.xml', category: 'TECHNOLOGY', source: 'THE VERGE' },
     { url: 'https://www.space.com/feeds/all', category: 'SPACE', source: 'SPACE.COM' },
-    { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' }
+    { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' },
+    // 10 NEW CHANNELS BELOW
+    { url: 'https://moxie.foxnews.com/google-publisher/world.xml', category: 'WORLD', source: 'FOX NEWS' },
+    { url: 'http://feeds.skynews.com/feeds/rss/world.xml', category: 'GLOBAL', source: 'SKY NEWS' },
+    { url: 'https://www.cbsnews.com/latest/rss/world', category: 'WORLD', source: 'CBS NEWS' },
+    { url: 'https://abcnews.go.com/abcnews/internationalheadlines', category: 'WORLD', source: 'ABC NEWS' },
+    { url: 'https://rss.dw.com/rdf/rss-en-world', category: 'EUROPE', source: 'DW NEWS' },
+    { url: 'https://www.france24.com/en/rss', category: 'EUROPE', source: 'FRANCE 24' },
+    { url: 'https://feeds.npr.org/1004/rss.xml', category: 'GLOBAL', source: 'NPR' },
+    { url: 'https://feeds.washingtonpost.com/rss/world', category: 'WORLD', source: 'WASH POST' },
+    { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?id=100727362', category: 'FINANCE', source: 'FINANCIAL TIMES' },
+    { url: 'https://www.yahoo.com/news/rss', category: 'TRENDING', source: 'YAHOO NEWS' }
 ];
 
 let newsLibrary = [];
 let currentIndex = 0;
-let broadcastTimer; // Used to manage auto-playing and pausing
+let broadcastTimer; 
 const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
+
+// GLOBAL WEATHER DATA CONFIGURATION
+const weatherCities = [
+    { name: "NEW YORK", lat: 40.71, lon: -74.00 },
+    { name: "LONDON", lat: 51.50, lon: -0.12 },
+    { name: "TOKYO", lat: 35.68, lon: 139.69 },
+    { name: "DUBAI", lat: 25.20, lon: 55.27 },
+    { name: "PARIS", lat: 48.85, lon: 2.35 },
+    { name: "SYDNEY", lat: -33.86, lon: 151.20 },
+    { name: "SINGAPORE", lat: 1.29, lon: 103.85 },
+    { name: "BERLIN", lat: 52.52, lon: 13.41 }
+];
+let weatherIndex = 0;
 
 function extractImage(item) {
     if (item.thumbnail && item.thumbnail !== "") return item.thumbnail;
@@ -37,16 +62,15 @@ function extractImage(item) {
 async function fetchAllNews() {
     try {
         let allArticles = [];
-
         for (let feed of feeds) {
             const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
             const data = await response.json();
             
             if (data.status === 'ok') {
-                const articles = data.items.slice(0, 8).map(item => {
+                const articles = data.items.slice(0, 6).map(item => {
                     let imgUrl = extractImage(item);
                     let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
-                    if(cleanDesc.length > 250) cleanDesc = cleanDesc.substring(0, 250) + '...';
+                    if(cleanDesc.length > 200) cleanDesc = cleanDesc.substring(0, 200) + '...';
 
                     return {
                         title: item.title,
@@ -54,8 +78,7 @@ async function fetchAllNews() {
                         image: imgUrl,
                         category: feed.category,
                         source: feed.source,
-                        date: new Date(item.pubDate),
-                        link: item.link // Captures the exact URL to the full news article
+                        date: new Date(item.pubDate)
                     };
                 });
                 allArticles = allArticles.concat(articles);
@@ -73,24 +96,22 @@ async function fetchAllNews() {
 }
 
 function setupTicker(articles) {
-    const tickerSubset = articles.slice(0, 15);
+    const tickerSubset = articles.slice(0, 20);
     const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join('  ///  ');
-    document.getElementById('ticker-text').innerText = `LIVE GLOBAL UPDATES ///  ${tickerContent}  ///  PLEASE STAND BY FOR MORE UPDATES`;
+    document.getElementById('ticker-text').innerText = `SWEN LIVE ALERTS ///  ${tickerContent}  ///  MORE UPDATES IMMINENT`;
 }
 
-// Builds the sidebar showing previous, current, and next items
 function updateSidebar() {
     const sidebar = document.getElementById('upcoming-list');
     sidebar.innerHTML = ''; 
 
-    // Array containing: [Prev, Current, Next1, Next2, Next3, Next4]
     let indices = [
-        (currentIndex - 1 + newsLibrary.length) % newsLibrary.length, // PREV
-        currentIndex,                                                 // CURRENT
-        (currentIndex + 1) % newsLibrary.length,                      // NEXT 1
-        (currentIndex + 2) % newsLibrary.length,                      // NEXT 2
-        (currentIndex + 3) % newsLibrary.length,                      // NEXT 3
-        (currentIndex + 4) % newsLibrary.length                       // NEXT 4
+        (currentIndex - 1 + newsLibrary.length) % newsLibrary.length,
+        currentIndex,                                                
+        (currentIndex + 1) % newsLibrary.length,                     
+        (currentIndex + 2) % newsLibrary.length,                     
+        (currentIndex + 3) % newsLibrary.length,
+        (currentIndex + 4) % newsLibrary.length
     ];
 
     indices.forEach((index, i) => {
@@ -101,9 +122,8 @@ function updateSidebar() {
         if (i === 0) statusText = '<span style="color: #94a3b8;">[PREV]</span> ';
         if (i === 1) statusText = '<span style="color: #00ffcc;">[LIVE]</span> ';
 
-        // Notice the onclick event triggers the jump function!
         sidebar.innerHTML += `
-            <div class="upcoming-item ${isCurrentClass}" onclick="jumpToArticle(${index})">
+            <div class="upcoming-item ${isCurrentClass}">
                 <div class="up-meta">${statusText}${article.category} | <span>${article.source}</span></div>
                 <div class="up-title">${article.title}</div>
             </div>
@@ -111,7 +131,6 @@ function updateSidebar() {
     });
 }
 
-// Function to update the main screen elements
 function updateScreen() {
     if (newsLibrary.length === 0) return;
 
@@ -136,33 +155,36 @@ function updateScreen() {
     updateSidebar();
 }
 
-// Controls the automatic rotation
+// FETCH LIVE WEATHER DATA
+async function fetchWeather() {
+    const city = weatherCities[weatherIndex];
+    try {
+        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
+        const data = await res.json();
+        const temp = Math.round(data.current_weather.temperature);
+        
+        document.getElementById('weather-city').innerText = city.name;
+        document.getElementById('weather-temp').innerText = `${temp}°C`;
+    } catch (e) {
+        console.error("Weather fetch failed", e);
+    }
+    
+    weatherIndex = (weatherIndex + 1) % weatherCities.length;
+}
+
 function autoAdvance() {
     currentIndex = (currentIndex + 1) % newsLibrary.length;
     updateScreen();
 }
 
-// Called when a user manually clicks an item in the sidebar
-window.jumpToArticle = function(index) {
-    currentIndex = index;
-    updateScreen();
-    // Resets the timer so it doesn't instantly jump away while you're reading
-    clearInterval(broadcastTimer);
-    broadcastTimer = setInterval(autoAdvance, 12000);
-}
-
-// Opens the full article in a new tab when the headline is clicked
-window.openFullArticle = function() {
-    if (newsLibrary.length === 0) return;
-    const article = newsLibrary[currentIndex];
-    if (article.link) {
-        window.open(article.link, '_blank');
-    }
-}
-
 function startBroadcast() {
     updateScreen();
+    // Rotate news every 12 seconds
     broadcastTimer = setInterval(autoAdvance, 12000);
+    
+    // Rotate weather every 8 seconds
+    fetchWeather();
+    setInterval(fetchWeather, 8000);
 }
 
 fetchAllNews();
