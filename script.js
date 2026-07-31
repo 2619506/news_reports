@@ -30,7 +30,6 @@ let broadcastTimer;
 const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
 
-// GLOBAL WEATHER DATA CONFIGURATION
 const weatherCities = [
     { name: "NEW YORK", lat: 40.71, lon: -74.00 },
     { name: "LONDON", lat: 51.50, lon: -0.12 },
@@ -43,18 +42,16 @@ const weatherCities = [
 ];
 let weatherIndex = 0;
 
-// HELPER: WMO CODE TO FONTAWESOME ICON
 function getWeatherIcon(code) {
-    // Standard WMO codes to icons
-    if (code === 0) return 'fa-sun'; // Clear sky
-    if (code === 1 || code === 2 || code === 3) return 'fa-cloud-sun'; // Partly cloudy
-    if (code === 45 || code === 48) return 'fa-smog'; // Fog
-    if (code >= 51 && code <= 55) return 'fa-cloud-rain'; // Drizzle
-    if (code >= 61 && code <= 65) return 'fa-cloud-showers-heavy'; // Rain
-    if (code >= 71 && code <= 77) return 'fa-snowflake'; // Snow
-    if (code >= 80 && code <= 82) return 'fa-cloud-showers-water'; // Showers
-    if (code >= 95 && code <= 99) return 'fa-cloud-bolt'; // Thunderstorm
-    return 'fa-cloud'; // Default
+    if (code === 0) return 'fa-sun'; 
+    if (code === 1 || code === 2 || code === 3) return 'fa-cloud-sun'; 
+    if (code === 45 || code === 48) return 'fa-smog'; 
+    if (code >= 51 && code <= 55) return 'fa-cloud-rain'; 
+    if (code >= 61 && code <= 65) return 'fa-cloud-showers-heavy'; 
+    if (code >= 71 && code <= 77) return 'fa-snowflake'; 
+    if (code >= 80 && code <= 82) return 'fa-cloud-showers-water'; 
+    if (code >= 95 && code <= 99) return 'fa-cloud-bolt'; 
+    return 'fa-cloud'; 
 }
 
 function extractImage(item) {
@@ -72,7 +69,6 @@ function extractImage(item) {
     return defaultImage;
 }
 
-// FORMAT GLOBAL DATE
 function updateGlobalDate() {
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
     const today = new Date();
@@ -89,9 +85,9 @@ async function fetchAllNews() {
             if (data.status === 'ok') {
                 const articles = data.items.slice(0, 6).map(item => {
                     let imgUrl = extractImage(item);
-                    // Extract longer description for "full matter"
                     let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
-                    if(cleanDesc.length > 500) cleanDesc = cleanDesc.substring(0, 500) + '...';
+                    // STANDARDIZED LENGTH: Prevents huge blocks by limiting to 300 chars max.
+                    if(cleanDesc.length > 300) cleanDesc = cleanDesc.substring(0, 300) + '...';
 
                     return {
                         title: item.title,
@@ -118,8 +114,9 @@ async function fetchAllNews() {
 
 function setupTicker(articles) {
     const tickerSubset = articles.slice(0, 20);
-    const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join('  ///  ');
-    document.getElementById('ticker-text').innerText = `SWEN LIVE ALERTS ///  ${tickerContent}  ///  MORE UPDATES IMMINENT`;
+    // UPDATED SEPARATOR: Clean vertical straight line with spacing
+    const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join('   |   ');
+    document.getElementById('ticker-text').innerText = `SWEN LIVE ALERTS   |   ${tickerContent}   |   MORE UPDATES IMMINENT`;
 }
 
 function updateSidebar() {
@@ -143,7 +140,6 @@ function updateSidebar() {
         if (i === 0) statusText = '<span style="color: #94a3b8;">[PREV]</span> ';
         if (i === 1) statusText = '<span style="color: #00ffcc;">[LIVE]</span> ';
 
-        // ADDED EXPLICIT SOURCE NAME BADGE IN QUEUE
         sidebar.innerHTML += `
             <div class="upcoming-item ${isCurrentClass}">
                 <div class="up-meta">
@@ -181,19 +177,17 @@ function updateScreen() {
     updateGlobalDate();
 }
 
-// FETCH LIVE WEATHER DATA WITH ICONS
 async function fetchWeather() {
     const city = weatherCities[weatherIndex];
     try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
         const data = await res.json();
         const temp = Math.round(data.current_weather.temperature);
-        const code = data.current_weather.weathercode; // Fetch WMO code
+        const code = data.current_weather.weathercode; 
         
         document.getElementById('weather-city').innerText = city.name;
         document.getElementById('weather-temp').innerText = `${temp}°C`;
         
-        // Update Icon based on code
         const iconClass = getWeatherIcon(code);
         const iconEl = document.getElementById('weather-icon');
         iconEl.className = `fa-solid ${iconClass}`;
@@ -212,10 +206,7 @@ function autoAdvance() {
 
 function startBroadcast() {
     updateScreen();
-    // Rotate news story every 12 seconds
     broadcastTimer = setInterval(autoAdvance, 12000);
-    
-    // Rotate weather every 10 seconds 
     fetchWeather();
     setInterval(fetchWeather, 10000);
 }
