@@ -1,4 +1,4 @@
-// ADDED 10 MORE GLOBAL CHANNELS
+// 22 GLOBAL SOURCES
 const feeds = [
     { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC NEWS' },
     { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
@@ -12,7 +12,6 @@ const feeds = [
     { url: 'https://www.theverge.com/rss/index.xml', category: 'TECHNOLOGY', source: 'THE VERGE' },
     { url: 'https://www.space.com/feeds/all', category: 'SPACE', source: 'SPACE.COM' },
     { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' },
-    // 10 NEW CHANNELS BELOW
     { url: 'https://moxie.foxnews.com/google-publisher/world.xml', category: 'WORLD', source: 'FOX NEWS' },
     { url: 'http://feeds.skynews.com/feeds/rss/world.xml', category: 'GLOBAL', source: 'SKY NEWS' },
     { url: 'https://www.cbsnews.com/latest/rss/world', category: 'WORLD', source: 'CBS NEWS' },
@@ -179,12 +178,12 @@ function autoAdvance() {
 
 function startBroadcast() {
     updateScreen();
-    // Rotate news every 12 seconds
+    // Rotate news story every 12 seconds
     broadcastTimer = setInterval(autoAdvance, 12000);
     
-    // Rotate weather every 8 seconds
+    // Rotate weather every 10 seconds (Compliant with free API daily limits)
     fetchWeather();
-    setInterval(fetchWeather, 8000);
+    setInterval(fetchWeather, 10000);
 }
 
 fetchAllNews();
