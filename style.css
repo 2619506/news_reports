@@ -31,34 +31,17 @@ html, body {
     border-radius: 0;
 }
 
-.scanlines {
-    position: absolute;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
-    background-size: 100% 4px;
-    z-index: 10;
-    pointer-events: none;
-    opacity: 0.6;
-}
-
-.glare {
-    position: absolute;
-    top: -50%; left: -50%; width: 200%; height: 200%;
-    background: linear-gradient(45deg, rgba(255,255,255,0) 40%, rgba(255,255,255,0.02) 50%, rgba(255,255,255,0) 60%);
-    z-index: 11;
-    pointer-events: none;
-}
+/* REMOVED .scanlines AND .glare ENTIRELY */
 
 .broadcast-layout {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 60px); /* Adjusted for thicker ticker */
+    height: calc(100vh - 60px);
     width: 100vw;
 }
 
-/* SIDEBAR STYLING */
 .sidebar {
-    width: 360px; /* Slightly wider for clear names */
+    width: 360px;
     background: rgba(5, 10, 20, 0.95);
     border-right: 1px solid rgba(255,255,255,0.1);
     z-index: 20;
@@ -104,7 +87,7 @@ html, body {
     font-family: 'Orbitron', sans-serif;
     margin-bottom: 4px;
     display: flex;
-    justify-content: space-between; /* Space out category and source name */
+    justify-content: space-between;
 }
 .up-meta .source-name {
     color: #ffffff;
@@ -125,7 +108,6 @@ html, body {
     overflow: hidden;
 }
 
-/* WEATHER WIDGET WITH ICONS */
 .weather-widget {
     background: #080d1a;
     border-top: 1px solid rgba(0, 255, 204, 0.2);
@@ -169,18 +151,16 @@ html, body {
     font-weight: 700;
 }
 
-/* MAIN CONTENT AREA */
 .main-story {
     flex: 1;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start; /* Shifted up */
-    padding: 15vh 60px 40px 60px; /* Pushed down slightly from absolute top */
+    justify-content: flex-start;
+    padding: 12vh 60px 40px 60px;
     z-index: 15;
 }
 
-/* TOP-RIGHT LOGO AND DATE ALIGNMENT */
 .swen-logo-container {
     position: absolute;
     top: 30px;
@@ -200,22 +180,24 @@ html, body {
     padding: 10px 22px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.6);
     letter-spacing: 2px;
-    border-left: 5px solid #ffffff; /* Reverted to white */
+    border-left: 5px solid #ffffff;
 }
 
 .swen-logo span {
     font-weight: 400;
 }
 
+/* INCREASED DATE SIZE */
 .swen-date {
     background: transparent;
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.8rem;
+    font-size: 1.15rem; /* Increased size */
     font-weight: 700;
-    margin-top: 5px;
+    margin-top: 8px; /* Slightly more space */
+    letter-spacing: 1px;
     text-transform: uppercase;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
 }
 
 .story-image-container {
@@ -234,13 +216,14 @@ html, body {
 .image-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.7) 40%, transparent 80%);
+    /* Darker gradient since scanlines are removed, ensures text readability */
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 45%, transparent 90%);
 }
 
 .story-content {
     position: relative;
     z-index: 2;
-    max-width: 80%; /* Keeps text constrained */
+    max-width: 85%; 
 }
 
 .meta-tags {
@@ -272,7 +255,7 @@ html, body {
 
 #news-headline {
     color: #ffffff;
-    font-family: 'Outfit', sans-serif; /* Highly readable font */
+    font-family: 'Outfit', sans-serif;
     font-size: 3.5rem;
     font-weight: 700;
     line-height: 1.1;
@@ -280,7 +263,6 @@ html, body {
     text-shadow: 2px 2px 10px rgba(0,0,0,1);
 }
 
-/* FULL MATTER CONTAINER */
 .news-full-matter {
     background: rgba(0, 0, 0, 0.6);
     border-left: 4px solid #cc0000;
@@ -288,17 +270,17 @@ html, body {
     margin-bottom: 20px;
 }
 
+/* STANDARDIZED TEXT LENGTH (Max 4 lines) */
 #news-description {
     color: #e2e8f0;
-    font-size: 1.4rem;
+    font-size: 1.45rem;
     line-height: 1.6;
     margin: 0;
     text-shadow: 1px 1px 3px rgba(0,0,0,1);
-    /* Allow full text viewing, max height constraint */
-    max-height: 300px;
+    max-height: 200px;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 8; /* Allows for a good block of text */
+    -webkit-line-clamp: 4; /* Reduced from 8 to prevent massive blocks */
     -webkit-box-orient: vertical;
 }
 
@@ -313,15 +295,14 @@ html, body {
     position: absolute;
     bottom: 35px;
     right: 35px;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgba(255, 255, 255, 0.8); /* Brighter for HD readability */
     font-size: 0.9rem;
     z-index: 10;
 }
 
-/* BOLDER, THICKER TICKER TAPE */
 .ticker-tape {
     position: absolute;
-    bottom: 0; left: 0; width: 100vw; height: 60px; /* Taller */
+    bottom: 0; left: 0; width: 100vw; height: 60px;
     background-color: #cc0000;
     display: flex;
     align-items: center;
@@ -333,10 +314,10 @@ html, body {
 .ticker-text {
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
-    font-weight: 900; /* Extra bold */
-    font-size: 1.5rem; /* Larger text */
+    font-weight: 900;
+    font-size: 1.5rem;
     white-space: nowrap;
-    animation: scroll-ticker 150s linear infinite; /* Slightly faster */
+    animation: scroll-ticker 150s linear infinite;
     letter-spacing: 3px;
 }
 
