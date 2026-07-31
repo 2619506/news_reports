@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWEN News Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Fonts selected for maximum digital signage readability -->
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600;700&family=Teko:wght@500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
@@ -18,31 +19,36 @@
 
             <div class="broadcast-layout">
                 
-                <!-- LEFT SIDEBAR -->
+                <!-- LEFT SIDEBAR QUEUE -->
                 <div class="sidebar">
                     <div class="sidebar-header">
                         <span><i class="fa-solid fa-list"></i> BROADCAST QUEUE</span>
                     </div>
                     
                     <div class="upcoming-list" id="upcoming-list">
-                        <!-- Populated by JS -->
+                        <!-- Populated dynamically by JS with source logos -->
                     </div>
                     
-                    <!-- BOTTOM-LEFT WEATHER WIDGET -->
+                    <!-- ENHANCED VISUAL WEATHER WIDGET -->
                     <div class="weather-widget">
                         <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL WEATHER</div>
                         <div class="weather-content">
                             <span id="weather-city">LOADING...</span>
-                            <span id="weather-temp">--°C</span>
+                            <div class="weather-details">
+                                <span id="weather-icon"><i class="fa-solid fa-sun"></i></span>
+                                <span id="weather-temp">--°C</span>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- MAIN DISPLAY STORY -->
+                <!-- MAIN DISPLAY STORY (Shifted to Upper-Middle) -->
                 <div class="main-story">
-                    <!-- TOP-RIGHT BRANDING LOGO -->
+                    <!-- TOP-RIGHT BRANDING & GLOBAL DATE -->
                     <div class="swen-logo">
-                        SWEN <span>NEWS</span>
+                        <div class="swen-title">SWEN <span>NEWS</span></div>
+                        <div class="swen-slogan">THE INSTANT GLOBAL PULSE /// REAL-TIME</div>
+                        <div class="swen-date" id="swen-date">31 JUL 2026</div>
                     </div>
 
                     <div class="story-image-container">
@@ -50,6 +56,7 @@
                         <div class="image-overlay"></div>
                     </div>
                     
+                    <!-- STORY CONTENT ELEVATED HIGHER UP -->
                     <div class="story-content">
                         <div class="meta-tags">
                             <span class="category-badge" id="news-category">LOADING</span>
@@ -59,7 +66,7 @@
                         <h1 id="news-headline">Establishing satellite link...</h1>
                         
                         <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
-                        <div class="timestamp" id="news-time">00:00</div>
+                        <div class="timestamp" id="news-time">00:00 UTC</div>
                     </div>
 
                     <div class="source-citation" id="source-citation">
@@ -69,7 +76,7 @@
 
             </div>
 
-            <!-- BROADCAST TICKER TAPE -->
+            <!-- ULTRA-BOLD HIGH READABILITY TICKER TAPE -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
                     SWEN NEWS NETWORK /// INITIALIZING GLOBAL NODES /// STAND BY...
