@@ -6,7 +6,6 @@
     <title>SWEN News Broadcast</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- FontAwesome for robust icon support (weather & layout) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
@@ -14,8 +13,7 @@
     <div class="tv-bezel">
         <div class="crt-screen">
             
-            <div class="scanlines"></div>
-            <div class="glare"></div>
+            <!-- REMOVED OLD TV SCANLINES AND GLARE FOR CLEAR HD VIEW -->
 
             <div class="broadcast-layout">
                 
@@ -29,7 +27,7 @@
                         <!-- Populated by JS -->
                     </div>
                     
-                    <!-- BOTTOM-LEFT WEATHER WIDGET WITH ICONS -->
+                    <!-- BOTTOM-LEFT WEATHER WIDGET -->
                     <div class="weather-widget">
                         <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL WEATHER</div>
                         <div class="weather-content">
@@ -44,7 +42,7 @@
 
                 <!-- MAIN DISPLAY STORY -->
                 <div class="main-story">
-                    <!-- TOP-RIGHT BRANDING LOGO WITH DATE (NO SLOGAN) -->
+                    <!-- TOP-RIGHT BRANDING LOGO WITH LARGER DATE -->
                     <div class="swen-logo-container">
                         <div class="swen-logo">
                             SWEN <span>NEWS</span>
@@ -60,7 +58,6 @@
                     </div>
                     
                     <div class="story-content">
-                        <!-- SHIFTED UP AND RESTRUCTURED -->
                         <div class="meta-tags">
                             <span class="category-badge" id="news-category">LOADING</span>
                             <span class="source-badge" id="news-source">NETWORK</span>
@@ -68,7 +65,7 @@
                         
                         <h1 id="news-headline">Establishing satellite link...</h1>
                         
-                        <!-- FULL MATTER CONCLUSION TEXT -->
+                        <!-- STANDARDIZED CONCLUSION TEXT -->
                         <div class="news-full-matter">
                             <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
                         </div>
@@ -86,7 +83,7 @@
             <!-- BOLD BROADCAST TICKER TAPE -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
-                    SWEN NEWS NETWORK /// INITIALIZING GLOBAL NODES /// STAND BY...
+                    SWEN NEWS NETWORK | INITIALIZING GLOBAL NODES | STAND BY...
                 </div>
             </div>
 
