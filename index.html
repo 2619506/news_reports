@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern News Broadcast</title>
+    <title>SWEN News Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=Outfit:wght@300;400;600&family=Teko:wght@400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
@@ -18,7 +18,7 @@
 
             <div class="broadcast-layout">
                 
-                <!-- EXTENDED & INTERACTIVE SIDEBAR -->
+                <!-- SIDEBAR WITH WEATHER WIDGET -->
                 <div class="sidebar">
                     <div class="sidebar-header">
                         <span><i class="fa-solid fa-list"></i> BROADCAST QUEUE</span>
@@ -26,12 +26,21 @@
                     <div class="upcoming-list" id="upcoming-list">
                         <!-- Populated by JS -->
                     </div>
+                    
+                    <!-- NEW: Weather Widget at Bottom Left -->
+                    <div class="weather-widget">
+                        <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL WEATHER</div>
+                        <div class="weather-content">
+                            <span id="weather-city">LOADING...</span>
+                            <span id="weather-temp">--°C</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="main-story">
-                    <div class="live-indicator">
-                        <div class="red-dot"></div>
-                        LIVE AGGREGATOR
+                    <!-- NEW: SWEN Logo Area Top Right -->
+                    <div class="swen-logo">
+                        SWEN <span>NEWS</span>
                     </div>
 
                     <div class="story-image-container">
@@ -45,8 +54,7 @@
                             <span class="source-badge" id="news-source">NETWORK</span>
                         </div>
                         
-                        <!-- HEADLINE IS NOW CLICKABLE -->
-                        <h1 id="news-headline" onclick="openFullArticle()" title="Click to read full article on publisher's site">Establishing satellite link...</h1>
+                        <h1 id="news-headline">Establishing satellite link...</h1>
                         
                         <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
                         <div class="timestamp" id="news-time">00:00</div>
@@ -59,9 +67,10 @@
 
             </div>
 
+            <!-- UPDATED: Red Ticker with White Text -->
             <div class="ticker-tape">
                 <div class="ticker-text" id="ticker-text">
-                    INITIALIZING BROADCAST NODE // CONNECTING TO RSS MAINFRAME // STAND BY...
+                    SWEN NEWS NETWORK /// INITIALIZING GLOBAL NODES /// STAND BY...
                 </div>
             </div>
 
