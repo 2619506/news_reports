@@ -5,23 +5,21 @@
 }
 
 body {
-    background-color: transparent; 
+    background-color: #000; 
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100vw;
     height: 100vh;
     overflow: hidden;
     font-family: 'Outfit', sans-serif;
 }
 
+/* Updated for 100% Full Screen */
 .tv-bezel {
-    width: 100%;
-    max-width: 1100px; 
-    aspect-ratio: 16 / 9; 
-    background: #111;
-    border-radius: 20px;
-    padding: 15px;
-    box-shadow: inset 0 0 10px #000, 0 20px 40px rgba(0,0,0,0.8);
+    width: 100vw;
+    height: 100vh;
+    background: #000;
     position: relative;
 }
 
@@ -29,20 +27,18 @@ body {
     width: 100%;
     height: 100%;
     background-color: #050a15; 
-    border-radius: 12px; 
     position: relative;
     overflow: hidden;
-    box-shadow: inset 0 0 30px rgba(0,0,0,0.8);
 }
 
 .scanlines {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%);
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
     background-size: 100% 4px;
     z-index: 10;
     pointer-events: none;
-    opacity: 0.6;
+    opacity: 0.8;
 }
 
 .glare {
@@ -56,25 +52,23 @@ body {
 .broadcast-layout {
     display: flex;
     flex-direction: row; 
-    height: calc(100% - 45px); 
+    height: calc(100% - 50px); /* Leaves exact room for the ticker */
     width: 100%;
 }
 
-/* EXTENDED SIDEBAR STYLES */
 .sidebar {
     width: 320px;
-    background: rgba(10, 15, 25, 0.85);
+    background: rgba(5, 10, 20, 0.95);
     border-right: 1px solid rgba(255,255,255,0.1); 
     z-index: 5;
     display: flex;
     flex-direction: column;
-    backdrop-filter: blur(10px);
 }
 
 .sidebar-header {
-    background: rgba(0, 0, 0, 0.4);
+    background: rgba(0, 0, 0, 0.6);
     padding: 15px 20px;
-    color: #00ffcc;
+    color: #ffffff;
     font-family: 'Orbitron', sans-serif;
     font-size: 0.85rem;
     font-weight: 700;
@@ -87,31 +81,19 @@ body {
     flex-direction: column;
     padding: 10px 20px;
     gap: 15px;
-    flex: 1; /* Pushes list all the way down */
-    overflow-y: auto; /* Allows scrolling if queue gets big */
+    flex: 1;
+    overflow: hidden;
 }
 
-/* Custom slick scrollbar for the queue */
-.upcoming-list::-webkit-scrollbar { width: 6px; }
-.upcoming-list::-webkit-scrollbar-track { background: transparent; }
-.upcoming-list::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
-
-/* INTERACTIVE QUEUE ITEMS */
 .upcoming-item {
     border-left: 2px solid #334155;
     padding: 4px 0 4px 12px;
     transition: all 0.3s ease;
-    cursor: pointer; /* Shows the user they can click it */
-}
-
-.upcoming-item:hover {
-    border-left-color: #94a3b8;
-    background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, transparent 100%);
 }
 
 .upcoming-item.current-active {
     border-left-color: #00ffcc;
-    background: linear-gradient(90deg, rgba(0,255,204,0.05) 0%, transparent 100%);
+    background: linear-gradient(90deg, rgba(0,255,204,0.1) 0%, transparent 100%);
 }
 
 .up-meta {
@@ -133,44 +115,66 @@ body {
     overflow: hidden;
 }
 
+/* NEW: Weather Widget Styles */
+.weather-widget {
+    background: #000;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.weather-header {
+    color: #94a3b8;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 1px;
+}
+
+.weather-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    font-family: 'Teko', sans-serif;
+    font-size: 2rem;
+    line-height: 1;
+}
+
+#weather-temp {
+    color: #00ffcc;
+}
+
 .main-story {
     flex: 1;
     position: relative;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
-    padding: 30px;
+    padding: 40px;
     z-index: 5;
 }
 
-.live-indicator {
+/* NEW: SWEN Logo Box */
+.swen-logo {
     position: absolute;
-    top: 20px; right: 20px;
+    top: 30px; 
+    right: 30px;
+    background: rgba(200, 0, 0, 0.9);
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    font-size: 1.5rem;
+    font-weight: 900;
+    padding: 10px 20px;
     z-index: 20;
-    background: rgba(0,0,0,0.5);
-    padding: 5px 12px;
-    border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+    letter-spacing: 2px;
+    border-left: 4px solid #fff;
 }
-
-.red-dot {
-    width: 10px; height: 10px;
-    background-color: #ff003c;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #ff003c;
-    animation: pulse 1.5s infinite alternate;
-}
-
-@keyframes pulse {
-    from { opacity: 1; }
-    to { opacity: 0.3; }
+.swen-logo span {
+    font-weight: 400;
+    color: #e2e8f0;
 }
 
 .story-image-container {
@@ -189,13 +193,13 @@ body {
 .image-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to top, rgba(5, 10, 21, 0.95) 0%, rgba(5, 10, 21, 0.7) 40%, transparent 60%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 50%, transparent 80%);
 }
 
 .story-content {
     position: relative;
     z-index: 2;
-    padding-bottom: 10px; 
+    padding-bottom: 20px; 
 }
 
 .meta-tags {
@@ -208,46 +212,36 @@ body {
     background-color: #00ffcc;
     color: #000;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 4px;
+    padding: 5px 15px;
     letter-spacing: 1px;
 }
 
 .source-badge {
-    background-color: rgba(255, 255, 255, 0.1);
+    background-color: rgba(0, 0, 0, 0.5);
     border: 1px solid rgba(255, 255, 255, 0.3);
     color: #fff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 4px;
+    padding: 5px 15px;
     text-transform: uppercase;
 }
 
-/* INTERACTIVE CLICKABLE HEADLINE */
 #news-headline {
     color: #ffffff;
     font-family: 'Teko', sans-serif;
-    font-size: 3.5rem; 
+    font-size: 4.5rem; 
     font-weight: 600;
     line-height: 1.1;
     margin: 0 0 10px 0;
-    text-shadow: 2px 2px 5px rgba(0,0,0,1); 
-    cursor: pointer;
-    transition: color 0.2s ease, text-shadow 0.2s ease;
-}
-
-#news-headline:hover {
-    color: #00ffcc;
-    text-shadow: 0 0 15px rgba(0,255,204,0.6);
+    text-shadow: 2px 2px 10px rgba(0,0,0,1); 
 }
 
 #news-description {
-    color: #f8fafc;
-    font-size: 1.25rem; 
+    color: #e2e8f0;
+    font-size: 1.5rem; 
     line-height: 1.5;
     margin: 0 0 15px 0;
     max-width: 90%;
@@ -255,46 +249,45 @@ body {
     -webkit-line-clamp: 3; 
     -webkit-box-orient: vertical;  
     overflow: hidden;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+    text-shadow: 1px 1px 5px rgba(0,0,0,1);
 }
 
 .timestamp {
     color: #94a3b8;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
-    text-shadow: 1px 1px 2px #000;
+    font-size: 1rem;
+    text-shadow: 1px 1px 3px #000;
 }
 
 .source-citation {
     position: absolute;
-    bottom: 25px;
-    right: 25px;
-    color: rgba(255, 255, 255, 0.6);
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.75rem;
-    font-weight: 300;
+    bottom: 40px;
+    right: 30px;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.85rem;
     z-index: 10;
-    text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
 }
 
+/* UPDATED: Classic News Red Background with White Text */
 .ticker-tape {
     position: absolute;
-    bottom: 0; left: 0; width: 100%; height: 45px;
-    background-color: #020617;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    bottom: 0; left: 0; width: 100%; height: 50px;
+    background-color: #cc0000; /* Deep Broadcast Red */
     display: flex;
     align-items: center;
     overflow: hidden;
     z-index: 15;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
 }
 
 .ticker-text {
-    color: #ffcc00;
+    color: #ffffff; /* Crisp White Text */
     font-family: 'Orbitron', sans-serif;
-    font-size: 1rem;
+    font-weight: 700;
+    font-size: 1.1rem;
     white-space: nowrap;
-    animation: scroll-ticker 200s linear infinite;
-    letter-spacing: 1px;
+    animation: scroll-ticker 180s linear infinite;
+    letter-spacing: 2px;
 }
 
 @keyframes scroll-ticker {
