@@ -45,7 +45,7 @@ const weatherCities = [
     { name: "TOKYO", lat: 35.68, lon: 139.69 }, { name: "DUBAI", lat: 25.20, lon: 55.27 },
     { name: "LONDON", lat: 51.50, lon: -0.12 }, { name: "PARIS", lat: 48.85, lon: 2.35 },
     { name: "NEW YORK", lat: 40.71, lon: -74.00 }, { name: "SYDNEY", lat: -33.8688, lon: 151.2093 }
-    // You can safely add the rest of your cities here
+    // Add additional cities here as needed
 ];
 weatherCities.sort(() => Math.random() - 0.5);
 let weatherIndex = 0;
@@ -280,6 +280,5 @@ function startBroadcast() {
 startLiveClock();
 updateGlobalDate();
 fetchWeather();
-setInterval(fetchWeather, 10000);
+setInterval(fetchWeather, 600000); // Set to 10 minutes (600,000 ms) to prevent API throttling
 fetchAllNews();
- 
