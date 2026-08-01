@@ -9,40 +9,20 @@ html, body {
     height: 100vh;
     background-color: #000;
     overflow: hidden;
-    font-family: 'Outfit', sans-serif;
+    font-family: 'Inter', sans-serif; /* Clean, professional body font */
 }
-
-.tv-bezel {
-    width: 100vw;
-    height: 100vh;
-    background: #000;
-    position: relative;
-    border-radius: 0;
-    padding: 0;
-    margin: 0;
-}
-
-.crt-screen {
-    width: 100vw;
-    height: 100vh;
-    background-color: #050a15;
-    position: relative;
-    overflow: hidden;
-    border-radius: 0;
-}
-
-/* REMOVED .scanlines AND .glare ENTIRELY */
 
 .broadcast-layout {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 65px);
     width: 100vw;
 }
 
+/* SIDEBAR STYLING */
 .sidebar {
-    width: 360px;
-    background: rgba(5, 10, 20, 0.95);
+    width: 380px; /* Slightly wider for better text flow */
+    background: #0a0f1a;
     border-right: 1px solid rgba(255,255,255,0.1);
     z-index: 20;
     display: flex;
@@ -50,77 +30,82 @@ html, body {
 }
 
 .sidebar-header {
-    background: rgba(0, 0, 0, 0.7);
-    padding: 16px 20px;
+    background: #05080f;
+    padding: 18px 25px;
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     font-weight: 700;
-    letter-spacing: 1px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    letter-spacing: 1.5px;
+    border-bottom: 2px solid #1e293b;
 }
 
 .upcoming-list {
     display: flex;
     flex-direction: column;
-    padding: 15px 20px;
-    gap: 15px;
+    padding: 15px 25px;
+    gap: 18px;
     flex: 1;
     overflow-y: hidden;
 }
 
 .upcoming-item {
     border-left: 3px solid #1e293b;
-    padding: 4px 0 4px 12px;
+    padding: 4px 0 4px 15px;
     transition: all 0.3s ease;
 }
 
 .upcoming-item.current-active {
-    border-left-color: #00ffcc;
-    background: linear-gradient(90deg, rgba(0,255,204,0.12) 0%, transparent 100%);
+    border-left-color: #cc0000; /* Use SWEN Red for active status */
+    background: linear-gradient(90deg, rgba(204,0,0,0.15) 0%, transparent 100%);
 }
 
 .up-meta {
     font-size: 0.75rem;
     color: #94a3b8;
     text-transform: uppercase;
-    font-family: 'Orbitron', sans-serif;
-    margin-bottom: 4px;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    margin-bottom: 6px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }
+
 .up-meta .source-name {
-    color: #ffffff;
-    font-weight: 900;
-    background: rgba(255,255,255,0.1);
-    padding: 2px 6px;
-    border-radius: 3px;
+    color: #000;
+    background: #e2e8f0;
+    padding: 3px 8px;
+    border-radius: 2px;
     font-size: 0.65rem;
+    letter-spacing: 0.5px;
 }
 
 .up-title {
-    font-size: 0.95rem;
-    color: #f8fafc;
-    line-height: 1.3;
+    font-size: 1rem;
+    color: #f1f5f9;
+    line-height: 1.4;
+    font-weight: 500;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
+/* WEATHER WIDGET */
 .weather-widget {
-    background: #080d1a;
-    border-top: 1px solid rgba(0, 255, 204, 0.2);
-    padding: 15px 20px;
+    background: #05080f;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding: 20px 25px;
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    gap: 8px;
 }
 
 .weather-header {
-    color: #00ffcc;
+    color: #94a3b8;
     font-family: 'Orbitron', sans-serif;
-    font-size: 0.7rem;
+    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 1px;
 }
@@ -130,20 +115,20 @@ html, body {
     justify-content: space-between;
     align-items: center;
     color: #ffffff;
-    font-family: 'Teko', sans-serif;
-    font-size: 2.5rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2.8rem;
     line-height: 1;
 }
 
 .weather-temp-container {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 12px;
 }
 
 #weather-icon {
-    font-size: 2rem;
-    color: #00ffcc;
+    font-size: 2.2rem;
+    color: #38bdf8;
 }
 
 #weather-temp {
@@ -151,20 +136,22 @@ html, body {
     font-weight: 700;
 }
 
+/* MAIN CONTENT AREA */
 .main-story {
     flex: 1;
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    padding: 12vh 60px 40px 60px;
+    justify-content: flex-end; /* Moved text back down for cleaner reading */
+    padding: 60px 80px;
     z-index: 15;
 }
 
+/* TOP RIGHT CORNER (LOGO, DATE, CLOCK) */
 .swen-logo-container {
     position: absolute;
-    top: 30px;
-    right: 35px;
+    top: 40px;
+    right: 50px;
     z-index: 30;
     display: flex;
     flex-direction: column;
@@ -175,31 +162,38 @@ html, body {
     background: #cc0000;
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 900;
-    padding: 10px 22px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+    padding: 12px 25px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
     letter-spacing: 2px;
-    border-left: 5px solid #ffffff;
 }
 
 .swen-logo span {
     font-weight: 400;
 }
 
-/* INCREASED DATE SIZE */
 .swen-date {
-    background: transparent;
     color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.15rem; /* Increased size */
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
     font-weight: 700;
-    margin-top: 8px; /* Slightly more space */
-    letter-spacing: 1px;
+    margin-top: 10px;
     text-transform: uppercase;
     text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
 }
 
+.swen-clock {
+    color: #00ffcc;
+    font-family: 'Oswald', sans-serif;
+    font-size: 2rem;
+    font-weight: 500;
+    margin-top: 2px;
+    letter-spacing: 1px;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+}
+
+/* IMAGES & OVERLAYS */
 .story-image-container {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
@@ -216,109 +210,99 @@ html, body {
 .image-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    /* Darker gradient since scanlines are removed, ensures text readability */
-    background: linear-gradient(to right, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.8) 45%, transparent 90%);
+    /* Dark smooth gradient for perfect text contrast */
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 90%);
 }
 
 .story-content {
     position: relative;
     z-index: 2;
-    max-width: 85%; 
+    max-width: 90%; 
 }
 
 .meta-tags {
     display: flex;
-    gap: 12px;
+    gap: 15px;
     margin-bottom: 20px;
 }
 
 .category-badge {
     background-color: #00ffcc;
     color: #000000;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 900;
-    padding: 8px 18px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    padding: 6px 16px;
     letter-spacing: 1px;
+    border-radius: 2px;
 }
 
 .source-badge {
-    background-color: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #000000;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
     font-weight: 700;
-    padding: 8px 18px;
+    padding: 6px 16px;
     text-transform: uppercase;
+    border-radius: 2px;
 }
 
 #news-headline {
     color: #ffffff;
-    font-family: 'Outfit', sans-serif;
-    font-size: 3.5rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 4rem;
     font-weight: 700;
-    line-height: 1.1;
-    margin: 0 0 15px 0;
-    text-shadow: 2px 2px 10px rgba(0,0,0,1);
+    line-height: 1.15;
+    margin: 0 0 25px 0;
+    text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
 }
 
+/* FROSTED GLASS PROFESSIONAL PANEL */
 .news-full-matter {
-    background: rgba(0, 0, 0, 0.6);
-    border-left: 4px solid #cc0000;
-    padding: 20px;
-    margin-bottom: 20px;
+    background: rgba(10, 15, 25, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-left: 5px solid #cc0000;
+    padding: 25px 35px;
+    border-radius: 0 8px 8px 0;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
-/* STANDARDIZED TEXT LENGTH (Max 4 lines) */
 #news-description {
-    color: #e2e8f0;
-    font-size: 1.45rem;
+    color: #f8fafc;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.5rem;
     line-height: 1.6;
     margin: 0;
-    text-shadow: 1px 1px 3px rgba(0,0,0,1);
-    max-height: 200px;
+    font-weight: 400;
+    max-height: 250px;
     overflow: hidden;
     display: -webkit-box;
-    -webkit-line-clamp: 4; /* Reduced from 8 to prevent massive blocks */
+    -webkit-line-clamp: 4; 
     -webkit-box-orient: vertical;
 }
 
-.timestamp {
-    color: #94a3b8;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-    text-shadow: 1px 1px 3px #000;
-}
-
-.source-citation {
-    position: absolute;
-    bottom: 35px;
-    right: 35px;
-    color: rgba(255, 255, 255, 0.8); /* Brighter for HD readability */
-    font-size: 0.9rem;
-    z-index: 10;
-}
-
+/* TICKER TAPE */
 .ticker-tape {
     position: absolute;
-    bottom: 0; left: 0; width: 100vw; height: 60px;
+    bottom: 0; left: 0; width: 100vw; height: 65px;
     background-color: #cc0000;
     display: flex;
     align-items: center;
     overflow: hidden;
     z-index: 100;
-    box-shadow: 0 -3px 15px rgba(0,0,0,0.6);
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.5);
 }
 
 .ticker-text {
     color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: 1.5rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
     white-space: nowrap;
-    animation: scroll-ticker 150s linear infinite;
-    letter-spacing: 3px;
+    animation: scroll-ticker 180s linear infinite;
+    letter-spacing: 1.5px;
 }
 
 @keyframes scroll-ticker {
