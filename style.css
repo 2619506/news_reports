@@ -4,19 +4,20 @@
     padding: 0;
 }
 
+/* STRICT 1280x720 RESOLUTION LOCK */
 html, body {
-    width: 100vw;
-    height: 100vh;
+    width: 1280px;
+    height: 720px;
     background-color: #000;
-    overflow: hidden;
+    overflow: hidden; /* Permanently hides scrollbars */
     font-family: 'Inter', sans-serif;
 }
 
 .broadcast-layout {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 65px);
-    width: 100vw;
+    height: 655px; /* 720px total height - 65px ticker height */
+    width: 1280px;
 }
 
 /* SIDEBAR STYLING */
@@ -46,7 +47,7 @@ html, body {
     padding: 15px 25px;
     gap: 18px;
     flex: 1;
-    overflow-y: hidden;
+    overflow: hidden; /* Prevents DOM overflow */
 }
 
 .upcoming-item {
@@ -205,6 +206,7 @@ html, body {
     object-fit: cover;
     opacity: 1;
     transition: opacity 0.5s ease;
+    will-change: opacity; /* Hardware Acceleration */
 }
 
 .image-overlay {
@@ -285,7 +287,9 @@ html, body {
 /* TICKER TAPE */
 .ticker-tape {
     position: absolute;
-    bottom: 0; left: 0; width: 100vw; height: 65px;
+    bottom: 0; left: 0; 
+    width: 1280px; /* Locked to full width */
+    height: 65px;
     background-color: #cc0000;
     display: flex;
     align-items: center;
@@ -302,9 +306,10 @@ html, body {
     white-space: nowrap;
     animation: scroll-ticker 180s linear infinite;
     letter-spacing: 1.5px;
+    will-change: transform; /* Hardware Acceleration for smooth 10fps movement */
 }
 
 @keyframes scroll-ticker {
-    0% { transform: translateX(100vw); }
+    0% { transform: translateX(1280px); }
     100% { transform: translateX(-100%); }
 }
