@@ -5,88 +5,74 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWEN News Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Teko:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- NEW PROFESSIONAL FONTS: Oswald (Headlines) and Inter (Body) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Oswald:wght@500;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
 
-    <div class="tv-bezel">
-        <div class="crt-screen">
+    <div class="broadcast-layout">
+        
+        <!-- LEFT SIDEBAR -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span><i class="fa-solid fa-list-ul"></i> BROADCAST QUEUE</span>
+            </div>
             
-            <!-- REMOVED OLD TV SCANLINES AND GLARE FOR CLEAR HD VIEW -->
+            <div class="upcoming-list" id="upcoming-list">
+                <!-- Populated by JS -->
+            </div>
+            
+            <!-- BOTTOM-LEFT WEATHER WIDGET -->
+            <div class="weather-widget">
+                <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL WEATHER</div>
+                <div class="weather-content">
+                    <span id="weather-city">LOADING...</span>
+                    <div class="weather-temp-container">
+                        <i id="weather-icon" class="fa-solid fa-cloud"></i>
+                        <span id="weather-temp">--°C</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-            <div class="broadcast-layout">
+        <!-- MAIN DISPLAY STORY -->
+        <div class="main-story">
+            <!-- TOP-RIGHT BRANDING, DATE & LIVE CLOCK -->
+            <div class="swen-logo-container">
+                <div class="swen-logo">
+                    SWEN <span>NEWS</span>
+                </div>
+                <div class="swen-date" id="global-date">LOADING DATE...</div>
+                <div class="swen-clock" id="global-clock">00:00:00</div>
+            </div>
+
+            <div class="story-image-container">
+                <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
+                <div class="image-overlay"></div>
+            </div>
+            
+            <div class="story-content">
+                <div class="meta-tags">
+                    <span class="category-badge" id="news-category">LOADING</span>
+                    <span class="source-badge" id="news-source">NETWORK</span>
+                </div>
                 
-                <!-- LEFT SIDEBAR -->
-                <div class="sidebar">
-                    <div class="sidebar-header">
-                        <span><i class="fa-solid fa-list"></i> BROADCAST QUEUE</span>
-                    </div>
-                    
-                    <div class="upcoming-list" id="upcoming-list">
-                        <!-- Populated by JS -->
-                    </div>
-                    
-                    <!-- BOTTOM-LEFT WEATHER WIDGET -->
-                    <div class="weather-widget">
-                        <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL WEATHER</div>
-                        <div class="weather-content">
-                            <span id="weather-city">LOADING...</span>
-                            <div class="weather-temp-container">
-                                <i id="weather-icon" class="fa-solid fa-cloud"></i>
-                                <span id="weather-temp">--°C</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- MAIN DISPLAY STORY -->
-                <div class="main-story">
-                    <!-- TOP-RIGHT BRANDING LOGO WITH LARGER DATE -->
-                    <div class="swen-logo-container">
-                        <div class="swen-logo">
-                            SWEN <span>NEWS</span>
-                        </div>
-                        <div class="swen-date" id="global-date">
-                            LOADING DATE...
-                        </div>
-                    </div>
-
-                    <div class="story-image-container">
-                        <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
-                        <div class="image-overlay"></div>
-                    </div>
-                    
-                    <div class="story-content">
-                        <div class="meta-tags">
-                            <span class="category-badge" id="news-category">LOADING</span>
-                            <span class="source-badge" id="news-source">NETWORK</span>
-                        </div>
-                        
-                        <h1 id="news-headline">Establishing satellite link...</h1>
-                        
-                        <!-- STANDARDIZED CONCLUSION TEXT -->
-                        <div class="news-full-matter">
-                            <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
-                        </div>
-                        
-                        <div class="timestamp" id="news-time">00:00</div>
-                    </div>
-
-                    <div class="source-citation" id="source-citation">
-                        Authenticating source data...
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- BOLD BROADCAST TICKER TAPE -->
-            <div class="ticker-tape">
-                <div class="ticker-text" id="ticker-text">
-                    SWEN NEWS NETWORK | INITIALIZING GLOBAL NODES | STAND BY...
+                <h1 id="news-headline">Establishing satellite link...</h1>
+                
+                <!-- FROSTED GLASS MATTER PANEL -->
+                <div class="news-full-matter">
+                    <p id="news-description">Please stand by as we aggregate global data feeds from verified sources.</p>
                 </div>
             </div>
+        </div>
 
+    </div>
+
+    <!-- BOLD BROADCAST TICKER TAPE -->
+    <div class="ticker-tape">
+        <div class="ticker-text" id="ticker-text">
+            SWEN NEWS NETWORK &nbsp;|&nbsp; INITIALIZING GLOBAL NODES &nbsp;|&nbsp; STAND BY...
         </div>
     </div>
 
