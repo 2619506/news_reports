@@ -1,27 +1,38 @@
-// 22 GLOBAL SOURCES
+// MASSIVE EXPANSION: Added 10 Economic and 5 Science feeds.
 const feeds = [
-    { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC NEWS' },
-    { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
-    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml', category: 'SCIENCE', source: 'NY TIMES' },
-    { url: 'https://www.espn.com/espn/rss/news', category: 'SPORTS', source: 'ESPN' },
+    // --- GENERAL NEWS ---
+    { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC' },
     { url: 'https://www.theguardian.com/world/rss', category: 'GLOBAL', source: 'THE GUARDIAN' },
-    { url: 'https://techcrunch.com/feed/', category: 'TECH', source: 'TECHCRUNCH' },
     { url: 'https://www.aljazeera.com/xml/rss/all.xml', category: 'WORLD', source: 'AL JAZEERA' },
-    { url: 'https://www.cnbc.com/id/100003114/device/rss/rss.html', category: 'MARKETS', source: 'CNBC' },
     { url: 'https://rss.cnn.com/rss/edition_world.rss', category: 'WORLD', source: 'CNN' },
-    { url: 'https://www.theverge.com/rss/index.xml', category: 'TECHNOLOGY', source: 'THE VERGE' },
-    { url: 'https://www.space.com/feeds/all', category: 'SPACE', source: 'SPACE.COM' },
-    { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' },
     { url: 'https://moxie.foxnews.com/google-publisher/world.xml', category: 'WORLD', source: 'FOX NEWS' },
-    { url: 'http://feeds.skynews.com/feeds/rss/world.xml', category: 'GLOBAL', source: 'SKY NEWS' },
     { url: 'https://www.cbsnews.com/latest/rss/world', category: 'WORLD', source: 'CBS NEWS' },
     { url: 'https://abcnews.go.com/abcnews/internationalheadlines', category: 'WORLD', source: 'ABC NEWS' },
-    { url: 'https://rss.dw.com/rdf/rss-en-world', category: 'EUROPE', source: 'DW NEWS' },
-    { url: 'https://www.france24.com/en/rss', category: 'EUROPE', source: 'FRANCE 24' },
-    { url: 'https://feeds.npr.org/1004/rss.xml', category: 'GLOBAL', source: 'NPR' },
-    { url: 'https://feeds.washingtonpost.com/rss/world', category: 'WORLD', source: 'WASH POST' },
-    { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?id=100727362', category: 'FINANCE', source: 'FINANCIAL TIMES' },
-    { url: 'https://www.yahoo.com/news/rss', category: 'TRENDING', source: 'YAHOO NEWS' }
+    
+    // --- ECONOMIC / FINANCE (10 Feeds) ---
+    { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
+    { url: 'https://www.cnbc.com/id/10000664/device/rss/rss.html', category: 'FINANCE', source: 'CNBC MARKETS' },
+    { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?id=100727362', category: 'ECONOMY', source: 'FINANCIAL TIMES' },
+    { url: 'http://feeds.marketwatch.com/marketwatch/topstories/', category: 'MARKETS', source: 'MARKETWATCH' },
+    { url: 'https://www.economist.com/finance-and-economics/rss.xml', category: 'ECONOMY', source: 'THE ECONOMIST' },
+    { url: 'http://rss.cnn.com/rss/money_latest.rss', category: 'FINANCE', source: 'CNN BUSINESS' },
+    { url: 'https://fortune.com/feed/', category: 'BUSINESS', source: 'FORTUNE' },
+    { url: 'https://www.forbes.com/business/feed/', category: 'BUSINESS', source: 'FORBES' },
+    { url: 'http://feeds.foxbusiness.com/foxbusiness/latest', category: 'MARKETS', source: 'FOX BUSINESS' },
+    { url: 'https://www.entrepreneur.com/latest.rss', category: 'STARTUPS', source: 'ENTREPRENEUR' },
+
+    // --- SCIENCE (5 Feeds) ---
+    { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml', category: 'SCIENCE', source: 'NY TIMES' },
+    { url: 'https://www.sciencedaily.com/rss/top/science.xml', category: 'SCIENCE', source: 'SCIENCE DAILY' },
+    { url: 'https://www.wired.com/feed/category/science/latest/rss', category: 'RESEARCH', source: 'WIRED SCIENCE' },
+    { url: 'https://phys.org/rss-feed/', category: 'PHYSICS', source: 'PHYS.ORG' },
+    { url: 'https://www.nasa.gov/feeds/iotd-feed/', category: 'SPACE', source: 'NASA' },
+
+    // --- TECH & GAMING ---
+    { url: 'https://techcrunch.com/feed/', category: 'TECH', source: 'TECHCRUNCH' },
+    { url: 'https://www.theverge.com/rss/index.xml', category: 'TECHNOLOGY', source: 'THE VERGE' },
+    { url: 'https://www.polygon.com/rss/index.xml', category: 'GAMING', source: 'POLYGON' },
+    { url: 'https://www.espn.com/espn/rss/news', category: 'SPORTS', source: 'ESPN' }
 ];
 
 let newsLibrary = [];
@@ -62,11 +73,15 @@ function extractImage(item) {
         const match = item.description.match(imgRegex);
         if (match && match[1]) return match[1];
     }
-    if (item.content) {
-        const match = item.content.match(imgRegex);
-        if (match && match[1]) return match[1];
-    }
     return defaultImage;
+}
+
+// LIVE CLOCK FUNCTION
+function startLiveClock() {
+    setInterval(() => {
+        const now = new Date();
+        document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
+    }, 1000);
 }
 
 function updateGlobalDate() {
@@ -83,19 +98,17 @@ async function fetchAllNews() {
             const data = await response.json();
             
             if (data.status === 'ok') {
-                const articles = data.items.slice(0, 6).map(item => {
+                const articles = data.items.slice(0, 5).map(item => {
                     let imgUrl = extractImage(item);
                     let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
-                    // STANDARDIZED LENGTH: Prevents huge blocks by limiting to 300 chars max.
                     if(cleanDesc.length > 300) cleanDesc = cleanDesc.substring(0, 300) + '...';
 
                     return {
                         title: item.title,
-                        description: cleanDesc || "Full report available on publisher's network.",
+                        description: cleanDesc || "Detailed report available on the official network site.",
                         image: imgUrl,
                         category: feed.category,
-                        source: feed.source,
-                        date: new Date(item.pubDate)
+                        source: feed.source
                     };
                 });
                 allArticles = allArticles.concat(articles);
@@ -108,15 +121,15 @@ async function fetchAllNews() {
 
     } catch (error) {
         console.error("Signal lost:", error);
-        document.getElementById('news-headline').innerText = "SIGNAL LOST. RETRYING...";
+        document.getElementById('news-headline').innerText = "SYSTEM UPDATE IN PROGRESS...";
     }
 }
 
 function setupTicker(articles) {
-    const tickerSubset = articles.slice(0, 20);
-    // UPDATED SEPARATOR: Clean vertical straight line with spacing
-    const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join('   |   ');
-    document.getElementById('ticker-text').innerText = `SWEN LIVE ALERTS   |   ${tickerContent}   |   MORE UPDATES IMMINENT`;
+    const tickerSubset = articles.slice(0, 25);
+    // Hard-coded strict separator for the ticker
+    const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join(' &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ');
+    document.getElementById('ticker-text').innerHTML = `SWEN LIVE ALERTS &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ${tickerContent} &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; STAND BY FOR UPDATES`;
 }
 
 function updateSidebar() {
@@ -137,8 +150,7 @@ function updateSidebar() {
         let isCurrentClass = (i === 1) ? 'current-active' : '';
         
         let statusText = '';
-        if (i === 0) statusText = '<span style="color: #94a3b8;">[PREV]</span> ';
-        if (i === 1) statusText = '<span style="color: #00ffcc;">[LIVE]</span> ';
+        if (i === 1) statusText = '<span style="color: #cc0000; font-weight: 900;">[LIVE]</span> ';
 
         sidebar.innerHTML += `
             <div class="upcoming-item ${isCurrentClass}">
@@ -168,10 +180,6 @@ function updateScreen() {
     document.getElementById('news-source').innerText = article.source;
     document.getElementById('news-headline').innerText = article.title;
     document.getElementById('news-description').innerText = article.description;
-    document.getElementById('source-citation').innerText = `Verified data sourced in real-time from: ${article.source}`;
-
-    const timeString = article.date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    document.getElementById('news-time').innerText = timeString;
 
     updateSidebar();
     updateGlobalDate();
@@ -206,6 +214,7 @@ function autoAdvance() {
 
 function startBroadcast() {
     updateScreen();
+    startLiveClock(); // Start ticking clock immediately
     broadcastTimer = setInterval(autoAdvance, 12000);
     fetchWeather();
     setInterval(fetchWeather, 10000);
