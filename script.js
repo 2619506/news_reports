@@ -282,3 +282,4 @@ updateGlobalDate();
 fetchWeather();
 setInterval(fetchWeather, 10000);
 fetchAllNews();
+ 
