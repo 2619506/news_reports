@@ -75,17 +75,15 @@ function extractImage(item) {
     return defaultImage;
 }
 
-// START CLOCK IMMEDIATELY
 function startLiveClock() {
     const updateTime = () => {
         const now = new Date();
         document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
     };
-    updateTime(); // Run once instantly
+    updateTime(); 
     setInterval(updateTime, 1000);
 }
 
-// START DATE IMMEDIATELY
 function updateGlobalDate() {
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
     const today = new Date();
@@ -93,19 +91,20 @@ function updateGlobalDate() {
 }
 
 async function fetchAllNews() {
-    let allArticles = [];
     document.getElementById('news-headline').innerText = "CONNECTING TO GLOBAL FEEDS...";
     
-    for (let feed of feeds) {
-        // ERROR ISOLATION: Inner try-catch protects the loop
+    // 1. SMART BATCHING: Shuffle and grab only 10 random feeds to avoid API blocks
+    const shuffledFeeds = feeds.sort(() => 0.5 - Math.random()).slice(0, 10);
+    
+    // 2. PARALLEL PROCESSING: Fetch all 10 at the exact same time
+    const fetchPromises = shuffledFeeds.map(async (feed) => {
         try {
             const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
-            if (!response.ok) continue; // If network fails, skip to next feed
-
+            if (!response.ok) return []; 
             const data = await response.json();
             
             if (data.status === 'ok') {
-                const articles = data.items.slice(0, 5).map(item => {
+                return data.items.slice(0, 4).map(item => {
                     let imgUrl = extractImage(item);
                     let cleanDesc = item.description ? item.description.replace(/<[^>]+>/g, '').trim() : "";
                     if(cleanDesc.length > 300) cleanDesc = cleanDesc.substring(0, 300) + '...';
@@ -118,21 +117,27 @@ async function fetchAllNews() {
                         source: feed.source
                     };
                 });
-                allArticles = allArticles.concat(articles);
             }
+            return [];
         } catch (error) {
-            console.warn(`Skipping dead feed: ${feed.source}`);
-            // Does not crash script, simply moves to next feed
+            return []; // Ignore broken feeds silently
         }
-    }
+    });
+
+    // Wait for all 10 parallel fetches to finish
+    const results = await Promise.all(fetchPromises);
+    
+    // Flatten the array of arrays into a single list of articles
+    let allArticles = results.flat();
 
     if (allArticles.length > 0) {
         newsLibrary = allArticles.sort(() => Math.random() - 0.5);
+        currentIndex = 0; // Reset index on new load
         setupTicker(newsLibrary);
         startBroadcast();
     } else {
-        document.getElementById('news-headline').innerText = "NETWORK ERROR. RETRYING IN 30 SECONDS...";
-        setTimeout(fetchAllNews, 30000);
+        document.getElementById('news-headline').innerText = "API LIMIT REACHED. RETRYING IN 10 SECONDS...";
+        setTimeout(fetchAllNews, 10000); // Fast retry
     }
 }
 
@@ -227,9 +232,9 @@ function startBroadcast() {
     broadcastTimer = setInterval(autoAdvance, 12000);
 }
 
-// INITIALIZATION: Start UI immediately, fetch news in background
+// INITIALIZE SYSTEM
 startLiveClock();
 updateGlobalDate();
 fetchWeather();
 setInterval(fetchWeather, 10000);
-fetchAllNews();
+fetchAllNews(); // Now optimized!
