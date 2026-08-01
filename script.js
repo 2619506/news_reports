@@ -1,4 +1,3 @@
-// MASSIVE EXPANSION: Added 10 Economic and 5 Science feeds.
 const feeds = [
     // --- GENERAL NEWS ---
     { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC' },
@@ -9,7 +8,7 @@ const feeds = [
     { url: 'https://www.cbsnews.com/latest/rss/world', category: 'WORLD', source: 'CBS NEWS' },
     { url: 'https://abcnews.go.com/abcnews/internationalheadlines', category: 'WORLD', source: 'ABC NEWS' },
     
-    // --- ECONOMIC / FINANCE (10 Feeds) ---
+    // --- ECONOMIC / FINANCE ---
     { url: 'https://feeds.a.dj.com/rss/RSSMarketsMain.xml', category: 'ECONOMY', source: 'WALL ST JOURNAL' },
     { url: 'https://www.cnbc.com/id/10000664/device/rss/rss.html', category: 'FINANCE', source: 'CNBC MARKETS' },
     { url: 'https://search.cnbc.com/rs/search/combinedcms/view.xml?id=100727362', category: 'ECONOMY', source: 'FINANCIAL TIMES' },
@@ -21,7 +20,7 @@ const feeds = [
     { url: 'http://feeds.foxbusiness.com/foxbusiness/latest', category: 'MARKETS', source: 'FOX BUSINESS' },
     { url: 'https://www.entrepreneur.com/latest.rss', category: 'STARTUPS', source: 'ENTREPRENEUR' },
 
-    // --- SCIENCE (5 Feeds) ---
+    // --- SCIENCE ---
     { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Science.xml', category: 'SCIENCE', source: 'NY TIMES' },
     { url: 'https://www.sciencedaily.com/rss/top/science.xml', category: 'SCIENCE', source: 'SCIENCE DAILY' },
     { url: 'https://www.wired.com/feed/category/science/latest/rss', category: 'RESEARCH', source: 'WIRED SCIENCE' },
@@ -76,14 +75,17 @@ function extractImage(item) {
     return defaultImage;
 }
 
-// LIVE CLOCK FUNCTION
+// START CLOCK IMMEDIATELY
 function startLiveClock() {
-    setInterval(() => {
+    const updateTime = () => {
         const now = new Date();
         document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { hour12: false });
-    }, 1000);
+    };
+    updateTime(); // Run once instantly
+    setInterval(updateTime, 1000);
 }
 
+// START DATE IMMEDIATELY
 function updateGlobalDate() {
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
     const today = new Date();
@@ -91,16 +93,21 @@ function updateGlobalDate() {
 }
 
 async function fetchAllNews() {
-    try {
-        let allArticles = [];
-        for (let feed of feeds) {
+    let allArticles = [];
+    document.getElementById('news-headline').innerText = "CONNECTING TO GLOBAL FEEDS...";
+    
+    for (let feed of feeds) {
+        // ERROR ISOLATION: Inner try-catch protects the loop
+        try {
             const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
+            if (!response.ok) continue; // If network fails, skip to next feed
+
             const data = await response.json();
             
             if (data.status === 'ok') {
                 const articles = data.items.slice(0, 5).map(item => {
                     let imgUrl = extractImage(item);
-                    let cleanDesc = item.description.replace(/<[^>]+>/g, '').trim();
+                    let cleanDesc = item.description ? item.description.replace(/<[^>]+>/g, '').trim() : "";
                     if(cleanDesc.length > 300) cleanDesc = cleanDesc.substring(0, 300) + '...';
 
                     return {
@@ -113,21 +120,24 @@ async function fetchAllNews() {
                 });
                 allArticles = allArticles.concat(articles);
             }
+        } catch (error) {
+            console.warn(`Skipping dead feed: ${feed.source}`);
+            // Does not crash script, simply moves to next feed
         }
+    }
 
+    if (allArticles.length > 0) {
         newsLibrary = allArticles.sort(() => Math.random() - 0.5);
         setupTicker(newsLibrary);
         startBroadcast();
-
-    } catch (error) {
-        console.error("Signal lost:", error);
-        document.getElementById('news-headline').innerText = "SYSTEM UPDATE IN PROGRESS...";
+    } else {
+        document.getElementById('news-headline').innerText = "NETWORK ERROR. RETRYING IN 30 SECONDS...";
+        setTimeout(fetchAllNews, 30000);
     }
 }
 
 function setupTicker(articles) {
     const tickerSubset = articles.slice(0, 25);
-    // Hard-coded strict separator for the ticker
     const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join(' &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ');
     document.getElementById('ticker-text').innerHTML = `SWEN LIVE ALERTS &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ${tickerContent} &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; STAND BY FOR UPDATES`;
 }
@@ -148,9 +158,7 @@ function updateSidebar() {
     indices.forEach((index, i) => {
         let article = newsLibrary[index];
         let isCurrentClass = (i === 1) ? 'current-active' : '';
-        
-        let statusText = '';
-        if (i === 1) statusText = '<span style="color: #cc0000; font-weight: 900;">[LIVE]</span> ';
+        let statusText = (i === 1) ? '<span style="color: #cc0000; font-weight: 900;">[LIVE]</span> ' : '';
 
         sidebar.innerHTML += `
             <div class="upcoming-item ${isCurrentClass}">
@@ -182,13 +190,14 @@ function updateScreen() {
     document.getElementById('news-description').innerText = article.description;
 
     updateSidebar();
-    updateGlobalDate();
 }
 
 async function fetchWeather() {
     const city = weatherCities[weatherIndex];
     try {
         const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
+        if (!res.ok) throw new Error("Weather unavailable");
+        
         const data = await res.json();
         const temp = Math.round(data.current_weather.temperature);
         const code = data.current_weather.weathercode; 
@@ -201,7 +210,7 @@ async function fetchWeather() {
         iconEl.className = `fa-solid ${iconClass}`;
         
     } catch (e) {
-        console.error("Weather fetch failed", e);
+        console.warn("Weather fetch skipped", e);
     }
     
     weatherIndex = (weatherIndex + 1) % weatherCities.length;
@@ -214,10 +223,13 @@ function autoAdvance() {
 
 function startBroadcast() {
     updateScreen();
-    startLiveClock(); // Start ticking clock immediately
+    if (broadcastTimer) clearInterval(broadcastTimer);
     broadcastTimer = setInterval(autoAdvance, 12000);
-    fetchWeather();
-    setInterval(fetchWeather, 10000);
 }
 
+// INITIALIZATION: Start UI immediately, fetch news in background
+startLiveClock();
+updateGlobalDate();
+fetchWeather();
+setInterval(fetchWeather, 10000);
 fetchAllNews();
