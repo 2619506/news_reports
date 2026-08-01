@@ -1,12 +1,13 @@
 <!DOCTYPE html>
-<html lang="en"> 
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SWEN News Broadcast</title>
     <link rel="stylesheet" href="style.css">
-    <!-- NEW PROFESSIONAL FONTS: Oswald (Headlines) and Inter (Body) -->
+    <!-- Professional Broadcast Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Oswald:wght@500;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- FontAwesome for Icons -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
 </head>
 <body>
@@ -44,14 +45,16 @@
                     SWEN <span>NEWS</span>
                 </div>
                 <div class="swen-date" id="global-date">LOADING DATE...</div>
-                <div class="swen-clock" id="global-clock">00:00:00</div>
+                <div class="swen-clock" id="global-clock">00:00:00 UTC</div>
             </div>
 
+            <!-- BACKGROUND IMAGE -->
             <div class="story-image-container">
                 <img id="news-image" src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop" alt="News Image">
                 <div class="image-overlay"></div>
             </div>
             
+            <!-- NEWS CONTENT -->
             <div class="story-content">
                 <div class="meta-tags">
                     <span class="category-badge" id="news-category">LOADING</span>
