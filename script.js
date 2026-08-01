@@ -41,15 +41,32 @@ const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
 
 const weatherCities = [
-    { name: "KABUL", lat: 34.5281, lon: 69.1171 }, { name: "TOKYO", lat: 35.68, lon: 139.69 },
-    { name: "LONDON", lat: 51.50, lon: -0.12 }, { name: "NEW YORK", lat: 40.71, lon: -74.00 },
-    { name: "DUBAI", lat: 25.20, lon: 55.27 }, { name: "PARIS", lat: 48.85, lon: 2.35 },
-    { name: "BEIJING", lat: 39.9042, lon: 116.4074 }, { name: "SYDNEY", lat: -33.8688, lon: 151.2093 }
-    // Add rest of your cities here safely!
+    { name: "KABUL", lat: 34.5281, lon: 69.1171 }, { name: "HERAT", lat: 34.3419, lon: 62.2031 },
+    { name: "TOKYO", lat: 35.68, lon: 139.69 }, { name: "DUBAI", lat: 25.20, lon: 55.27 },
+    { name: "LONDON", lat: 51.50, lon: -0.12 }, { name: "PARIS", lat: 48.85, lon: 2.35 },
+    { name: "NEW YORK", lat: 40.71, lon: -74.00 }, { name: "SYDNEY", lat: -33.8688, lon: 151.2093 }
+    // You can safely add the rest of your cities here
 ];
 weatherCities.sort(() => Math.random() - 0.5);
 let weatherIndex = 0;
 
+// --- CLOCK & DATE LOGIC ---
+function startLiveClock() {
+    const updateTime = () => {
+        const now = new Date();
+        document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false }) + ' UTC';
+    };
+    updateTime(); 
+    setInterval(updateTime, 1000);
+}
+
+function updateGlobalDate() {
+    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
+    const today = new Date();
+    document.getElementById('global-date').innerText = today.toLocaleDateString('en-US', options).toUpperCase();
+}
+
+// --- UTILITIES ---
 function getWeatherIcon(code) {
     if (code === 0) return 'fa-sun'; 
     if (code === 1 || code === 2 || code === 3) return 'fa-cloud-sun'; 
@@ -73,28 +90,117 @@ function extractImage(item) {
     return defaultImage;
 }
 
-function startLiveClock() {
-    const updateTime = () => {
-        const now = new Date();
-        document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false }) + ' UTC';
+// --- DATA FLIP TICKER LOGIC ---
+let tickerItems = [];
+let currentTickerIndex = 0;
+let tickerRotationTimer;
+
+function setupTicker(articles) {
+    // Extract strings for the ticker
+    tickerItems = articles.slice(0, 25).map(a => `${a.source.toUpperCase()}: ${a.title}`);
+    
+    if (tickerRotationTimer) clearInterval(tickerRotationTimer);
+    
+    currentTickerIndex = 0;
+    rotateTicker(); // Initial call
+    tickerRotationTimer = setInterval(rotateTicker, 4500); // Change headline every 4.5 seconds
+}
+
+function rotateTicker() {
+    if (tickerItems.length === 0) return;
+    
+    const tickerEl = document.getElementById('ticker-text');
+    
+    // Slide UP and FADE OUT (Triggers CSS Transition)
+    tickerEl.classList.add('hide-headline');
+    
+    // Wait for the 400ms CSS animation to finish
+    setTimeout(() => {
+        // Swap text while hidden
+        tickerEl.innerHTML = `BREAKING &nbsp;|&nbsp; ${tickerItems[currentTickerIndex]} &nbsp;|&nbsp; STAND BY`;
+        
+        // Remove class to drop it back down and FADE IN
+        tickerEl.classList.remove('hide-headline');
+        
+        // Advance array
+        currentTickerIndex = (currentTickerIndex + 1) % tickerItems.length;
+    }, 400); 
+}
+
+// --- MAIN STORY & SIDEBAR LOGIC ---
+function updateSidebar() {
+    const sidebar = document.getElementById('upcoming-list');
+    let sidebarHTML = ''; // Batching HTML to prevent 6 separate DOM CPU spikes
+
+    let indices = [
+        (currentIndex - 1 + newsLibrary.length) % newsLibrary.length,
+        currentIndex,                                                
+        (currentIndex + 1) % newsLibrary.length,                     
+        (currentIndex + 2) % newsLibrary.length,                     
+        (currentIndex + 3) % newsLibrary.length,
+        (currentIndex + 4) % newsLibrary.length
+    ];
+
+    indices.forEach((index, i) => {
+        let article = newsLibrary[index];
+        let isCurrentClass = (i === 1) ? 'current-active' : '';
+        let statusText = (i === 1) ? '<span style="color: #cc0000; font-weight: 900;">[LIVE]</span> ' : '';
+
+        sidebarHTML += `
+            <div class="upcoming-item ${isCurrentClass}">
+                <div class="up-meta">
+                    <span>${statusText}${article.category}</span>
+                    <span class="source-name">${article.source}</span>
+                </div>
+                <div class="up-title">${article.title}</div>
+            </div>
+        `;
+    });
+    
+    sidebar.innerHTML = sidebarHTML; // Inject once
+}
+
+function updateScreen() {
+    if (newsLibrary.length === 0) return;
+
+    const article = newsLibrary[currentIndex];
+    const imgEl = document.getElementById('news-image');
+    
+    // 1. Fade Out Current Background
+    imgEl.style.opacity = 0;
+
+    // 2. Preload the new image secretly
+    const virtualImg = new Image();
+    
+    virtualImg.onload = () => {
+        // Only swap the image once the CSS fade-out (500ms) is complete
+        setTimeout(() => {
+            imgEl.src = virtualImg.src;
+            
+            // Instantly update text while the screen is dark
+            document.getElementById('news-category').innerText = article.category;
+            document.getElementById('news-source').innerText = article.source;
+            document.getElementById('news-headline').innerText = article.title;
+            document.getElementById('news-description').innerText = article.description;
+            
+            updateSidebar(); 
+            
+            // Fade the new background in
+            imgEl.style.opacity = 1; 
+        }, 500); 
     };
-    updateTime(); 
-    setInterval(updateTime, 1000);
+
+    virtualImg.onerror = () => { virtualImg.src = defaultImage; };
+    virtualImg.src = article.image; // Starts the download
 }
 
-function updateGlobalDate() {
-    const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
-    const today = new Date();
-    document.getElementById('global-date').innerText = today.toLocaleDateString('en-US', options).toUpperCase();
-}
-
+// --- FETCH DATA LOGIC ---
 async function fetchAllNews() {
     document.getElementById('news-headline').innerText = "CONNECTING TO GLOBAL FEEDS...";
     
-    // SMART BATCHING: Grab 10 random feeds
+    // Shuffle and grab 10 feeds
     const shuffledFeeds = feeds.sort(() => 0.5 - Math.random()).slice(0, 10);
     
-    // PARALLEL PROCESSING
     const fetchPromises = shuffledFeeds.map(async (feed) => {
         try {
             const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
@@ -136,84 +242,6 @@ async function fetchAllNews() {
     }
 }
 
-function setupTicker(articles) {
-    const tickerSubset = articles.slice(0, 25);
-    const tickerContent = tickerSubset.map(a => `${a.source.toUpperCase()}: ${a.title}`).join(' &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ');
-    document.getElementById('ticker-text').innerHTML = `SWEN LIVE ALERTS &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; ${tickerContent} &nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; STAND BY FOR UPDATES`;
-}
-
-function updateSidebar() {
-    const sidebar = document.getElementById('upcoming-list');
-    let sidebarHTML = ''; // Build string internally first (reduces CPU load)
-
-    let indices = [
-        (currentIndex - 1 + newsLibrary.length) % newsLibrary.length,
-        currentIndex,                                                
-        (currentIndex + 1) % newsLibrary.length,                     
-        (currentIndex + 2) % newsLibrary.length,                     
-        (currentIndex + 3) % newsLibrary.length,
-        (currentIndex + 4) % newsLibrary.length
-    ];
-
-    indices.forEach((index, i) => {
-        let article = newsLibrary[index];
-        let isCurrentClass = (i === 1) ? 'current-active' : '';
-        let statusText = (i === 1) ? '<span style="color: #cc0000; font-weight: 900;">[LIVE]</span> ' : '';
-
-        sidebarHTML += `
-            <div class="upcoming-item ${isCurrentClass}">
-                <div class="up-meta">
-                    <span>${statusText}${article.category}</span>
-                    <span class="source-name">${article.source}</span>
-                </div>
-                <div class="up-title">${article.title}</div>
-            </div>
-        `;
-    });
-    
-    // Inject all at once (prevents 6 separate DOM reflows)
-    sidebar.innerHTML = sidebarHTML; 
-}
-
-function updateScreen() {
-    if (newsLibrary.length === 0) return;
-
-    const article = newsLibrary[currentIndex];
-    const imgEl = document.getElementById('news-image');
-    
-    // 1. Fade Out Current Image
-    imgEl.style.opacity = 0;
-
-    // 2. TRUE IMAGE PRELOADING (Prevents black flashes)
-    const virtualImg = new Image();
-    
-    virtualImg.onload = () => {
-        // Only swap the image once it is fully downloaded by the browser
-        setTimeout(() => {
-            imgEl.src = virtualImg.src;
-            
-            // Instantly update text while the screen is black
-            document.getElementById('news-category').innerText = article.category;
-            document.getElementById('news-source').innerText = article.source;
-            document.getElementById('news-headline').innerText = article.title;
-            document.getElementById('news-description').innerText = article.description;
-            
-            updateSidebar(); // Update sidebar at exact same time
-            
-            // Fade the new image in
-            imgEl.style.opacity = 1; 
-        }, 300); // 300ms buffer to allow CSS fade-out animation to finish smoothly
-    };
-
-    // If an image link is broken, fall back to default instantly
-    virtualImg.onerror = () => {
-        virtualImg.src = defaultImage;
-    };
-
-    // Begin downloading the new image
-    virtualImg.src = article.image;
-}
-
 async function fetchWeather() {
     const city = weatherCities[weatherIndex];
     try {
@@ -230,14 +258,13 @@ async function fetchWeather() {
         const iconClass = getWeatherIcon(code);
         const iconEl = document.getElementById('weather-icon');
         iconEl.className = `fa-solid ${iconClass}`;
-        
     } catch (e) {
-        console.warn("Weather fetch skipped", e);
+        console.warn("Weather fetch skipped");
     }
-    
     weatherIndex = (weatherIndex + 1) % weatherCities.length;
 }
 
+// --- BOOT SEQUENCE ---
 function autoAdvance() {
     currentIndex = (currentIndex + 1) % newsLibrary.length;
     updateScreen();
@@ -249,7 +276,7 @@ function startBroadcast() {
     broadcastTimer = setInterval(autoAdvance, 12000);
 }
 
-// INITIALIZE SYSTEM
+// Initialize
 startLiveClock();
 updateGlobalDate();
 fetchWeather();
