@@ -40,13 +40,10 @@ let broadcastTimer;
 const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
 
-// 75 GLOBAL WEATHER CITIES (Including Afghanistan)
 const weatherCities = [
-    // Afghanistan
     { name: "KABUL", lat: 34.5281, lon: 69.1171 },
     { name: "HERAT", lat: 34.3419, lon: 62.2031 },
     { name: "BALKH", lat: 36.7581, lon: 66.8989 },
-    // Asia & Middle East
     { name: "TOKYO", lat: 35.68, lon: 139.69 },
     { name: "DUBAI", lat: 25.20, lon: 55.27 },
     { name: "SINGAPORE", lat: 1.29, lon: 103.85 },
@@ -61,7 +58,6 @@ const weatherCities = [
     { name: "MANILA", lat: 14.5995, lon: 120.9842 },
     { name: "TAIPEI", lat: 25.0330, lon: 121.5654 },
     { name: "KUALA LUMPUR", lat: 3.1390, lon: 101.6869 },
-    // Europe
     { name: "LONDON", lat: 51.50, lon: -0.12 },
     { name: "PARIS", lat: 48.85, lon: 2.35 },
     { name: "BERLIN", lat: 52.52, lon: 13.41 },
@@ -80,7 +76,6 @@ const weatherCities = [
     { name: "BRUSSELS", lat: 50.8503, lon: 4.3517 },
     { name: "PRAGUE", lat: 50.0755, lon: 14.4378 },
     { name: "OSLO", lat: 59.9139, lon: 10.7522 },
-    // North America
     { name: "NEW YORK", lat: 40.71, lon: -74.00 },
     { name: "LOS ANGELES", lat: 34.0522, lon: -118.2437 },
     { name: "CHICAGO", lat: 41.8781, lon: -87.6298 },
@@ -91,7 +86,6 @@ const weatherCities = [
     { name: "WASHINGTON DC", lat: 38.9072, lon: -77.0369 },
     { name: "HOUSTON", lat: 29.7604, lon: -95.3698 },
     { name: "MONTREAL", lat: 45.5017, lon: -73.5673 },
-    // South America
     { name: "SAO PAULO", lat: -23.5505, lon: -46.6333 },
     { name: "RIO DE JANEIRO", lat: -22.9068, lon: -43.1729 },
     { name: "BUENOS AIRES", lat: -34.6037, lon: -58.3816 },
@@ -99,7 +93,6 @@ const weatherCities = [
     { name: "BOGOTA", lat: 4.7110, lon: -74.0721 },
     { name: "SANTIAGO", lat: -33.4489, lon: -70.6693 },
     { name: "CARACAS", lat: 10.4806, lon: -66.9036 },
-    // Africa
     { name: "CAIRO", lat: 30.0444, lon: 31.2357 },
     { name: "CAPE TOWN", lat: -33.9249, lon: 18.4241 },
     { name: "JOHANNESBURG", lat: -26.2041, lon: 28.0473 },
@@ -109,14 +102,12 @@ const weatherCities = [
     { name: "ALGIERS", lat: 36.7538, lon: 3.0588 },
     { name: "ADDIS ABABA", lat: 9.0320, lon: 38.7482 },
     { name: "ACCRA", lat: 5.6037, lon: -0.1870 },
-    // Oceania
     { name: "SYDNEY", lat: -33.8688, lon: 151.2093 },
     { name: "MELBOURNE", lat: -37.8136, lon: 144.9631 },
     { name: "AUCKLAND", lat: -36.8485, lon: 174.7633 },
     { name: "WELLINGTON", lat: -41.2865, lon: 174.7762 },
     { name: "PERTH", lat: -31.9505, lon: 115.8605 }
 ];
-// Shuffle cities so it's a random global mix each time the page loads
 weatherCities.sort(() => Math.random() - 0.5);
 let weatherIndex = 0;
 
@@ -143,18 +134,15 @@ function extractImage(item) {
     return defaultImage;
 }
 
-// 🟢 PROFESSIONAL FIX: Lock clock to UTC (Global Standard Time)
 function startLiveClock() {
     const updateTime = () => {
         const now = new Date();
-        // Force the clock to render in UTC time, and add " UTC" text
         document.getElementById('global-clock').innerText = now.toLocaleTimeString('en-US', { timeZone: 'UTC', hour12: false }) + ' UTC';
     };
     updateTime(); 
     setInterval(updateTime, 1000);
 }
 
-// 🟢 PROFESSIONAL FIX: Lock date to UTC as well
 function updateGlobalDate() {
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
     const today = new Date();
@@ -304,5 +292,5 @@ function startBroadcast() {
 startLiveClock();
 updateGlobalDate();
 fetchWeather();
-setInterval(fetchWeather, 10000); // Cycles a new city every 10 seconds
+setInterval(fetchWeather, 10000);
 fetchAllNews();
