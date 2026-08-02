@@ -2,21 +2,22 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    cursor: none; /* Permanently hides the mouse cursor */
 }
 
-/* STRETCH TO FILL BROWSER AND FIX BLACK GAP */
+/* STRETCH TO FILL BROWSER */
 html, body {
     width: 100vw;
     height: 100vh;
-    background-color: #000;
-    overflow: hidden; /* Permanently hides scrollbars */
+    background-color: #050505;
+    overflow: hidden; 
     font-family: 'Inter', sans-serif;
 }
 
 .broadcast-layout {
     display: flex;
     flex-direction: row;
-    height: calc(100vh - 65px); /* 100vh total height - 65px ticker height */
+    height: calc(100vh - 65px); 
     width: 100vw;
 }
 
@@ -24,50 +25,51 @@ html, body {
 .sidebar {
     width: 380px;
     background: #0a0f1a;
-    border-right: 1px solid rgba(255,255,255,0.1);
+    border-right: 2px solid #1e293b;
     z-index: 20;
     display: flex;
     flex-direction: column;
 }
 
 .sidebar-header {
-    background: #05080f;
+    background: #000;
     padding: 18px 25px;
-    color: #ffffff;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.9rem;
+    color: #94a3b8;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 1.5px;
+    letter-spacing: 2px;
     border-bottom: 2px solid #1e293b;
+    text-transform: uppercase;
 }
 
 .upcoming-list {
     display: flex;
     flex-direction: column;
     padding: 15px 25px;
-    gap: 18px;
+    gap: 15px;
     flex: 1;
-    overflow: hidden; /* Prevents DOM overflow */
+    overflow: hidden; 
 }
 
 .upcoming-item {
-    border-left: 3px solid #1e293b;
-    padding: 4px 0 4px 15px;
+    border-left: 4px solid transparent;
+    padding: 10px 0 10px 15px;
     transition: all 0.3s ease;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
 .upcoming-item.current-active {
     border-left-color: #cc0000;
-    background: linear-gradient(90deg, rgba(204,0,0,0.15) 0%, transparent 100%);
+    background: #111827; /* Solid color instead of gradient for CPU performance */
 }
 
 .up-meta {
     font-size: 0.75rem;
     color: #94a3b8;
     text-transform: uppercase;
-    font-family: 'Inter', sans-serif;
     font-weight: 700;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -77,26 +79,27 @@ html, body {
     color: #000;
     background: #e2e8f0;
     padding: 3px 8px;
-    border-radius: 2px;
-    font-size: 0.65rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.75rem;
     letter-spacing: 0.5px;
 }
 
+/* FIXED SIDEBAR TEXT REEL */
 .up-title {
     font-size: 1rem;
     color: #f1f5f9;
     line-height: 1.4;
     font-weight: 500;
     display: -webkit-box;
-    -webkit-line-clamp: 2;
+    -webkit-line-clamp: 3; /* Increased from 2 to allow more text */
     -webkit-box-orient: vertical;
     overflow: hidden;
 }
 
 /* ================= WEATHER WIDGET ================= */
 .weather-widget {
-    background: #05080f;
-    border-top: 1px solid rgba(255,255,255,0.1);
+    background: #000;
+    border-top: 2px solid #1e293b;
     padding: 20px 25px;
     display: flex;
     flex-direction: column;
@@ -104,11 +107,11 @@ html, body {
 }
 
 .weather-header {
-    color: #94a3b8;
-    font-family: 'Orbitron', sans-serif;
-    font-size: 0.75rem;
+    color: #64748b;
+    font-family: 'Oswald', sans-serif;
+    font-size: 0.85rem;
     font-weight: 700;
-    letter-spacing: 1px;
+    letter-spacing: 2px;
 }
 
 .weather-content {
@@ -117,24 +120,19 @@ html, body {
     align-items: center;
     color: #ffffff;
     font-family: 'Oswald', sans-serif;
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     line-height: 1;
 }
 
 .weather-temp-container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
 }
 
 #weather-icon {
     font-size: 2.2rem;
     color: #38bdf8;
-}
-
-#weather-temp {
-    color: #ffffff;
-    font-weight: 700;
 }
 
 /* ================= MAIN CONTENT AREA ================= */
@@ -146,6 +144,7 @@ html, body {
     justify-content: flex-end;
     padding: 60px 80px;
     z-index: 15;
+    background: #000; /* Fallback for safe loading */
 }
 
 /* TOP RIGHT CORNER */
@@ -163,32 +162,24 @@ html, body {
     background: #cc0000;
     color: #ffffff;
     font-family: 'Orbitron', sans-serif;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 900;
     padding: 12px 25px;
     letter-spacing: 2px;
+    box-shadow: 4px 4px 0px #000; /* Hardware-safe shadow */
 }
 
 .swen-logo span { font-weight: 400; }
 
 .swen-date {
     color: #ffffff;
-    font-family: 'Inter', sans-serif;
-    font-size: 1.1rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.2rem;
     font-weight: 700;
     margin-top: 10px;
     text-transform: uppercase;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
-}
-
-.swen-clock {
-    color: #00ffcc;
-    font-family: 'Oswald', sans-serif;
-    font-size: 2rem;
-    font-weight: 500;
-    margin-top: 2px;
     letter-spacing: 1px;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.9);
+    text-shadow: 2px 2px 0px #000;
 }
 
 /* IMAGES & OVERLAYS */
@@ -202,7 +193,6 @@ html, body {
     width: 100%; height: 100%;
     object-fit: cover;
     opacity: 1;
-    /* Hardware accelerated fade in 500ms */
     transition: opacity 0.5s ease;
     will-change: opacity; 
 }
@@ -210,13 +200,13 @@ html, body {
 .image-overlay {
     position: absolute;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 90%);
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.98) 0%, rgba(0, 0, 0, 0.5) 60%, rgba(0, 0, 0, 0.1) 100%);
 }
 
 .story-content {
     position: relative;
     z-index: 2;
-    max-width: 90%; 
+    max-width: 95%; 
 }
 
 .meta-tags {
@@ -228,23 +218,21 @@ html, body {
 .category-badge {
     background-color: #00ffcc;
     color: #000000;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
     font-weight: 700;
-    padding: 6px 16px;
+    padding: 6px 18px;
     letter-spacing: 1px;
-    border-radius: 2px;
 }
 
 .source-badge {
-    background-color: rgba(255, 255, 255, 0.9);
+    background-color: #ffffff;
     color: #000000;
-    font-family: 'Inter', sans-serif;
-    font-size: 0.9rem;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1rem;
     font-weight: 700;
-    padding: 6px 16px;
+    padding: 6px 18px;
     text-transform: uppercase;
-    border-radius: 2px;
 }
 
 #news-headline {
@@ -254,16 +242,15 @@ html, body {
     font-weight: 700;
     line-height: 1.15;
     margin: 0 0 25px 0;
-    text-shadow: 2px 2px 15px rgba(0,0,0,0.8);
+    text-shadow: 3px 3px 0px #000; /* Removed blur to stop lag */
 }
 
-/* PROFESSIONAL PANEL (Stripped CPU Killers) */
+/* FIXED MAIN DESCRIPTION REEL */
 .news-full-matter {
-    background: rgba(10, 15, 25, 0.95); /* Solid dark color */
+    background: #0a0f1a; /* Solid color, no opacity lag */
     border-left: 5px solid #cc0000;
     padding: 25px 35px;
-    border-radius: 0 8px 8px 0;
-    /* Blur and heavy shadow removed for server CPU optimization */
+    width: 90%;
 }
 
 #news-description {
@@ -273,44 +260,41 @@ html, body {
     line-height: 1.6;
     margin: 0;
     font-weight: 400;
-    max-height: 250px;
-    overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 4; 
     -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
-/* ================= BOTTOM TICKER TAPE (DATA FLIP TRICK) ================= */
+/* ================= BOTTOM TICKER TAPE ================= */
 .ticker-tape {
     position: absolute;
     bottom: 0; left: 0; 
     width: 100vw;
     height: 65px;
     background-color: #cc0000;
+    border-top: 2px solid #fff;
     display: flex;
     align-items: center;
     overflow: hidden;
     z-index: 100;
-    padding: 0 30px;
+    padding: 0 40px;
 }
 
 .ticker-text {
     color: #ffffff;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Oswald', sans-serif;
     font-weight: 700;
-    font-size: 1.4rem;
+    font-size: 1.5rem;
     white-space: nowrap;
     letter-spacing: 1.5px;
-    
-    /* The Magic Slide-and-Fade Transition (400ms) */
-    transition: opacity 0.4s ease, transform 0.4s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     will-change: transform, opacity;
     opacity: 1;
     transform: translateY(0);
 }
 
-/* Javascript adds this class to flip the headline */
 .ticker-text.hide-headline {
     opacity: 0;
-    transform: translateY(-25px); /* Slides upwards */
+    transform: translateY(-20px);
 }
