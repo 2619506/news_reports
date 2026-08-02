@@ -3,20 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60Smart Space Broadcast</title>
-    <!-- Khwaja AI Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>60Smart Network Broadcast</title>
+    <!-- Professional Broadcast Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS: Khwaja AI / 60Smart Unified Design */
+        /* CSS: 60Smart Dark Blue Broadcast Design */
         :root {
-            --bg-dark: #000000;
-            --bg-panel: rgba(15, 23, 42, 0.75); /* Khwaja AI Glass */
-            --accent: #00ffcc; /* Khwaja AI Neon */
-            --accent-glow: rgba(0, 255, 204, 0.4);
+            --bg-deep: #020813;
+            --bg-panel: rgba(6, 17, 38, 0.85); 
+            --accent-blue: #0066ff; 
+            --accent-glow: rgba(0, 102, 255, 0.4);
             --text-main: #ffffff;
-            --text-muted: #cbd5e1;
+            --text-muted: #a0aec0;
+            --alert-red: #ff2a2a;
         }
 
         * {
@@ -24,17 +25,17 @@
             padding: 0;
             box-sizing: border-box;
             cursor: none; 
+            font-family: 'Montserrat', sans-serif;
         }
 
         body {
             width: 1280px;
             height: 720px;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             color: var(--text-main);
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            font-family: 'Outfit', sans-serif;
         }
 
         .broadcast-container {
@@ -43,128 +44,129 @@
             width: 100%;
         }
 
-        /* --- SIDEBAR (Glassmorphism) --- */
+        /* --- SIDEBAR --- */
         .sidebar {
-            width: 340px;
+            width: 360px;
             background: var(--bg-panel);
-            backdrop-filter: blur(18px);
-            -webkit-backdrop-filter: blur(18px);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
-            border-right: 1px solid rgba(0, 255, 204, 0.2);
+            border-right: 1px solid rgba(0, 102, 255, 0.2);
             z-index: 50;
             position: relative;
         }
 
         .brand-container {
-            padding: 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            background: rgba(0, 0, 0, 0.2);
+            padding: 25px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.3);
         }
 
         .brand-logo {
-            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             font-weight: 900;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
             color: var(--text-main);
-            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
 
         .brand-logo span {
-            color: var(--accent);
-            text-shadow: 0 0 15px var(--accent-glow);
+            color: var(--accent-blue);
         }
 
         .weather-widget {
-            padding: 20px 30px;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .weather-city {
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.9rem;
-            color: var(--accent);
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-main);
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .weather-temp {
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: 1.6rem;
+            font-weight: 800;
             display: flex;
             align-items: center;
-            gap: 10px;
-            font-family: 'Orbitron', sans-serif;
+            gap: 12px;
         }
 
         .queue-container {
             flex: 1;
-            padding: 20px 30px;
+            padding: 15px 30px;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
             position: relative;
             overflow: hidden;
         }
 
         .queue-header {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.8rem;
+            font-size: 0.75rem;
+            font-weight: 800;
             color: var(--text-muted);
             letter-spacing: 1.5px;
-            margin-bottom: 10px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
         }
         
         .queue-list-wrapper {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 12px;
         }
 
-        .queue-item { opacity: 0.5; transition: opacity 0.3s; }
+        .queue-item { opacity: 0.4; transition: opacity 0.3s; }
         .queue-item.active {
             opacity: 1;
-            border-left: 3px solid var(--accent);
+            border-left: 4px solid var(--accent-blue);
             padding-left: 10px;
-            margin-left: -13px;
-            box-shadow: -5px 0 10px -5px var(--accent);
+            margin-left: -14px;
+            background: linear-gradient(90deg, rgba(0, 102, 255, 0.15) 0%, transparent 100%);
         }
-        .queue-source { 
-            font-family: 'Share Tech Mono', monospace;
-            font-size: 0.75rem; 
-            color: var(--accent); 
-            margin-bottom: 4px; 
-            letter-spacing: 1px;
+        
+        /* Network Logos Styling */
+        .network-logo {
+            height: 16px;
+            background-color: #ffffff;
+            padding: 2px 6px;
+            border-radius: 4px;
+            object-fit: contain;
+            margin-bottom: 6px;
+            display: inline-block;
         }
+
         .queue-title {
-            font-size: 0.95rem; font-weight: 400; line-height: 1.3;
+            font-size: 0.9rem; font-weight: 500; line-height: 1.35;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             color: var(--text-main);
         }
 
-        /* The Smoke/Fade effect perfectly matching the dark glass sidebar */
+        /* Sidebar Fade effect */
         .queue-smoke-overlay {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 80px;
-            background: linear-gradient(to top, rgba(15, 23, 42, 1) 10%, transparent 100%);
+            height: 90px;
+            background: linear-gradient(to top, rgba(6, 17, 38, 1) 10%, transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
 
-        /* --- MAIN CONTENT (SPACE THEME) --- */
+        /* --- MAIN CONTENT (SPACE STAGE) --- */
         .main-stage {
             flex: 1;
             position: relative;
-            background-color: var(--bg-dark);
+            background-color: var(--bg-deep);
             overflow: hidden;
         }
 
-        /* Canvas Space Background */
         #space-canvas {
             position: absolute;
             top: 0; left: 0;
@@ -175,41 +177,35 @@
         /* The Black Hole */
         .bh-container {
             position: absolute;
-            top: 40%;
+            top: 45%;
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10;
         }
 
         .bh-core {
-            width: 120px;
-            height: 120px;
+            width: 130px;
+            height: 130px;
             background: #000;
             border-radius: 50%;
-            box-shadow: 0 0 50px 10px var(--accent-glow), inset 0 0 15px 2px rgba(0, 255, 204, 0.8);
+            box-shadow: 0 0 60px 15px var(--accent-glow), inset 0 0 20px 2px rgba(0, 102, 255, 0.8);
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.3s ease;
         }
 
-        /* Pulse effect when rocket hits */
-        .bh-core.pulse {
-            box-shadow: 0 0 150px 40px rgba(255, 255, 255, 0.9), inset 0 0 40px 10px var(--accent);
-            transform: translate(-50%, -50%) scale(1.2);
-        }
-
         .bh-accretion-disk {
-            width: 350px;
-            height: 350px;
+            width: 380px;
+            height: 380px;
             position: absolute;
             top: 50%; left: 50%;
             border-radius: 50%;
-            border: 1px solid rgba(0, 255, 204, 0.1);
-            border-left: 3px solid rgba(0, 255, 204, 0.7);
-            border-right: 3px solid rgba(0, 255, 204, 0.7);
-            box-shadow: 0 0 20px 2px var(--accent-glow);
-            animation: spinDisk 3s linear infinite;
+            border: 1px solid rgba(0, 102, 255, 0.1);
+            border-left: 3px solid rgba(0, 102, 255, 0.6);
+            border-right: 3px solid rgba(0, 102, 255, 0.6);
+            box-shadow: 0 0 25px 2px var(--accent-glow);
+            animation: spinDisk 4s linear infinite;
         }
 
         @keyframes spinDisk {
@@ -217,77 +213,114 @@
             to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
         }
 
-        /* Rocket Animation */
-        .rocket {
+        /* Orbiting Satellites (Visual Only) */
+        .satellite-orbit-path {
             position: absolute;
-            left: 50%;
-            top: -100px;
-            color: var(--accent);
-            font-size: 2.5rem;
-            transform: translateX(-50%) rotate(180deg); 
-            z-index: 20;
+            top: 50%; left: 50%;
+            width: 480px; height: 480px;
+            transform: translate(-50%, -50%);
+            animation: orbitSpin 15s linear infinite;
+            z-index: 12;
+        }
+        .satellite-orbit-path.delayed { animation: orbitSpin 20s linear infinite reverse; }
+        
+        .orbit-sat {
+            position: absolute;
+            top: -15px; left: 50%;
+            color: #88bbff;
+            font-size: 1.5rem;
+            transform: translateX(-50%);
+            filter: drop-shadow(0 0 8px rgba(136,187,255,0.5));
+        }
+
+        @keyframes orbitSpin {
+            from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+        }
+
+        /* Transition Satellite (Shoots at the screen) */
+        .transition-sat {
+            position: absolute;
+            left: 50%; top: 45%;
+            color: #ffffff;
+            font-size: 3rem;
+            transform: translate(-50%, -50%) scale(0);
             opacity: 0;
-            filter: drop-shadow(0 -10px 15px var(--accent));
+            z-index: 100;
+            filter: drop-shadow(0 0 30px var(--accent-blue));
         }
 
-        @keyframes rocketDive {
-            0% { top: -100px; opacity: 1; transform: translateX(-50%) rotate(180deg) scale(1); }
-            70% { top: 35%; opacity: 1; transform: translateX(-50%) rotate(180deg) scale(0.6); }
-            100% { top: 40%; opacity: 0; transform: translateX(-50%) rotate(180deg) scale(0); }
+        @keyframes satDive {
+            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
+            40% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
+            60% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
+            100% { transform: translate(-50%, 600px) scale(15); opacity: 0; }
         }
 
-        /* Transparent Text Content Area */
+        /* Text Content Area */
         .story-content {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
-            padding: 40px 50px;
+            padding: 40px 60px;
             z-index: 15;
             transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .story-tags { display: flex; gap: 15px; margin-bottom: 15px; }
+        .story-tags { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
         
-        /* Khwaja AI Telemetry Chip Style */
-        .tag { 
-            background: rgba(0, 255, 204, 0.1);
-            border: 1px solid rgba(0, 255, 204, 0.4);
-            color: #00ffcc;
-            padding: 5px 12px; 
-            font-size: 0.75rem; 
-            font-family: 'Share Tech Mono', monospace;
+        .tag-category { 
+            background: rgba(0, 102, 255, 0.2);
+            border: 1px solid rgba(0, 102, 255, 0.5);
+            color: #ffffff;
+            padding: 6px 14px; 
+            font-size: 0.8rem; 
+            font-weight: 700;
             letter-spacing: 1px;
             text-transform: uppercase; 
-            border-radius: 20px; 
-            backdrop-filter: blur(4px);
-            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+            border-radius: 4px; 
+            box-shadow: 0 0 10px rgba(0, 102, 255, 0.2);
         }
-        
-        .tag.source { border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.1); }
+
+        .main-network-logo {
+            height: 28px;
+            background-color: #ffffff;
+            padding: 4px 10px;
+            border-radius: 4px;
+            object-fit: contain;
+        }
 
         .story-headline {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 3rem; font-weight: 700; line-height: 1.1; margin-bottom: 15px;
+            font-size: 2.8rem; font-weight: 800; line-height: 1.15; margin-bottom: 15px;
             color: #ffffff;
-            text-shadow: 0 0 15px rgba(0, 255, 204, 0.8), 0 0 30px rgba(0, 255, 204, 0.4), 0 0 5px #fff;
+            /* Removed extreme glow, replaced with clean drop shadow */
+            text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.9);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            letter-spacing: 1px;
+            letter-spacing: -0.5px;
         }
 
         .story-description {
-            font-family: 'Outfit', sans-serif;
-            font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 800px;
-            text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
+            font-size: 1.25rem; line-height: 1.5; color: #e2e8f0; max-width: 800px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            font-weight: 300;
+            font-weight: 400;
         }
 
         /* --- TICKER TAPE --- */
         .ticker {
-            height: 40px; background-color: var(--accent); color: #000;
-            display: flex; align-items: center; padding: 0 20px;
-            font-family: 'Share Tech Mono', monospace;
-            font-weight: 800; font-size: 1rem; letter-spacing: 1px; z-index: 60;
-            box-shadow: 0 -5px 15px var(--accent-glow);
+            height: 40px; background-color: #051024; color: #ffffff;
+            display: flex; align-items: center; padding: 0 25px;
+            font-weight: 600; font-size: 1.05rem; z-index: 60;
+            border-top: 2px solid var(--accent-blue);
+        }
+
+        .ticker-breaking {
+            color: var(--alert-red);
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .ticker-logo {
+            height: 16px; background: #fff; padding: 1px 4px; border-radius: 3px; vertical-align: middle; margin: 0 8px;
         }
     </style>
 </head>
@@ -309,7 +342,8 @@
             </div>
 
             <div class="queue-container">
-                <div class="queue-header">UPCOMING TELEMETRY</div>
+                <div class="queue-header">UPCOMING IN FEED</div>
+                <!-- Queue list increased to 8 items to fill space -->
                 <div class="queue-list-wrapper" id="queue-list">
                     <!-- Queue populates here -->
                 </div>
@@ -321,43 +355,69 @@
         <!-- Main Content (Space Stage) -->
         <div class="main-stage">
             
-            <!-- Dynamic Khwaja AI Canvas Starfield -->
+            <!-- Dark Blue Canvas Starfield -->
             <canvas id="space-canvas"></canvas>
 
-            <!-- Black Hole Event Horizon -->
+            <!-- Black Hole & Orbiting Satellites -->
             <div class="bh-container">
                 <div class="bh-accretion-disk"></div>
                 <div class="bh-core" id="bh-core"></div>
+                
+                <!-- Purely Visual Orbiting Satellites -->
+                <div class="satellite-orbit-path">
+                    <i class="fa-solid fa-satellite orbit-sat"></i>
+                </div>
+                <div class="satellite-orbit-path delayed">
+                    <i class="fa-solid fa-satellite orbit-sat"></i>
+                </div>
             </div>
 
-            <!-- Falling Rocket Graphic -->
-            <i class="fa-solid fa-rocket rocket" id="rocket-anim"></i>
+            <!-- The Transition Satellite (Shoots toward screen) -->
+            <i class="fa-solid fa-satellite transition-sat" id="sat-anim"></i>
 
-            <!-- Transparent News Text Content -->
+            <!-- News Text Content -->
             <div class="story-content" id="story-content">
                 <div class="story-tags">
-                    <span class="tag category" id="main-category">SYSTEM</span>
-                    <span class="tag source" id="main-source">NETWORK</span>
+                    <span class="tag-category" id="main-category">SYSTEM</span>
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/512px-NASA_logo.svg.png" class="main-network-logo" id="main-source-logo" style="display:none;">
                 </div>
-                <h1 class="story-headline" id="main-headline">Initializing Neural Network...</h1>
-                <p class="story-description" id="main-description">Calibrating spatial sensors and aggregating global data feeds.</p>
+                <h1 class="story-headline" id="main-headline">Establishing Global Link...</h1>
+                <p class="story-description" id="main-description">Calibrating telemetry systems and fetching worldwide databanks.</p>
             </div>
         </div>
     </div>
 
     <!-- Bottom Ticker -->
     <div class="ticker">
-        <!-- STAND BY has been removed -->
-        <div class="ticker-text" id="ticker-text">60SMART NETWORK | INITIALIZING DATABANKS</div>
+        <div class="ticker-text" id="ticker-text"><span class="ticker-breaking">SYSTEM</span> | INITIALIZING DATABANKS</div>
     </div>
 
     <!-- Javascript -->
     <script>
-        // --- KHWAJA AI CANVAS SPACE BACKGROUND ---
+        // --- NETWORK LOGO MAPPING ---
+        const logoMap = {
+            'BBC': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_Logo_2021.svg/512px-BBC_Logo_2021.svg.png',
+            'THE GUARDIAN': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Guardian_2018.svg/512px-The_Guardian_2018.svg.png',
+            'AL JAZEERA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Aljazeera_eng.svg/512px-Aljazeera_eng.svg.png',
+            'CNN': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/512px-CNN.svg.png',
+            'FOX NEWS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Fox_News_Channel_logo.svg/512px-Fox_News_Channel_logo.svg.png',
+            'CBS NEWS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/CBS_News.svg/512px-CBS_News.svg.png',
+            'WALL ST JOURNAL': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/The_Wall_Street_Journal_Logo.svg/512px-The_Wall_Street_Journal_Logo.svg.png',
+            'CNBC MARKETS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/CNBC_logo.svg/512px-CNBC_logo.svg.png',
+            'MARKETWATCH': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/MarketWatch_logo.svg/512px-MarketWatch_logo.svg.png',
+            'NY TIMES': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/The_New_York_Times_logo.png/512px-The_New_York_Times_logo.png',
+            'WIRED SCIENCE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Wired_logo.svg/512px-Wired_logo.svg.png',
+            'NASA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/512px-NASA_logo.svg.png',
+            'TECHCRUNCH': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/TechCrunch_logo.svg/512px-TechCrunch_logo.svg.png',
+            'THE VERGE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/The_Verge_logo.svg/512px-The_Verge_logo.svg.png',
+            'POLYGON': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Polygon_logo.svg/512px-Polygon_logo.svg.png'
+        };
+
+        // --- DARK BLUE CANVAS SPACE BACKGROUND ---
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         const stage = document.querySelector('.main-stage');
-        let stars = [], meteors = [];
+        let stars = [];
 
         function resizeCanvas() {
             canvas.width = stage.clientWidth;
@@ -368,9 +428,10 @@
 
         function createStars(count) {
             stars = [];
-            const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#b3d4ff', '#ffddaa', '#00ffcc'];
+            // Updated colors to match the nice darker blue theme
+            const starColors = ['#ffffff', '#aaddff', '#66aaff', '#4488ff'];
             for(let i=0; i<count; i++){
-                let size = Math.random() < 0.95 ? Math.random() * 0.8 + 0.2 : Math.random() * 1.5 + 0.8;
+                let size = Math.random() < 0.95 ? Math.random() * 0.8 + 0.2 : Math.random() * 1.5 + 0.5;
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -379,19 +440,6 @@
                     color: starColors[Math.floor(Math.random() * starColors.length)],
                     alpha: Math.random(),
                     alphaChange: (Math.random() * 0.01 + 0.002) * (Math.random() > 0.5 ? 1 : -1)
-                });
-            }
-        }
-
-        function createMeteors(count) {
-            meteors = [];
-            for(let i=0; i<count; i++){
-                meteors.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    speedX: -(Math.random() * 4 + 2),
-                    speedY: Math.random() * 2 + 1,
-                    length: Math.random() * 50 + 30
                 });
             }
         }
@@ -410,19 +458,6 @@
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
                 ctx.fill();
-                
-                // Draw the glowing cross for larger stars
-                if (s.size > 1.4) {
-                    ctx.globalAlpha = s.alpha * 0.6;
-                    ctx.beginPath();
-                    ctx.moveTo(s.x - s.size * 6, s.y);
-                    ctx.lineTo(s.x + s.size * 6, s.y);
-                    ctx.moveTo(s.x, s.y - s.size * 6);
-                    ctx.lineTo(s.x, s.y + s.size * 6);
-                    ctx.strokeStyle = s.color;
-                    ctx.lineWidth = 0.3;
-                    ctx.stroke();
-                }
 
                 s.y += s.speed;
                 if(s.y > canvas.height){
@@ -430,34 +465,13 @@
                     s.x = Math.random() * canvas.width;
                 }
             }
-            
-            ctx.globalAlpha = 1.0;
-            ctx.strokeStyle = '#00ffcc'; // Tinted meteors to match accent
-            ctx.lineWidth = 0.8;
-            for(const m of meteors){
-                ctx.beginPath();
-                ctx.moveTo(m.x, m.y);
-                ctx.lineTo(m.x + m.length * m.speedX / 10, m.y + m.length * m.speedY / 10);
-                ctx.stroke();
-                
-                m.x += m.speedX;
-                m.y += m.speedY;
-                
-                if(m.x < -100 || m.y > canvas.height + 100){
-                    m.x = canvas.width + Math.random() * 200;
-                    m.y = Math.random() * canvas.height / 2;
-                }
-            }
         }
 
-        createStars(800);
-        createMeteors(2);
-
+        createStars(700);
         (function animateSpace(){
             drawSpace();
             requestAnimationFrame(animateSpace);
         })();
-
 
         // --- NEWS BROADCAST LOGIC ---
         const feeds = [
@@ -506,12 +520,19 @@
             }
         }
 
-        function getWeatherIcon(code) {
-            if (code === 0) return 'fa-sun'; 
-            if (code >= 1 && code <= 3) return 'fa-cloud-sun'; 
-            if (code >= 51 && code <= 65) return 'fa-cloud-rain'; 
-            if (code >= 71 && code <= 77) return 'fa-snowflake'; 
-            return 'fa-cloud'; 
+        // --- Weather Color Update ---
+        function updateWeatherUI(data, city) {
+            document.getElementById('weather-city').innerText = city.name;
+            document.getElementById('weather-temp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
+            const iconEl = document.getElementById('weather-icon');
+            const code = data.current_weather.weathercode;
+            
+            // Dynamic colors based on your request
+            if (code === 0) { iconEl.className = 'fa-solid fa-sun'; iconEl.style.color = '#FFD700'; }
+            else if (code >= 1 && code <= 3) { iconEl.className = 'fa-solid fa-cloud-sun'; iconEl.style.color = '#cccccc'; }
+            else if (code >= 51 && code <= 65) { iconEl.className = 'fa-solid fa-cloud-rain'; iconEl.style.color = '#44aaff'; }
+            else if (code >= 71 && code <= 77) { iconEl.className = 'fa-solid fa-snowflake'; iconEl.style.color = '#ffffff'; }
+            else { iconEl.className = 'fa-solid fa-cloud'; iconEl.style.color = '#aaaaaa'; }
         }
 
         async function fetchWeather() {
@@ -520,9 +541,7 @@
                 const res = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`, { timeout: 4000 });
                 if (res.ok) {
                     const data = await res.json();
-                    document.getElementById('weather-city').innerText = city.name;
-                    document.getElementById('weather-temp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
-                    document.getElementById('weather-icon').className = `fa-solid ${getWeatherIcon(data.current_weather.weathercode)}`;
+                    updateWeatherUI(data, city);
                 }
             } catch (e) { console.warn("Weather fetch skipped"); }
             weatherIndex = (weatherIndex + 1) % weatherCities.length;
@@ -535,8 +554,11 @@
             const tickerEl = document.getElementById('ticker-text');
             tickerEl.style.opacity = 0; 
             setTimeout(() => {
-                // STAND BY permanently removed.
-                tickerEl.innerHTML = `BREAKING &nbsp;|&nbsp; ${tickerItems[currentTickerIndex]}`;
+                const item = tickerItems[currentTickerIndex];
+                const logoUrl = logoMap[item.source] || '';
+                let logoHTML = logoUrl ? `<img src="${logoUrl}" class="ticker-logo">` : ` ${item.source}: `;
+                
+                tickerEl.innerHTML = `<span class="ticker-breaking">BREAKING</span> &nbsp;|&nbsp; ${logoHTML} ${item.title}`;
                 tickerEl.style.opacity = 1;
                 currentTickerIndex = (currentTickerIndex + 1) % tickerItems.length;
             }, 300); 
@@ -547,52 +569,60 @@
 
             const article = newsLibrary[currentIndex];
             const contentEl = document.getElementById('story-content');
-            const rocketEl = document.getElementById('rocket-anim');
-            const bhCore = document.getElementById('bh-core');
+            const satEl = document.getElementById('sat-anim');
 
             // 1. Fade out current text
             contentEl.style.opacity = 0;
             contentEl.style.transform = 'translateY(20px)';
 
-            // 2. Launch the rocket down into the black hole
-            rocketEl.style.animation = 'none';
-            void rocketEl.offsetWidth; 
-            rocketEl.style.animation = 'rocketDive 1s ease-in forwards';
+            // 2. Launch the satellite out from the black hole toward the screen
+            satEl.style.animation = 'none';
+            void satEl.offsetWidth; 
+            satEl.style.animation = 'satDive 1.5s ease-in-out forwards';
 
-            // 3. Wait for rocket to hit the center, then pulse and show news
+            // 3. Swap text halfway through the satellite animation (when it covers the screen)
             setTimeout(() => {
                 
-                // Black hole Pulse
-                bhCore.classList.add('pulse');
-                setTimeout(() => bhCore.classList.remove('pulse'), 300);
-
-                // Update text fields
                 document.getElementById('main-category').innerText = article.category;
-                document.getElementById('main-source').innerText = article.source;
                 document.getElementById('main-headline').innerText = article.title;
                 document.getElementById('main-description').innerText = article.description;
                 
-                // Update Sidebar Queue (Smoke overlay covers the bottom natively in CSS)
+                // Set the Main Stage Logo
+                const mainLogoEl = document.getElementById('main-source-logo');
+                const logoUrl = logoMap[article.source];
+                if(logoUrl) {
+                    mainLogoEl.src = logoUrl;
+                    mainLogoEl.style.display = 'inline-block';
+                } else {
+                    mainLogoEl.style.display = 'none';
+                }
+                
+                // Update Sidebar Queue (Increased to 8 to fill empty space)
                 let queueHTML = '';
                 const len = newsLibrary.length;
-                const indices = [ currentIndex, (currentIndex + 1) % len, (currentIndex + 2) % len, (currentIndex + 3) % len, (currentIndex + 4) % len ];
+                const indices = Array.from({length: 8}, (_, i) => (currentIndex + i) % len);
                 
                 indices.forEach((idx, i) => {
                     let a = newsLibrary[idx];
                     let activeClass = (i === 0) ? 'active' : '';
+                    let sideLogoUrl = logoMap[a.source];
+                    let sideSourceHTML = sideLogoUrl 
+                        ? `<img src="${sideLogoUrl}" class="network-logo"><br>` 
+                        : `<span style="font-weight:700;">${a.source}</span><br>`;
+
                     queueHTML += `
                         <div class="queue-item ${activeClass}">
-                            <div class="queue-source">${a.source.toUpperCase()} &bull; ${a.category}</div>
+                            ${sideSourceHTML}
                             <div class="queue-title">${a.title}</div>
                         </div>`;
                 });
                 document.getElementById('queue-list').innerHTML = queueHTML;
 
-                // Fade text back in immediately
+                // Fade text back in
                 contentEl.style.opacity = 1;
                 contentEl.style.transform = 'translateY(0)';
 
-            }, 1000); 
+            }, 750); // Exactly half-way through the 1.5s animation
         }
 
         async function fetchAllNews() {
@@ -627,7 +657,7 @@
 
             if (allArticles.length > 0) {
                 newsLibrary = allArticles.sort(() => Math.random() - 0.5);
-                tickerItems = newsLibrary.map(a => `${a.source.toUpperCase()}: ${a.title}`);
+                tickerItems = newsLibrary.map(a => ({ source: a.source, title: a.title }));
                 currentIndex = 0; 
                 
                 updateScreen();
