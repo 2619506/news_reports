@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60Smart Broadcast</title>
+    <title>60Smart Space Broadcast</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS: Premium & Minimalist Design */
+        /* CSS: Premium Space Design */
         :root {
-            --bg-dark: #050505;
-            --bg-panel: #111111;
+            --bg-dark: #020202;
+            --bg-panel: #0a0a0a;
             --accent: #00E5FF;
             --text-main: #FFFFFF;
             --text-muted: #888888;
@@ -21,7 +21,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; /* Hides cursor for GCP Stream */
+            cursor: none; 
             font-family: 'Inter', sans-serif;
         }
 
@@ -48,7 +48,7 @@
             display: flex;
             flex-direction: column;
             border-right: 1px solid #222;
-            z-index: 10;
+            z-index: 50;
         }
 
         .brand-container {
@@ -107,127 +107,156 @@
             margin-bottom: 10px;
         }
 
-        .queue-item {
-            opacity: 0.5;
-            transition: opacity 0.3s;
-        }
-
+        .queue-item { opacity: 0.5; transition: opacity 0.3s; }
         .queue-item.active {
             opacity: 1;
             border-left: 3px solid var(--accent);
             padding-left: 10px;
             margin-left: -13px;
         }
-
-        .queue-source {
-            font-size: 0.7rem;
-            color: var(--accent);
-            font-weight: 800;
-            margin-bottom: 4px;
-        }
-
+        .queue-source { font-size: 0.7rem; color: var(--accent); font-weight: 800; margin-bottom: 4px; }
         .queue-title {
-            font-size: 0.95rem;
-            font-weight: 600;
-            line-height: 1.3;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 0.95rem; font-weight: 600; line-height: 1.3;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
-        /* --- MAIN CONTENT (FULL BLEED) --- */
+        /* --- MAIN CONTENT (SPACE THEME) --- */
         .main-stage {
             flex: 1;
             position: relative;
             background-color: #000;
+            overflow: hidden;
         }
 
+        /* Pure CSS Starfield */
+        .stars-bg {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(1.5px 1.5px at 25px 5px, white, rgba(255,255,255,0)),
+                radial-gradient(1px 1px at 50px 25px, white, rgba(255,255,255,0)),
+                radial-gradient(2px 2px at 125px 20px, #aaa, rgba(255,255,255,0)),
+                radial-gradient(1.5px 1.5px at 50px 75px, white, rgba(255,255,255,0)),
+                radial-gradient(2px 2px at 15px 125px, white, rgba(255,255,255,0)),
+                radial-gradient(2.5px 2.5px at 110px 80px, #00e5ff, rgba(255,255,255,0));
+            background-size: 200px 200px;
+            z-index: 1;
+        }
+
+        /* The Black Hole */
+        .bh-container {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 10;
+        }
+
+        .bh-core {
+            width: 120px;
+            height: 120px;
+            background: #000;
+            border-radius: 50%;
+            box-shadow: 0 0 50px 10px rgba(0, 229, 255, 0.4), inset 0 0 15px 2px rgba(0, 229, 255, 0.8);
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.3s ease;
+        }
+
+        /* Pulse effect when rocket hits */
+        .bh-core.pulse {
+            box-shadow: 0 0 150px 40px rgba(255, 255, 255, 0.9), inset 0 0 40px 10px rgba(0, 229, 255, 1);
+            transform: translate(-50%, -50%) scale(1.2);
+        }
+
+        .bh-accretion-disk {
+            width: 350px;
+            height: 350px;
+            position: absolute;
+            top: 50%; left: 50%;
+            border-radius: 50%;
+            border: 1px solid rgba(0, 229, 255, 0.1);
+            border-left: 3px solid rgba(0, 229, 255, 0.7);
+            border-right: 3px solid rgba(0, 229, 255, 0.7);
+            box-shadow: 0 0 20px 2px rgba(0, 229, 255, 0.3);
+            animation: spinDisk 3s linear infinite;
+        }
+
+        @keyframes spinDisk {
+            from { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
+        }
+
+        /* Rocket Animation */
+        .rocket {
+            position: absolute;
+            left: 50%;
+            top: -100px;
+            color: var(--accent);
+            font-size: 2.5rem;
+            transform: translateX(-50%) rotate(180deg); /* Pointing down */
+            z-index: 20;
+            opacity: 0;
+            filter: drop-shadow(0 -10px 15px var(--accent));
+        }
+
+        @keyframes rocketDive {
+            0% { top: -100px; opacity: 1; transform: translateX(-50%) rotate(180deg) scale(1); }
+            70% { top: 35%; opacity: 1; transform: translateX(-50%) rotate(180deg) scale(0.6); }
+            100% { top: 40%; opacity: 0; transform: translateX(-50%) rotate(180deg) scale(0); }
+        }
+
+        /* Holographic News Image (Fades out around the black hole) */
         .story-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            opacity: 0;
+            opacity: 0.4;
             transition: opacity 0.5s ease;
+            /* Punches a transparent hole in the middle so the black hole shows through */
+            -webkit-mask-image: radial-gradient(circle at 50% 40%, transparent 120px, black 400px);
+            mask-image: radial-gradient(circle at 50% 40%, transparent 120px, black 400px);
+            z-index: 2;
         }
 
         .image-gradient {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 80%;
+            bottom: 0; left: 0; width: 100%; height: 60%;
             background: linear-gradient(to top, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 40%, rgba(0,0,0,0) 100%);
+            z-index: 3;
         }
 
+        /* Text Content Area */
         .story-content {
             position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 50px;
+            bottom: 0; left: 0; width: 100%;
+            padding: 40px 50px;
+            z-index: 15;
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
-        .story-tags {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .tag {
-            padding: 6px 12px;
-            font-size: 0.8rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            border-radius: 4px;
-        }
-
+        .story-tags { display: flex; gap: 15px; margin-bottom: 15px; }
+        .tag { padding: 6px 12px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; border-radius: 4px; }
         .tag.source { background: #fff; color: #000; }
         .tag.category { background: var(--accent); color: #000; }
 
         .story-headline {
-            font-size: 3.2rem;
-            font-weight: 800;
-            line-height: 1.1;
-            margin-bottom: 20px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            display: -webkit-box;
-            -webkit-line-clamp: 3;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.9);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
         .story-description {
-            font-size: 1.2rem;
-            line-height: 1.5;
-            color: #cccccc;
-            max-width: 800px;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+            font-size: 1.2rem; line-height: 1.5; color: #cccccc; max-width: 800px;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
         }
 
         /* --- TICKER TAPE --- */
         .ticker {
-            height: 40px;
-            background-color: var(--accent);
-            color: #000;
-            display: flex;
-            align-items: center;
-            padding: 0 20px;
-            font-weight: 800;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-            z-index: 20;
-        }
-
-        .ticker-text {
-            white-space: nowrap;
-        }
-        
-        .hide-headline {
-            opacity: 0;
+            height: 40px; background-color: var(--accent); color: #000;
+            display: flex; align-items: center; padding: 0 20px;
+            font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; z-index: 60;
         }
     </style>
 </head>
@@ -256,12 +285,26 @@
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- Main Content (Space Stage) -->
         <div class="main-stage">
+            <!-- 1. Starfield Background -->
+            <div class="stars-bg"></div>
+
+            <!-- 2. Black Hole Event Horizon -->
+            <div class="bh-container">
+                <div class="bh-accretion-disk"></div>
+                <div class="bh-core" id="bh-core"></div>
+            </div>
+
+            <!-- 3. Falling Rocket Graphic -->
+            <i class="fa-solid fa-rocket rocket" id="rocket-anim"></i>
+
+            <!-- 4. Holographic News Background -->
             <img id="main-image" class="story-image" src="" alt="">
             <div class="image-gradient"></div>
             
-            <div class="story-content">
+            <!-- 5. News Text Content -->
+            <div class="story-content" id="story-content">
                 <div class="story-tags">
                     <span class="tag category" id="main-category">SYSTEM</span>
                     <span class="tag source" id="main-source">NETWORK</span>
@@ -277,9 +320,8 @@
         <div class="ticker-text" id="ticker-text">60SMART NETWORK | INITIALIZING DATABANKS | STAND BY</div>
     </div>
 
-    <!-- Javascript integrated directly into the HTML -->
+    <!-- Javascript -->
     <script>
-        // ALL YOUR CHANNELS INCLUDED
         const feeds = [
             { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC' },
             { url: 'https://www.theguardian.com/world/rss', category: 'GLOBAL', source: 'THE GUARDIAN' },
@@ -304,7 +346,6 @@
         const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
         const defaultImage = "https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2072&auto=format&fit=crop";
 
-        // ALL YOUR WEATHER CITIES INCLUDED
         const weatherCities = [
             { name: "KABUL", lat: 34.5281, lon: 69.1171 }, { name: "HERAT", lat: 34.3419, lon: 62.2031 },
             { name: "TOKYO", lat: 35.68, lon: 139.69 }, { name: "DUBAI", lat: 25.20, lon: 55.27 },
@@ -314,7 +355,6 @@
         weatherCities.sort(() => Math.random() - 0.5);
         let weatherIndex = 0;
 
-        // SAFE FETCH WRAPPER
         async function fetchWithTimeout(resource, options = { timeout: 5000 }) {
             const { timeout = 5000 } = options;
             const controller = new AbortController();
@@ -329,7 +369,6 @@
             }
         }
 
-        // IMAGE EXTRACTION
         function extractImage(item) {
             if (item.thumbnail && item.thumbnail !== "") return item.thumbnail;
             if (item.enclosure && item.enclosure.link) return item.enclosure.link;
@@ -341,13 +380,11 @@
             return defaultImage;
         }
 
-        // WEATHER LOGIC
         function getWeatherIcon(code) {
             if (code === 0) return 'fa-sun'; 
             if (code >= 1 && code <= 3) return 'fa-cloud-sun'; 
             if (code >= 51 && code <= 65) return 'fa-cloud-rain'; 
             if (code >= 71 && code <= 77) return 'fa-snowflake'; 
-            if (code >= 95) return 'fa-cloud-bolt'; 
             return 'fa-cloud'; 
         }
 
@@ -357,38 +394,20 @@
                 const res = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`, { timeout: 4000 });
                 if (res.ok) {
                     const data = await res.json();
-                    const temp = Math.round(data.current_weather.temperature);
-                    const code = data.current_weather.weathercode; 
-                    
                     document.getElementById('weather-city').innerText = city.name;
-                    document.getElementById('weather-temp').innerText = `${temp}°C`;
-                    document.getElementById('weather-icon').className = `fa-solid ${getWeatherIcon(code)}`;
+                    document.getElementById('weather-temp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
+                    document.getElementById('weather-icon').className = `fa-solid ${getWeatherIcon(data.current_weather.weathercode)}`;
                 }
-            } catch (e) {
-                console.warn("Weather fetch skipped");
-            }
+            } catch (e) { console.warn("Weather fetch skipped"); }
             weatherIndex = (weatherIndex + 1) % weatherCities.length;
         }
 
-        // TICKER LOGIC
         let tickerItems = [];
         let currentTickerIndex = 0;
-        let tickerRotationTimer;
-
-        function setupTicker(articles) {
-            tickerItems = articles.slice(0, 25).map(a => `${a.source.toUpperCase()}: ${a.title}`);
-            if (tickerRotationTimer) clearInterval(tickerRotationTimer);
-            currentTickerIndex = 0;
-            rotateTicker(); 
-            tickerRotationTimer = setInterval(rotateTicker, 5000); 
-        }
-
         function rotateTicker() {
             if (tickerItems.length === 0) return;
             const tickerEl = document.getElementById('ticker-text');
-            if (!tickerEl) return;
-            
-            tickerEl.style.opacity = 0; // Quick fade
+            tickerEl.style.opacity = 0; 
             setTimeout(() => {
                 tickerEl.innerHTML = `BREAKING &nbsp;|&nbsp; ${tickerItems[currentTickerIndex]} &nbsp;|&nbsp; STAND BY`;
                 tickerEl.style.opacity = 1;
@@ -396,67 +415,78 @@
             }, 300); 
         }
 
-        // MAIN SCREEN LOGIC
+        // --- NEW ROCKET TRANSITION LOGIC ---
         function updateScreen() {
             if (newsLibrary.length === 0) return;
 
             const article = newsLibrary[currentIndex];
             const imgEl = document.getElementById('main-image');
-            
-            document.getElementById('main-category').innerText = article.category;
-            document.getElementById('main-source').innerText = article.source;
-            document.getElementById('main-headline').innerText = article.title;
-            document.getElementById('main-description').innerText = article.description;
-            
-            // Queue Sidebar Setup
-            let queueHTML = '';
-            const len = newsLibrary.length;
-            const indices = [
-                currentIndex, 
-                (currentIndex + 1) % len, 
-                (currentIndex + 2) % len, 
-                (currentIndex + 3) % len, 
-                (currentIndex + 4) % len
-            ];
-            
-            indices.forEach((idx, i) => {
-                let a = newsLibrary[idx];
-                let activeClass = (i === 0) ? 'active' : '';
-                queueHTML += `
-                    <div class="queue-item ${activeClass}">
-                        <div class="queue-source">${a.source.toUpperCase()} &bull; ${a.category}</div>
-                        <div class="queue-title">${a.title}</div>
-                    </div>
-                `;
-            });
-            document.getElementById('queue-list').innerHTML = queueHTML;
+            const contentEl = document.getElementById('story-content');
+            const rocketEl = document.getElementById('rocket-anim');
+            const bhCore = document.getElementById('bh-core');
 
-            // Image Crossfade effect
-            if (imgEl) {
-                imgEl.style.opacity = 0;
+            // 1. Fade out current text and image
+            contentEl.style.opacity = 0;
+            contentEl.style.transform = 'translateY(20px)';
+            imgEl.style.opacity = 0;
+
+            // 2. Launch the rocket down into the black hole!
+            rocketEl.style.animation = 'none';
+            void rocketEl.offsetWidth; // Force CSS reflow
+            rocketEl.style.animation = 'rocketDive 1s ease-in forwards';
+
+            // 3. Wait for rocket to hit the center, then pulse and show news
+            setTimeout(() => {
+                
+                // Black hole Flash/Pulse
+                bhCore.classList.add('pulse');
+                setTimeout(() => bhCore.classList.remove('pulse'), 300);
+
+                // Update text fields
+                document.getElementById('main-category').innerText = article.category;
+                document.getElementById('main-source').innerText = article.source;
+                document.getElementById('main-headline').innerText = article.title;
+                document.getElementById('main-description').innerText = article.description;
+                
+                // Update Sidebar Queue
+                let queueHTML = '';
+                const len = newsLibrary.length;
+                const indices = [ currentIndex, (currentIndex + 1) % len, (currentIndex + 2) % len, (currentIndex + 3) % len, (currentIndex + 4) % len ];
+                
+                indices.forEach((idx, i) => {
+                    let a = newsLibrary[idx];
+                    let activeClass = (i === 0) ? 'active' : '';
+                    queueHTML += `
+                        <div class="queue-item ${activeClass}">
+                            <div class="queue-source">${a.source.toUpperCase()} &bull; ${a.category}</div>
+                            <div class="queue-title">${a.title}</div>
+                        </div>`;
+                });
+                document.getElementById('queue-list').innerHTML = queueHTML;
+
+                // Load New Image and Fade everything back in
                 const virtualImg = new Image();
                 virtualImg.onload = () => {
-                    setTimeout(() => { 
-                        imgEl.src = virtualImg.src; 
-                        imgEl.style.opacity = 1; 
-                    }, 300);
+                    imgEl.src = virtualImg.src; 
+                    imgEl.style.opacity = 0.4; // 0.4 opacity keeps it holographic
+                    contentEl.style.opacity = 1;
+                    contentEl.style.transform = 'translateY(0)';
                 };
                 virtualImg.onerror = () => { 
                     imgEl.src = defaultImage; 
-                    imgEl.style.opacity = 1; 
+                    imgEl.style.opacity = 0.4; 
+                    contentEl.style.opacity = 1;
+                    contentEl.style.transform = 'translateY(0)';
                 };
                 virtualImg.src = article.image; 
-            }
+
+            }, 1000); // Trigger happens exactly 1s after rocket starts falling
         }
 
-        // NEWS FETCH LOGIC
         async function fetchAllNews() {
             const headEl = document.getElementById('main-headline');
-            if (headEl && newsLibrary.length === 0) {
-                headEl.innerText = "CONNECTING TO GLOBAL FEEDS...";
-            }
+            if (headEl && newsLibrary.length === 0) { headEl.innerText = "CONNECTING TO GLOBAL FEEDS..."; }
             
-            // Randomly select 8 feeds per cycle to prevent rate limiting
             const shuffledFeeds = feeds.sort(() => 0.5 - Math.random()).slice(0, 8);
             let allArticles = [];
 
@@ -482,34 +512,33 @@
                             allArticles.push(...items);
                         }
                     }
-                } catch (error) {
-                    console.warn(`Skipped feed ${feed.source}`);
-                }
+                } catch (error) { console.warn(`Skipped feed ${feed.source}`); }
             }
 
             if (allArticles.length > 0) {
                 newsLibrary = allArticles.sort(() => Math.random() - 0.5);
+                tickerItems = newsLibrary.map(a => `${a.source.toUpperCase()}: ${a.title}`);
                 currentIndex = 0; 
-                setupTicker(newsLibrary);
                 
                 updateScreen();
+                setInterval(rotateTicker, 5000); 
+
                 if (broadcastTimer) clearInterval(broadcastTimer);
                 broadcastTimer = setInterval(() => {
                     if (newsLibrary.length > 0) {
                         currentIndex = (currentIndex + 1) % newsLibrary.length;
                         updateScreen();
                     }
-                }, 15000); // Rotates every 15 seconds
+                }, 15000); 
             } else if (newsLibrary.length === 0) {
                 if (headEl) headEl.innerText = "API LIMIT REACHED. RETRYING...";
                 setTimeout(fetchAllNews, 30000); 
             }
         }
 
-        // BOOT SEQUENCE
         fetchWeather();
-        setInterval(fetchWeather, 600000); // 10 minutes
-        setInterval(fetchAllNews, 1800000); // 30 minutes
+        setInterval(fetchWeather, 600000); 
+        setInterval(fetchAllNews, 1800000);
         fetchAllNews();
 
     </script>
