@@ -31,9 +31,12 @@ const weatherCities = [
 weatherCities.sort(() => Math.random() - 0.5);
 let weatherIndex = 0;
 
+// Safe Update: Prevents script crash if #global-date is missing
 function updateGlobalDate() {
+    const el = document.getElementById('global-date');
+    if (!el) return; 
     const options = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', timeZone: 'UTC' };
-    document.getElementById('global-date').innerText = new Date().toLocaleDateString('en-US', options).toUpperCase();
+    el.innerText = new Date().toLocaleDateString('en-US', options).toUpperCase();
 }
 
 function getWeatherIcon(code) {
@@ -48,12 +51,27 @@ function getWeatherIcon(code) {
 function extractImage(item) {
     if (item.thumbnail && item.thumbnail !== "") return item.thumbnail;
     if (item.enclosure && item.enclosure.link) return item.enclosure.link;
-    const imgRegex = /<img[^>]+src="([^">]+)"/;
+    const imgRegex = /<img[^>]+src="([^">]+" )/;
     if (item.description) {
         const match = item.description.match(imgRegex);
         if (match && match[1]) return match[1];
     }
     return defaultImage;
+}
+
+// Timeout Fetch Wrapper: Aborts after 5 seconds to prevent hanging
+async function fetchWithTimeout(resource, options = { timeout: 5000 }) {
+    const { timeout = 5000 } = options;
+    const controller = new AbortController();
+    const id = setTimeout(() => controller.abort(), timeout);
+    try {
+        const response = await fetch(resource, { ...options, signal: controller.signal });
+        clearTimeout(id);
+        return response;
+    } catch (error) {
+        clearTimeout(id);
+        throw error;
+    }
 }
 
 // --- DATA FLIP TICKER LOGIC ---
@@ -72,6 +90,8 @@ function setupTicker(articles) {
 function rotateTicker() {
     if (tickerItems.length === 0) return;
     const tickerEl = document.getElementById('ticker-text');
+    if (!tickerEl) return;
+    
     tickerEl.classList.add('hide-headline');
     
     setTimeout(() => {
@@ -84,14 +104,15 @@ function rotateTicker() {
 // --- MAIN STORY & SIDEBAR LOGIC ---
 function updateSidebar() {
     const sidebar = document.getElementById('upcoming-list');
+    if (!sidebar) return;
     let sidebarHTML = ''; 
     const len = newsLibrary.length;
 
     let indices = [
         (currentIndex - 1 + len) % len,
-        currentIndex,                                
-        (currentIndex + 1) % len,                    
-        (currentIndex + 2) % len,                    
+        currentIndex,                                 
+        (currentIndex + 1) % len,                     
+        (currentIndex + 2) % len,                     
         (currentIndex + 3) % len,
         (currentIndex + 4) % len
     ];
@@ -119,39 +140,48 @@ function updateScreen() {
 
     const article = newsLibrary[currentIndex];
     const imgEl = document.getElementById('news-image');
+    const catEl = document.getElementById('news-category');
+    const srcEl = document.getElementById('news-source');
+    const headEl = document.getElementById('news-headline');
+    const descEl = document.getElementById('news-description');
+
+    if (catEl) catEl.innerText = article.category;
+    if (srcEl) srcEl.innerText = article.source;
+    if (headEl) headEl.innerText = article.title;
+    if (descEl) descEl.innerText = article.description;
     
-    imgEl.style.opacity = 0;
+    updateSidebar();
 
-    const virtualImg = new Image();
-    virtualImg.onload = () => {
-        setTimeout(() => {
-            imgEl.src = virtualImg.src;
-            document.getElementById('news-category').innerText = article.category;
-            document.getElementById('news-source').innerText = article.source;
-            document.getElementById('news-headline').innerText = article.title;
-            document.getElementById('news-description').innerText = article.description;
-            
-            updateSidebar(); 
-            imgEl.style.opacity = 1; 
-        }, 500); 
-    };
-
-    virtualImg.onerror = () => { virtualImg.src = defaultImage; };
-    virtualImg.src = article.image; 
+    if (imgEl) {
+        imgEl.style.opacity = 0;
+        const virtualImg = new Image();
+        virtualImg.onload = () => {
+            setTimeout(() => {
+                imgEl.src = virtualImg.src;
+                imgEl.style.opacity = 1; 
+            }, 300); 
+        };
+        virtualImg.onerror = () => { 
+            imgEl.src = defaultImage; 
+            imgEl.style.opacity = 1;
+        };
+        virtualImg.src = article.image; 
+    }
 }
 
-// --- OPTIMIZED FETCH LOGIC (Crash Prevention) ---
+// --- OPTIMIZED FETCH LOGIC ---
 async function fetchAllNews() {
-    document.getElementById('news-headline').innerText = "CONNECTING TO GLOBAL FEEDS...";
+    const headEl = document.getElementById('news-headline');
+    if (headEl && newsLibrary.length === 0) {
+        headEl.innerText = "CONNECTING TO GLOBAL FEEDS...";
+    }
     
-    // Grab 8 random feeds to keep memory low
     const shuffledFeeds = feeds.sort(() => 0.5 - Math.random()).slice(0, 8);
     let allArticles = [];
 
-    // CRITICAL FIX: Fetch sequentially to prevent CPU spike and "Page Unresponsive"
     for (const feed of shuffledFeeds) {
         try {
-            const response = await fetch(rss2jsonProxy + encodeURIComponent(feed.url));
+            const response = await fetchWithTimeout(rss2jsonProxy + encodeURIComponent(feed.url), { timeout: 5000 });
             if (response.ok) {
                 const data = await response.json();
                 if (data.status === 'ok') {
@@ -172,7 +202,7 @@ async function fetchAllNews() {
                 }
             }
         } catch (error) {
-            console.warn(`Skipped feed ${feed.source} due to network timeout.`);
+            console.warn(`Skipped feed ${feed.source} due to network timeout or error.`);
         }
     }
 
@@ -181,8 +211,8 @@ async function fetchAllNews() {
         currentIndex = 0; 
         setupTicker(newsLibrary);
         startBroadcast();
-    } else {
-        document.getElementById('news-headline').innerText = "API LIMIT REACHED. RETRYING IN 30 SECONDS...";
+    } else if (newsLibrary.length === 0) {
+        if (headEl) headEl.innerText = "API LIMIT REACHED. RETRYING IN 30 SECONDS...";
         setTimeout(fetchAllNews, 30000); 
     }
 }
@@ -190,16 +220,20 @@ async function fetchAllNews() {
 async function fetchWeather() {
     const city = weatherCities[weatherIndex];
     try {
-        const res = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`);
+        const res = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`, { timeout: 4000 });
         if (!res.ok) throw new Error("Weather unavailable");
         
         const data = await res.json();
         const temp = Math.round(data.current_weather.temperature);
         const code = data.current_weather.weathercode; 
         
-        document.getElementById('weather-city').innerText = city.name;
-        document.getElementById('weather-temp').innerText = `${temp}°C`;
-        document.getElementById('weather-icon').className = `fa-solid ${getWeatherIcon(code)}`;
+        const cityEl = document.getElementById('weather-city');
+        const tempEl = document.getElementById('weather-temp');
+        const iconEl = document.getElementById('weather-icon');
+
+        if (cityEl) cityEl.innerText = city.name;
+        if (tempEl) tempEl.innerText = `${temp}°C`;
+        if (iconEl) iconEl.className = `fa-solid ${getWeatherIcon(code)}`;
     } catch (e) {
         console.warn("Weather fetch skipped");
     }
@@ -208,6 +242,7 @@ async function fetchWeather() {
 
 // --- BOOT SEQUENCE ---
 function autoAdvance() {
+    if (newsLibrary.length === 0) return;
     currentIndex = (currentIndex + 1) % newsLibrary.length;
     updateScreen();
 }
@@ -215,11 +250,12 @@ function autoAdvance() {
 function startBroadcast() {
     updateScreen();
     if (broadcastTimer) clearInterval(broadcastTimer);
-    broadcastTimer = setInterval(autoAdvance, 15000); // 15 seconds allows for smooth reading
+    broadcastTimer = setInterval(autoAdvance, 15000); 
 }
 
 // Initialize
 updateGlobalDate();
 fetchWeather();
-setInterval(fetchWeather, 600000); 
+setInterval(fetchWeather, 600000); // Refresh weather every 10 mins
+setInterval(fetchAllNews, 1800000); // Fetch new stories every 30 mins
 fetchAllNews();
