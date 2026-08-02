@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>60Smart Network Broadcast</title>
-    <!-- Professional Broadcast Font -->
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    <title>60Smart Space Broadcast</title>
+    <!-- Fonts: Orbitron for Logo only, Inter for crisp, readable UI -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@800;900&family=Inter:wght@400;600;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS: 60Smart Dark Blue Broadcast Design */
+        /* CSS: Premium Broadcast Space Design */
         :root {
-            --bg-deep: #020813;
-            --bg-panel: rgba(6, 17, 38, 0.85); 
-            --accent-blue: #0066ff; 
-            --accent-glow: rgba(0, 102, 255, 0.4);
+            --bg-dark: #040b18; /* Nice dark bluish space background */
+            --bg-panel: rgba(7, 12, 25, 0.85); 
+            --accent: #2563eb; /* Darker bluish blue */
+            --accent-glow: rgba(37, 99, 235, 0.4);
             --text-main: #ffffff;
-            --text-muted: #a0aec0;
-            --alert-red: #ff2a2a;
+            --text-muted: #94a3b8;
+            --tv-red: #cc0000;
         }
 
         * {
@@ -25,34 +25,34 @@
             padding: 0;
             box-sizing: border-box;
             cursor: none; 
-            font-family: 'Montserrat', sans-serif;
         }
 
         body {
             width: 1280px;
             height: 720px;
-            background-color: var(--bg-deep);
+            background-color: var(--bg-dark);
             color: var(--text-main);
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            font-family: 'Inter', sans-serif; /* Clean, non-stylized font for readability */
         }
 
         .broadcast-container {
             display: flex;
-            height: 680px;
+            height: 675px; /* Leaves 45px for TV ticker */
             width: 100%;
         }
 
         /* --- SIDEBAR --- */
         .sidebar {
-            width: 360px;
+            width: 340px;
             background: var(--bg-panel);
             backdrop-filter: blur(15px);
             -webkit-backdrop-filter: blur(15px);
             display: flex;
             flex-direction: column;
-            border-right: 1px solid rgba(0, 102, 255, 0.2);
+            border-right: 1px solid rgba(37, 99, 235, 0.3);
             z-index: 50;
             position: relative;
         }
@@ -63,15 +63,18 @@
             background: rgba(0, 0, 0, 0.3);
         }
 
+        /* 60Smart Logo keeps the stylized font */
         .brand-logo {
+            font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
             font-weight: 900;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             color: var(--text-main);
         }
 
         .brand-logo span {
-            color: var(--accent-blue);
+            color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
         }
 
         .weather-widget {
@@ -80,18 +83,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            background: rgba(0, 0, 0, 0.15);
         }
 
         .weather-city {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--text-main);
+            font-size: 1rem;
+            font-weight: 800;
+            color: #ffffff;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         .weather-temp {
-            font-size: 1.6rem;
+            font-size: 1.4rem;
             font-weight: 800;
             display: flex;
             align-items: center;
@@ -100,7 +104,7 @@
 
         .queue-container {
             flex: 1;
-            padding: 15px 30px;
+            padding: 20px 30px;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -109,12 +113,12 @@
         }
 
         .queue-header {
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             font-weight: 800;
             color: var(--text-muted);
             letter-spacing: 1.5px;
-            text-transform: uppercase;
             margin-bottom: 5px;
+            text-transform: uppercase;
         }
         
         .queue-list-wrapper {
@@ -126,35 +130,43 @@
         .queue-item { opacity: 0.4; transition: opacity 0.3s; }
         .queue-item.active {
             opacity: 1;
-            border-left: 4px solid var(--accent-blue);
+            border-left: 3px solid var(--accent);
             padding-left: 10px;
-            margin-left: -14px;
-            background: linear-gradient(90deg, rgba(0, 102, 255, 0.15) 0%, transparent 100%);
+            margin-left: -13px;
         }
         
-        /* Network Logos Styling */
+        .queue-source { 
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.7rem; 
+            font-weight: 800;
+            color: var(--accent); 
+            margin-bottom: 4px; 
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Network Logos (Filtered to white for unified dark mode look) */
         .network-logo {
-            height: 16px;
-            background-color: #ffffff;
-            padding: 2px 6px;
-            border-radius: 4px;
+            max-height: 14px;
+            max-width: 60px;
+            filter: brightness(0) invert(1);
             object-fit: contain;
-            margin-bottom: 6px;
-            display: inline-block;
         }
 
         .queue-title {
-            font-size: 0.9rem; font-weight: 500; line-height: 1.35;
+            font-size: 0.9rem; font-weight: 600; line-height: 1.3;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
-            color: var(--text-main);
+            color: #e2e8f0;
         }
 
-        /* Sidebar Fade effect */
+        /* Smoke/Fade effect for the list */
         .queue-smoke-overlay {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 90px;
-            background: linear-gradient(to top, rgba(6, 17, 38, 1) 10%, transparent 100%);
+            height: 100px;
+            background: linear-gradient(to top, rgba(7, 12, 25, 1) 15%, transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
@@ -163,7 +175,7 @@
         .main-stage {
             flex: 1;
             position: relative;
-            background-color: var(--bg-deep);
+            background-color: transparent;
             overflow: hidden;
         }
 
@@ -174,13 +186,14 @@
             z-index: 1;
         }
 
-        /* The Black Hole */
+        /* The Black Hole (Lowered slightly behind text) */
         .bh-container {
             position: absolute;
-            top: 45%;
+            top: 55%; 
             left: 50%;
             transform: translate(-50%, -50%);
-            z-index: 10;
+            z-index: 5; /* Lowered Z-index so it sits behind text */
+            opacity: 0.85;
         }
 
         .bh-core {
@@ -188,11 +201,16 @@
             height: 130px;
             background: #000;
             border-radius: 50%;
-            box-shadow: 0 0 60px 15px var(--accent-glow), inset 0 0 20px 2px rgba(0, 102, 255, 0.8);
+            box-shadow: 0 0 50px 15px var(--accent-glow), inset 0 0 20px 2px rgba(37, 99, 235, 0.8);
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
             transition: all 0.3s ease;
+        }
+
+        .bh-core.pulse {
+            box-shadow: 0 0 150px 40px rgba(255, 255, 255, 0.8), inset 0 0 40px 10px var(--accent);
+            transform: translate(-50%, -50%) scale(1.15);
         }
 
         .bh-accretion-disk {
@@ -201,126 +219,134 @@
             position: absolute;
             top: 50%; left: 50%;
             border-radius: 50%;
-            border: 1px solid rgba(0, 102, 255, 0.1);
-            border-left: 3px solid rgba(0, 102, 255, 0.6);
-            border-right: 3px solid rgba(0, 102, 255, 0.6);
+            border: 1px solid rgba(37, 99, 235, 0.1);
+            border-left: 4px solid rgba(37, 99, 235, 0.6);
+            border-right: 4px solid rgba(37, 99, 235, 0.6);
             box-shadow: 0 0 25px 2px var(--accent-glow);
             animation: spinDisk 4s linear infinite;
         }
 
         @keyframes spinDisk {
-            from { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(0deg); }
-            to { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); }
+            from { transform: translate(-50%, -50%) rotateX(76deg) rotateZ(0deg); }
+            to { transform: translate(-50%, -50%) rotateX(76deg) rotateZ(360deg); }
         }
 
-        /* Orbiting Satellites (Visual Only) */
-        .satellite-orbit-path {
+        /* --- REALISTIC SATELLITE ANIMATION --- */
+        .orbit-system {
             position: absolute;
-            top: 50%; left: 50%;
-            width: 480px; height: 480px;
-            transform: translate(-50%, -50%);
-            animation: orbitSpin 15s linear infinite;
-            z-index: 12;
+            top: 55%; left: 50%;
+            width: 400px; height: 400px;
+            transform: translate(-50%, -50%) rotateX(76deg);
+            z-index: 10;
+            transform-style: preserve-3d;
+            animation: orbitAnim 12s linear infinite;
         }
-        .satellite-orbit-path.delayed { animation: orbitSpin 20s linear infinite reverse; }
-        
-        .orbit-sat {
+
+        .satellite-obj {
             position: absolute;
-            top: -15px; left: 50%;
-            color: #88bbff;
-            font-size: 1.5rem;
-            transform: translateX(-50%);
-            filter: drop-shadow(0 0 8px rgba(136,187,255,0.5));
+            top: -30px; left: 50%;
+            width: 60px; height: 60px;
+            margin-left: -30px;
+            /* High-res realistic satellite PNG */
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Hubble_Space_Telescope_model.png/320px-Hubble_Space_Telescope_model.png') no-repeat center/contain;
+            filter: drop-shadow(0 0 8px rgba(0,0,0,0.8)) brightness(0.6) contrast(1.2);
+            /* Counters the orbit rotation so satellite always faces "up/camera" */
+            animation: counterRotate 12s linear infinite;
+            transition: all 1s cubic-bezier(0.25, 1, 0.5, 1); 
         }
 
-        @keyframes orbitSpin {
-            from { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(0deg); }
-            to { transform: translate(-50%, -50%) rotateX(70deg) rotateZ(360deg); }
+        @keyframes orbitAnim { 0% { transform: translate(-50%, -50%) rotateX(76deg) rotateZ(0deg); } 100% { transform: translate(-50%, -50%) rotateX(76deg) rotateZ(360deg); } }
+        @keyframes counterRotate { 0% { transform: rotateZ(0deg) rotateX(-76deg); } 100% { transform: rotateZ(-360deg) rotateX(-76deg); } }
+
+        /* Triggered when news changes */
+        .satellite-obj.swoop-in {
+            /* Breaks out of orbit and swoops down towards the screen */
+            transform: scale(4.5) translate(10px, -40px) !important;
+            filter: drop-shadow(0 0 15px rgba(37, 99, 235, 0.8)) brightness(1.1) contrast(1.1);
         }
 
-        /* Transition Satellite (Shoots at the screen) */
-        .transition-sat {
-            position: absolute;
-            left: 50%; top: 45%;
-            color: #ffffff;
-            font-size: 3rem;
-            transform: translate(-50%, -50%) scale(0);
-            opacity: 0;
-            z-index: 100;
-            filter: drop-shadow(0 0 30px var(--accent-blue));
-        }
-
-        @keyframes satDive {
-            0% { transform: translate(-50%, -50%) scale(0); opacity: 0; }
-            40% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
-            60% { transform: translate(-50%, -50%) scale(5); opacity: 1; }
-            100% { transform: translate(-50%, 600px) scale(15); opacity: 0; }
-        }
-
-        /* Text Content Area */
+        /* Transparent Text Content Area */
         .story-content {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
-            padding: 40px 60px;
-            z-index: 15;
+            padding: 30px 50px;
+            z-index: 20; /* Ensures text is always on top of everything */
             transition: opacity 0.5s ease, transform 0.5s ease;
+            /* Added a subtle gradient behind text purely to guarantee readability against stars/satellite */
+            background: linear-gradient(to top, rgba(4,11,24,0.95) 0%, rgba(4,11,24,0.6) 60%, transparent 100%);
         }
 
-        .story-tags { display: flex; gap: 15px; margin-bottom: 15px; align-items: center; }
+        .story-tags { display: flex; align-items: center; gap: 15px; margin-bottom: 12px; }
         
-        .tag-category { 
-            background: rgba(0, 102, 255, 0.2);
-            border: 1px solid rgba(0, 102, 255, 0.5);
+        .tag { 
+            background: var(--accent);
             color: #ffffff;
-            padding: 6px 14px; 
-            font-size: 0.8rem; 
-            font-weight: 700;
+            padding: 4px 10px; 
+            font-size: 0.75rem; 
+            font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase; 
             border-radius: 4px; 
-            box-shadow: 0 0 10px rgba(0, 102, 255, 0.2);
+        }
+        
+        .main-logo-container {
+            display: flex; align-items: center;
         }
 
         .main-network-logo {
-            height: 28px;
-            background-color: #ffffff;
-            padding: 4px 10px;
-            border-radius: 4px;
-            object-fit: contain;
+            max-height: 22px;
+            filter: brightness(0) invert(1);
         }
 
         .story-headline {
-            font-size: 2.8rem; font-weight: 800; line-height: 1.15; margin-bottom: 15px;
+            font-size: 2.8rem; font-weight: 900; line-height: 1.1; margin-bottom: 10px;
             color: #ffffff;
-            /* Removed extreme glow, replaced with clean drop shadow */
-            text-shadow: 2px 3px 6px rgba(0, 0, 0, 0.9);
+            /* Standard clean shadow, removed heavy neon glow */
+            text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             letter-spacing: -0.5px;
         }
 
         .story-description {
-            font-size: 1.25rem; line-height: 1.5; color: #e2e8f0; max-width: 800px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            font-size: 1.15rem; line-height: 1.5; color: #cbd5e1; max-width: 850px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             font-weight: 400;
         }
 
-        /* --- TICKER TAPE --- */
-        .ticker {
-            height: 40px; background-color: #051024; color: #ffffff;
-            display: flex; align-items: center; padding: 0 25px;
-            font-weight: 600; font-size: 1.05rem; z-index: 60;
-            border-top: 2px solid var(--accent-blue);
+        /* --- TV STYLE BREAKING REEL --- */
+        .tv-ticker {
+            height: 45px;
+            background-color: #ffffff;
+            display: flex;
+            align-items: center;
+            z-index: 60;
+            border-top: 2px solid #880000;
         }
 
-        .ticker-breaking {
-            color: var(--alert-red);
+        .ticker-label {
+            background-color: var(--tv-red);
+            color: #ffffff;
             font-weight: 900;
+            font-size: 1.1rem;
+            padding: 0 25px;
+            height: 100%;
+            display: flex;
+            align-items: center;
             letter-spacing: 1px;
+            text-transform: uppercase;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+            z-index: 2;
         }
 
-        .ticker-logo {
-            height: 16px; background: #fff; padding: 1px 4px; border-radius: 3px; vertical-align: middle; margin: 0 8px;
+        .ticker-scroll {
+            flex: 1;
+            padding: 0 25px;
+            color: #000000;
+            font-weight: 800;
+            font-size: 1.05rem;
+            white-space: nowrap;
+            overflow: hidden;
         }
     </style>
 </head>
@@ -335,15 +361,14 @@
             
             <div class="weather-widget">
                 <div class="weather-city" id="weather-city">SYSTEM CHECK</div>
-                <div class="weather-temp">
-                    <i id="weather-icon" class="fa-solid fa-satellite-dish"></i>
+                <div class="weather-temp" id="weather-temp-container">
+                    <i id="weather-icon" class="fa-solid fa-satellite-dish" style="color: #ffffff;"></i>
                     <span id="weather-temp">ON</span>
                 </div>
             </div>
 
             <div class="queue-container">
-                <div class="queue-header">UPCOMING IN FEED</div>
-                <!-- Queue list increased to 8 items to fill space -->
+                <div class="queue-header">UPCOMING TELEMETRY</div>
                 <div class="queue-list-wrapper" id="queue-list">
                     <!-- Queue populates here -->
                 </div>
@@ -355,69 +380,68 @@
         <!-- Main Content (Space Stage) -->
         <div class="main-stage">
             
-            <!-- Dark Blue Canvas Starfield -->
+            <!-- Canvas Starfield -->
             <canvas id="space-canvas"></canvas>
 
-            <!-- Black Hole & Orbiting Satellites -->
+            <!-- Black Hole Background -->
             <div class="bh-container">
                 <div class="bh-accretion-disk"></div>
                 <div class="bh-core" id="bh-core"></div>
-                
-                <!-- Purely Visual Orbiting Satellites -->
-                <div class="satellite-orbit-path">
-                    <i class="fa-solid fa-satellite orbit-sat"></i>
-                </div>
-                <div class="satellite-orbit-path delayed">
-                    <i class="fa-solid fa-satellite orbit-sat"></i>
-                </div>
             </div>
 
-            <!-- The Transition Satellite (Shoots toward screen) -->
-            <i class="fa-solid fa-satellite transition-sat" id="sat-anim"></i>
+            <!-- Realistic Orbiting Satellite -->
+            <div class="orbit-system">
+                <div class="satellite-obj" id="satellite-anim"></div>
+            </div>
 
-            <!-- News Text Content -->
+            <!-- Text Content Array -->
             <div class="story-content" id="story-content">
                 <div class="story-tags">
-                    <span class="tag-category" id="main-category">SYSTEM</span>
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/512px-NASA_logo.svg.png" class="main-network-logo" id="main-source-logo" style="display:none;">
+                    <span class="tag category" id="main-category">SYSTEM</span>
+                    <div class="main-logo-container" id="main-source">
+                        <span style="font-weight:800; font-size: 0.9rem;">NETWORK</span>
+                    </div>
                 </div>
-                <h1 class="story-headline" id="main-headline">Establishing Global Link...</h1>
-                <p class="story-description" id="main-description">Calibrating telemetry systems and fetching worldwide databanks.</p>
+                <h1 class="story-headline" id="main-headline">Initializing Neural Network...</h1>
+                <p class="story-description" id="main-description">Calibrating spatial sensors and aggregating global data feeds.</p>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Ticker -->
-    <div class="ticker">
-        <div class="ticker-text" id="ticker-text"><span class="ticker-breaking">SYSTEM</span> | INITIALIZING DATABANKS</div>
+    <!-- TV Style Bottom Ticker -->
+    <div class="tv-ticker">
+        <div class="ticker-label">BREAKING</div>
+        <div class="ticker-scroll">
+            <div class="ticker-text" id="ticker-text">60SMART NETWORK | INITIALIZING DATABANKS</div>
+        </div>
     </div>
 
     <!-- Javascript -->
     <script>
-        // --- NETWORK LOGO MAPPING ---
-        const logoMap = {
-            'BBC': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/BBC_Logo_2021.svg/512px-BBC_Logo_2021.svg.png',
-            'THE GUARDIAN': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/The_Guardian_2018.svg/512px-The_Guardian_2018.svg.png',
-            'AL JAZEERA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f2/Aljazeera_eng.svg/512px-Aljazeera_eng.svg.png',
-            'CNN': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/CNN.svg/512px-CNN.svg.png',
-            'FOX NEWS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Fox_News_Channel_logo.svg/512px-Fox_News_Channel_logo.svg.png',
-            'CBS NEWS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/19/CBS_News.svg/512px-CBS_News.svg.png',
-            'WALL ST JOURNAL': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/The_Wall_Street_Journal_Logo.svg/512px-The_Wall_Street_Journal_Logo.svg.png',
-            'CNBC MARKETS': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/CNBC_logo.svg/512px-CNBC_logo.svg.png',
-            'MARKETWATCH': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/MarketWatch_logo.svg/512px-MarketWatch_logo.svg.png',
-            'NY TIMES': 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/The_New_York_Times_logo.png/512px-The_New_York_Times_logo.png',
-            'WIRED SCIENCE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Wired_logo.svg/512px-Wired_logo.svg.png',
-            'NASA': 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/NASA_logo.svg/512px-NASA_logo.svg.png',
-            'TECHCRUNCH': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/TechCrunch_logo.svg/512px-TechCrunch_logo.svg.png',
-            'THE VERGE': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/The_Verge_logo.svg/512px-The_Verge_logo.svg.png',
-            'POLYGON': 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/Polygon_logo.svg/512px-Polygon_logo.svg.png'
+        // --- REAL NETWORK LOGOS DICTIONARY ---
+        const sourceLogos = {
+            'BBC': 'https://upload.wikimedia.org/wikipedia/commons/6/62/BBC_News_2019.svg',
+            'THE GUARDIAN': 'https://upload.wikimedia.org/wikipedia/commons/7/75/The_Guardian_2018.svg',
+            'AL JAZEERA': 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Al_Jazeera_English_logo.svg',
+            'CNN': 'https://upload.wikimedia.org/wikipedia/commons/b/b1/CNN.svg',
+            'FOX NEWS': 'https://upload.wikimedia.org/wikipedia/commons/6/67/Fox_News_Channel_logo.svg',
+            'CBS NEWS': 'https://upload.wikimedia.org/wikipedia/commons/1/19/CBS_News_logo.svg',
+            'WALL ST JOURNAL': 'https://upload.wikimedia.org/wikipedia/commons/f/f9/The_Wall_Street_Journal_Logo.svg',
+            'CNBC MARKETS': 'https://upload.wikimedia.org/wikipedia/commons/e/e3/CNBC_logo.svg',
+            'MARKETWATCH': 'https://upload.wikimedia.org/wikipedia/commons/b/b3/MarketWatch_Logo.svg',
+            'NY TIMES': 'https://upload.wikimedia.org/wikipedia/commons/5/58/NewYorkTimes.svg',
+            'WIRED SCIENCE': 'https://upload.wikimedia.org/wikipedia/commons/8/87/WIRED_logo.svg',
+            'NASA': 'https://upload.wikimedia.org/wikipedia/commons/e/e5/NASA_logo.svg',
+            'TECHCRUNCH': 'https://upload.wikimedia.org/wikipedia/commons/b/b9/TechCrunch_logo.svg',
+            'THE VERGE': 'https://upload.wikimedia.org/wikipedia/commons/a/af/The_Verge_logo.svg',
+            'POLYGON': 'https://upload.wikimedia.org/wikipedia/commons/8/82/Polygon_logo.svg'
         };
 
-        // --- DARK BLUE CANVAS SPACE BACKGROUND ---
+        // --- CANVAS SPACE BACKGROUND ---
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         const stage = document.querySelector('.main-stage');
-        let stars = [];
+        let stars = [], meteors = [];
 
         function resizeCanvas() {
             canvas.width = stage.clientWidth;
@@ -428,10 +452,9 @@
 
         function createStars(count) {
             stars = [];
-            // Updated colors to match the nice darker blue theme
-            const starColors = ['#ffffff', '#aaddff', '#66aaff', '#4488ff'];
+            const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#b3d4ff'];
             for(let i=0; i<count; i++){
-                let size = Math.random() < 0.95 ? Math.random() * 0.8 + 0.2 : Math.random() * 1.5 + 0.5;
+                let size = Math.random() < 0.95 ? Math.random() * 0.8 + 0.2 : Math.random() * 1.5 + 0.8;
                 stars.push({
                     x: Math.random() * canvas.width,
                     y: Math.random() * canvas.height,
@@ -458,7 +481,7 @@
                 ctx.beginPath();
                 ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
                 ctx.fill();
-
+                
                 s.y += s.speed;
                 if(s.y > canvas.height){
                     s.y = 0;
@@ -467,7 +490,7 @@
             }
         }
 
-        createStars(700);
+        createStars(800);
         (function animateSpace(){
             drawSpace();
             requestAnimationFrame(animateSpace);
@@ -520,19 +543,13 @@
             }
         }
 
-        // --- Weather Color Update ---
-        function updateWeatherUI(data, city) {
-            document.getElementById('weather-city').innerText = city.name;
-            document.getElementById('weather-temp').innerText = `${Math.round(data.current_weather.temperature)}°C`;
-            const iconEl = document.getElementById('weather-icon');
-            const code = data.current_weather.weathercode;
-            
-            // Dynamic colors based on your request
-            if (code === 0) { iconEl.className = 'fa-solid fa-sun'; iconEl.style.color = '#FFD700'; }
-            else if (code >= 1 && code <= 3) { iconEl.className = 'fa-solid fa-cloud-sun'; iconEl.style.color = '#cccccc'; }
-            else if (code >= 51 && code <= 65) { iconEl.className = 'fa-solid fa-cloud-rain'; iconEl.style.color = '#44aaff'; }
-            else if (code >= 71 && code <= 77) { iconEl.className = 'fa-solid fa-snowflake'; iconEl.style.color = '#ffffff'; }
-            else { iconEl.className = 'fa-solid fa-cloud'; iconEl.style.color = '#aaaaaa'; }
+        function getWeatherIconHTML(code) {
+            // Colors: Sun=Yellow, Cloud=Grey, Rain/Snow=Blue
+            if (code === 0) return '<i class="fa-solid fa-sun" style="color: #FFD700;"></i>'; 
+            if (code >= 1 && code <= 3) return '<i class="fa-solid fa-cloud-sun" style="color: #A0AAB2;"></i>'; 
+            if (code >= 51 && code <= 65) return '<i class="fa-solid fa-cloud-rain" style="color: #4A90E2;"></i>'; 
+            if (code >= 71 && code <= 77) return '<i class="fa-solid fa-snowflake" style="color: #4A90E2;"></i>'; 
+            return '<i class="fa-solid fa-cloud" style="color: #A0AAB2;"></i>'; 
         }
 
         async function fetchWeather() {
@@ -541,7 +558,11 @@
                 const res = await fetchWithTimeout(`https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current_weather=true`, { timeout: 4000 });
                 if (res.ok) {
                     const data = await res.json();
-                    updateWeatherUI(data, city);
+                    document.getElementById('weather-city').innerText = city.name;
+                    document.getElementById('weather-temp-container').innerHTML = `
+                        ${getWeatherIconHTML(data.current_weather.weathercode)}
+                        <span id="weather-temp">${Math.round(data.current_weather.temperature)}°C</span>
+                    `;
                 }
             } catch (e) { console.warn("Weather fetch skipped"); }
             weatherIndex = (weatherIndex + 1) % weatherCities.length;
@@ -554,11 +575,7 @@
             const tickerEl = document.getElementById('ticker-text');
             tickerEl.style.opacity = 0; 
             setTimeout(() => {
-                const item = tickerItems[currentTickerIndex];
-                const logoUrl = logoMap[item.source] || '';
-                let logoHTML = logoUrl ? `<img src="${logoUrl}" class="ticker-logo">` : ` ${item.source}: `;
-                
-                tickerEl.innerHTML = `<span class="ticker-breaking">BREAKING</span> &nbsp;|&nbsp; ${logoHTML} ${item.title}`;
+                tickerEl.innerHTML = `${tickerItems[currentTickerIndex]} &nbsp;&bull;&nbsp; STAND BY FOR MORE`;
                 tickerEl.style.opacity = 1;
                 currentTickerIndex = (currentTickerIndex + 1) % tickerItems.length;
             }, 300); 
@@ -569,50 +586,55 @@
 
             const article = newsLibrary[currentIndex];
             const contentEl = document.getElementById('story-content');
-            const satEl = document.getElementById('sat-anim');
+            const satEl = document.getElementById('satellite-anim');
+            const bhCore = document.getElementById('bh-core');
 
             // 1. Fade out current text
             contentEl.style.opacity = 0;
             contentEl.style.transform = 'translateY(20px)';
 
-            // 2. Launch the satellite out from the black hole toward the screen
-            satEl.style.animation = 'none';
-            void satEl.offsetWidth; 
-            satEl.style.animation = 'satDive 1.5s ease-in-out forwards';
+            // 2. Satellite breaks orbit and swoops in
+            satEl.classList.add('swoop-in');
 
-            // 3. Swap text halfway through the satellite animation (when it covers the screen)
+            // 3. Wait for satellite swoop, pulse, and show new info
             setTimeout(() => {
                 
+                // Black hole Pulse
+                bhCore.classList.add('pulse');
+                setTimeout(() => bhCore.classList.remove('pulse'), 300);
+
+                // Update text fields
                 document.getElementById('main-category').innerText = article.category;
+                
+                // Insert SVG Logo or Fallback Text for Main Stage
+                const sourceUpper = article.source.toUpperCase();
+                if (sourceLogos[sourceUpper]) {
+                    document.getElementById('main-source').innerHTML = `<img src="${sourceLogos[sourceUpper]}" class="main-network-logo" alt="${article.source}" onerror="this.outerHTML='<span style=\\'font-weight:800; font-size: 0.9rem;\\'>${article.source}</span>'" />`;
+                } else {
+                    document.getElementById('main-source').innerHTML = `<span style="font-weight:800; font-size: 0.9rem;">${article.source}</span>`;
+                }
+
                 document.getElementById('main-headline').innerText = article.title;
                 document.getElementById('main-description').innerText = article.description;
                 
-                // Set the Main Stage Logo
-                const mainLogoEl = document.getElementById('main-source-logo');
-                const logoUrl = logoMap[article.source];
-                if(logoUrl) {
-                    mainLogoEl.src = logoUrl;
-                    mainLogoEl.style.display = 'inline-block';
-                } else {
-                    mainLogoEl.style.display = 'none';
-                }
-                
-                // Update Sidebar Queue (Increased to 8 to fill empty space)
+                // Update Sidebar Queue (Increased to 7 items to fill space)
                 let queueHTML = '';
                 const len = newsLibrary.length;
-                const indices = Array.from({length: 8}, (_, i) => (currentIndex + i) % len);
+                const indices = [ currentIndex, (currentIndex + 1) % len, (currentIndex + 2) % len, (currentIndex + 3) % len, (currentIndex + 4) % len, (currentIndex + 5) % len, (currentIndex + 6) % len ];
                 
                 indices.forEach((idx, i) => {
                     let a = newsLibrary[idx];
                     let activeClass = (i === 0) ? 'active' : '';
-                    let sideLogoUrl = logoMap[a.source];
-                    let sideSourceHTML = sideLogoUrl 
-                        ? `<img src="${sideLogoUrl}" class="network-logo"><br>` 
-                        : `<span style="font-weight:700;">${a.source}</span><br>`;
+                    let srcUpper = a.source.toUpperCase();
+                    
+                    // Insert SVG Logo or Fallback for Queue
+                    let logoHTML = sourceLogos[srcUpper] 
+                        ? `<img src="${sourceLogos[srcUpper]}" class="network-logo" alt="${a.source}" onerror="this.outerHTML='<span>${a.source}</span>'"/>`
+                        : `<span>${a.source}</span>`;
 
                     queueHTML += `
                         <div class="queue-item ${activeClass}">
-                            ${sideSourceHTML}
+                            <div class="queue-source">${logoHTML} &nbsp;&bull;&nbsp; ${a.category}</div>
                             <div class="queue-title">${a.title}</div>
                         </div>`;
                 });
@@ -621,8 +643,11 @@
                 // Fade text back in
                 contentEl.style.opacity = 1;
                 contentEl.style.transform = 'translateY(0)';
+                
+                // Send satellite back to orbit
+                satEl.classList.remove('swoop-in');
 
-            }, 750); // Exactly half-way through the 1.5s animation
+            }, 1000); 
         }
 
         async function fetchAllNews() {
@@ -657,7 +682,7 @@
 
             if (allArticles.length > 0) {
                 newsLibrary = allArticles.sort(() => Math.random() - 0.5);
-                tickerItems = newsLibrary.map(a => ({ source: a.source, title: a.title }));
+                tickerItems = newsLibrary.map(a => `${a.source.toUpperCase()}: ${a.title}`);
                 currentIndex = 0; 
                 
                 updateScreen();
