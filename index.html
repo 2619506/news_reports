@@ -3,56 +3,53 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SWEN News Broadcast</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Oswald:wght@500;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>SWEN News Dashboard</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="broadcast-layout">
-        <div class="sidebar">
-            <div class="sidebar-header">
-                <span><i class="fa-solid fa-list-ul"></i> LIVE QUEUE</span>
+    <div class="dashboard-container">
+        <!-- Left Sidebar: Queue & Weather -->
+        <aside class="sidebar">
+            <div class="queue-header"><span class="dot green"></span> Good <span>QUEUE</span></div>
+            <div id="news-queue" class="news-list">
+                <!-- Sidebar news items inject here -->
             </div>
-            <div class="upcoming-list" id="upcoming-list">
-                <!-- Javascript populates items here -->
-            </div>
-            <div class="weather-widget">
-                <div class="weather-header"><i class="fa-solid fa-earth-americas"></i> GLOBAL DATABANKS</div>
-                <div class="weather-content">
-                    <span id="weather-city">LOADING</span>
-                    <div class="weather-temp-container">
-                        <i id="weather-icon" class="fa-solid fa-cloud"></i>
-                        <span id="weather-temp">--°C</span>
-                    </div>
+            
+            <div class="weather-module">
+                <div class="weather-header">GLOBAL DATABANKS</div>
+                <div class="weather-data">
+                    <span id="weather-city">PARIS</span>
+                    <span id="weather-temp">31°C</span>
                 </div>
             </div>
-        </div>
-        <div class="main-story">
-            <div class="swen-logo-container">
-                <div class="swen-logo">SWEN <span>NEWS</span></div>
-            </div>
-            <div class="story-image-container">
-                <img id="news-image" src="" alt="">
-                <div class="image-overlay"></div>
-            </div>
-            <div class="story-content">
-                <div class="meta-tags">
-                    <span class="category-badge" id="news-category">SYSTEM</span>
-                    <span class="source-badge" id="news-source">NETWORK</span>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <header class="top-bar">
+                <div class="tags">
+                    <span class="tag cyan">BUSINESS</span>
+                    <span class="tag white">FORBES</span>
                 </div>
-                <h1 id="news-headline">Establishing satellite link...</h1>
-                <div class="news-full-matter">
-                    <p id="news-description">Aggregating global data feeds. Please stand by for transmission.</p>
+                
+                <!-- Logo Container (Date successfully removed) -->
+                <div class="swen-logo-container">
+                    <div class="swen-logo">SWEN <span>NEWS</span></div>
                 </div>
-            </div>
-        </div>
+            </header>
+
+            <article class="featured-story">
+                <h1 id="main-headline">Dodgers Veteran Cuts Ties With Team Just Before Tarik Skubal Trade</h1>
+                <div class="description-box">
+                    <p id="main-description">The Los Angeles Dodgers lost a 30-year-old southpaw hours before their acquisition of the Detroit Tigers' superstar ace was announced.</p>
+                </div>
+            </article>
+        </main>
     </div>
-    <div class="ticker-tape">
-        <div class="ticker-text" id="ticker-text">
-            SWEN NEWS NETWORK | INITIALIZING | STAND BY
-        </div>
-    </div>
+    
+    <!-- Red Bottom Ticker -->
+    <div class="bottom-ticker"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
