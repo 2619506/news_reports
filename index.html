@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>60Smart Space Broadcast</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Orbitron:wght@700&display=swap" rel="stylesheet">
+    <!-- Khwaja AI Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@500;700;900&family=Outfit:wght@300;400;600&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
-        /* CSS: Premium Space Design */
+        /* CSS: Khwaja AI / 60Smart Unified Design */
         :root {
-            --bg-dark: #020202;
-            --bg-panel: #0a0a0a;
-            --accent: #00E5FF;
-            --text-main: #FFFFFF;
-            --text-muted: #888888;
+            --bg-dark: #000000;
+            --bg-panel: rgba(15, 23, 42, 0.75); /* Khwaja AI Glass */
+            --accent: #00ffcc; /* Khwaja AI Neon */
+            --accent-glow: rgba(0, 255, 204, 0.4);
+            --text-main: #ffffff;
+            --text-muted: #cbd5e1;
         }
 
         * {
@@ -22,7 +24,6 @@
             padding: 0;
             box-sizing: border-box;
             cursor: none; 
-            font-family: 'Inter', sans-serif;
         }
 
         body {
@@ -33,6 +34,7 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
+            font-family: 'Outfit', sans-serif;
         }
 
         .broadcast-container {
@@ -41,55 +43,62 @@
             width: 100%;
         }
 
-        /* --- SIDEBAR --- */
+        /* --- SIDEBAR (Glassmorphism) --- */
         .sidebar {
             width: 340px;
-            background-color: var(--bg-panel);
+            background: var(--bg-panel);
+            backdrop-filter: blur(18px);
+            -webkit-backdrop-filter: blur(18px);
             display: flex;
             flex-direction: column;
-            border-right: 1px solid #222;
+            border-right: 1px solid rgba(0, 255, 204, 0.2);
             z-index: 50;
             position: relative;
         }
 
         .brand-container {
             padding: 30px;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
         }
 
         .brand-logo {
             font-family: 'Orbitron', sans-serif;
             font-size: 2.5rem;
-            font-weight: 700;
+            font-weight: 900;
             letter-spacing: 2px;
             color: var(--text-main);
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
         }
 
         .brand-logo span {
             color: var(--accent);
+            text-shadow: 0 0 15px var(--accent-glow);
         }
 
         .weather-widget {
             padding: 20px 30px;
-            border-bottom: 1px solid #222;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .weather-city {
+            font-family: 'Share Tech Mono', monospace;
             font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-muted);
+            color: var(--accent);
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .weather-temp {
             font-size: 1.5rem;
-            font-weight: 800;
+            font-weight: 600;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-family: 'Orbitron', sans-serif;
         }
 
         .queue-container {
@@ -103,10 +112,10 @@
         }
 
         .queue-header {
+            font-family: 'Orbitron', sans-serif;
             font-size: 0.8rem;
-            font-weight: 800;
             color: var(--text-muted);
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             margin-bottom: 10px;
         }
         
@@ -122,19 +131,27 @@
             border-left: 3px solid var(--accent);
             padding-left: 10px;
             margin-left: -13px;
+            box-shadow: -5px 0 10px -5px var(--accent);
         }
-        .queue-source { font-size: 0.7rem; color: var(--accent); font-weight: 800; margin-bottom: 4px; }
+        .queue-source { 
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75rem; 
+            color: var(--accent); 
+            margin-bottom: 4px; 
+            letter-spacing: 1px;
+        }
         .queue-title {
-            font-size: 0.95rem; font-weight: 600; line-height: 1.3;
+            font-size: 0.95rem; font-weight: 400; line-height: 1.3;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            color: var(--text-main);
         }
 
-        /* The Smoke/Fade effect at the bottom of the list */
+        /* The Smoke/Fade effect perfectly matching the dark glass sidebar */
         .queue-smoke-overlay {
             position: absolute;
             bottom: 0; left: 0; right: 0;
-            height: 70px;
-            background: linear-gradient(to top, var(--bg-panel) 10%, transparent 100%);
+            height: 80px;
+            background: linear-gradient(to top, rgba(15, 23, 42, 1) 10%, transparent 100%);
             pointer-events: none;
             z-index: 10;
         }
@@ -143,29 +160,15 @@
         .main-stage {
             flex: 1;
             position: relative;
-            background-color: #000;
+            background-color: var(--bg-dark);
             overflow: hidden;
         }
 
-        /* Pure CSS Twinkling Starfield */
-        @keyframes twinkle {
-            0% { opacity: 0.7; transform: scale(1); }
-            50% { opacity: 1; transform: scale(1.1); box-shadow: 0 0 10px rgba(255,255,255,0.8); }
-            100% { opacity: 0.7; transform: scale(1); }
-        }
-
-        .stars-bg {
+        /* Canvas Space Background */
+        #space-canvas {
             position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background-image: 
-                radial-gradient(1.5px 1.5px at 25px 5px, white, rgba(255,255,255,0)),
-                radial-gradient(1px 1px at 50px 25px, white, rgba(255,255,255,0)),
-                radial-gradient(2px 2px at 125px 20px, #aaa, rgba(255,255,255,0)),
-                radial-gradient(1.5px 1.5px at 50px 75px, white, rgba(255,255,255,0)),
-                radial-gradient(2px 2px at 15px 125px, white, rgba(255,255,255,0)),
-                radial-gradient(2.5px 2.5px at 110px 80px, #00e5ff, rgba(255,255,255,0));
-            background-size: 200px 200px;
-            animation: twinkle 4s infinite ease-in-out;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
             z-index: 1;
         }
 
@@ -183,7 +186,7 @@
             height: 120px;
             background: #000;
             border-radius: 50%;
-            box-shadow: 0 0 50px 10px rgba(0, 229, 255, 0.4), inset 0 0 15px 2px rgba(0, 229, 255, 0.8);
+            box-shadow: 0 0 50px 10px var(--accent-glow), inset 0 0 15px 2px rgba(0, 255, 204, 0.8);
             position: absolute;
             top: 50%; left: 50%;
             transform: translate(-50%, -50%);
@@ -192,7 +195,7 @@
 
         /* Pulse effect when rocket hits */
         .bh-core.pulse {
-            box-shadow: 0 0 150px 40px rgba(255, 255, 255, 0.9), inset 0 0 40px 10px rgba(0, 229, 255, 1);
+            box-shadow: 0 0 150px 40px rgba(255, 255, 255, 0.9), inset 0 0 40px 10px var(--accent);
             transform: translate(-50%, -50%) scale(1.2);
         }
 
@@ -202,10 +205,10 @@
             position: absolute;
             top: 50%; left: 50%;
             border-radius: 50%;
-            border: 1px solid rgba(0, 229, 255, 0.1);
-            border-left: 3px solid rgba(0, 229, 255, 0.7);
-            border-right: 3px solid rgba(0, 229, 255, 0.7);
-            box-shadow: 0 0 20px 2px rgba(0, 229, 255, 0.3);
+            border: 1px solid rgba(0, 255, 204, 0.1);
+            border-left: 3px solid rgba(0, 255, 204, 0.7);
+            border-right: 3px solid rgba(0, 255, 204, 0.7);
+            box-shadow: 0 0 20px 2px var(--accent-glow);
             animation: spinDisk 3s linear infinite;
         }
 
@@ -233,7 +236,7 @@
             100% { top: 40%; opacity: 0; transform: translateX(-50%) rotate(180deg) scale(0); }
         }
 
-        /* Transparent Text Content Area (No Gradients or images behind it) */
+        /* Transparent Text Content Area */
         .story-content {
             position: absolute;
             bottom: 0; left: 0; width: 100%;
@@ -243,27 +246,48 @@
         }
 
         .story-tags { display: flex; gap: 15px; margin-bottom: 15px; }
-        .tag { padding: 6px 12px; font-size: 0.8rem; font-weight: 800; text-transform: uppercase; border-radius: 4px; }
-        .tag.source { background: #fff; color: #000; }
-        .tag.category { background: var(--accent); color: #000; }
+        
+        /* Khwaja AI Telemetry Chip Style */
+        .tag { 
+            background: rgba(0, 255, 204, 0.1);
+            border: 1px solid rgba(0, 255, 204, 0.4);
+            color: #00ffcc;
+            padding: 5px 12px; 
+            font-size: 0.75rem; 
+            font-family: 'Share Tech Mono', monospace;
+            letter-spacing: 1px;
+            text-transform: uppercase; 
+            border-radius: 20px; 
+            backdrop-filter: blur(4px);
+            box-shadow: 0 0 10px rgba(0, 255, 204, 0.1);
+        }
+        
+        .tag.source { border-color: #ffffff; color: #ffffff; background: rgba(255,255,255,0.1); }
 
         .story-headline {
-            font-size: 3rem; font-weight: 800; line-height: 1.1; margin-bottom: 15px;
-            text-shadow: 2px 2px 8px rgba(0,0,0,1);
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem; font-weight: 700; line-height: 1.1; margin-bottom: 15px;
+            color: #ffffff;
+            text-shadow: 0 0 15px rgba(0, 255, 204, 0.8), 0 0 30px rgba(0, 255, 204, 0.4), 0 0 5px #fff;
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            letter-spacing: 1px;
         }
 
         .story-description {
-            font-size: 1.2rem; line-height: 1.5; color: #cccccc; max-width: 800px;
-            text-shadow: 1px 1px 3px rgba(0,0,0,1);
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem; line-height: 1.5; color: var(--text-muted); max-width: 800px;
+            text-shadow: 0 0 8px rgba(0, 255, 204, 0.3);
             display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            font-weight: 300;
         }
 
         /* --- TICKER TAPE --- */
         .ticker {
             height: 40px; background-color: var(--accent); color: #000;
             display: flex; align-items: center; padding: 0 20px;
-            font-weight: 800; font-size: 0.9rem; letter-spacing: 1px; z-index: 60;
+            font-family: 'Share Tech Mono', monospace;
+            font-weight: 800; font-size: 1rem; letter-spacing: 1px; z-index: 60;
+            box-shadow: 0 -5px 15px var(--accent-glow);
         }
     </style>
 </head>
@@ -285,49 +309,157 @@
             </div>
 
             <div class="queue-container">
-                <div class="queue-header">UPCOMING IN FEED</div>
+                <div class="queue-header">UPCOMING TELEMETRY</div>
                 <div class="queue-list-wrapper" id="queue-list">
                     <!-- Queue populates here -->
                 </div>
-                <!-- This div creates the smoke/fade effect -->
+                <!-- Smoke/Fade effect -->
                 <div class="queue-smoke-overlay"></div>
             </div>
         </div>
 
         <!-- Main Content (Space Stage) -->
         <div class="main-stage">
-            <!-- 1. Starfield Background (Shiny/Twinkling) -->
-            <div class="stars-bg"></div>
+            
+            <!-- Dynamic Khwaja AI Canvas Starfield -->
+            <canvas id="space-canvas"></canvas>
 
-            <!-- 2. Black Hole Event Horizon -->
+            <!-- Black Hole Event Horizon -->
             <div class="bh-container">
                 <div class="bh-accretion-disk"></div>
                 <div class="bh-core" id="bh-core"></div>
             </div>
 
-            <!-- 3. Falling Rocket Graphic -->
+            <!-- Falling Rocket Graphic -->
             <i class="fa-solid fa-rocket rocket" id="rocket-anim"></i>
 
-            <!-- 4. Transparent News Text Content -->
+            <!-- Transparent News Text Content -->
             <div class="story-content" id="story-content">
                 <div class="story-tags">
                     <span class="tag category" id="main-category">SYSTEM</span>
                     <span class="tag source" id="main-source">NETWORK</span>
                 </div>
-                <h1 class="story-headline" id="main-headline">Establishing satellite link...</h1>
-                <p class="story-description" id="main-description">Aggregating global data feeds. Please stand by for transmission.</p>
+                <h1 class="story-headline" id="main-headline">Initializing Neural Network...</h1>
+                <p class="story-description" id="main-description">Calibrating spatial sensors and aggregating global data feeds.</p>
             </div>
         </div>
     </div>
 
     <!-- Bottom Ticker -->
     <div class="ticker">
-        <!-- Removed STAND BY from HTML initialization as well -->
+        <!-- STAND BY has been removed -->
         <div class="ticker-text" id="ticker-text">60SMART NETWORK | INITIALIZING DATABANKS</div>
     </div>
 
     <!-- Javascript -->
     <script>
+        // --- KHWAJA AI CANVAS SPACE BACKGROUND ---
+        const canvas = document.getElementById('space-canvas');
+        const ctx = canvas.getContext('2d');
+        const stage = document.querySelector('.main-stage');
+        let stars = [], meteors = [];
+
+        function resizeCanvas() {
+            canvas.width = stage.clientWidth;
+            canvas.height = stage.clientHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        function createStars(count) {
+            stars = [];
+            const starColors = ['#ffffff', '#ffffff', '#e0f0ff', '#b3d4ff', '#ffddaa', '#00ffcc'];
+            for(let i=0; i<count; i++){
+                let size = Math.random() < 0.95 ? Math.random() * 0.8 + 0.2 : Math.random() * 1.5 + 0.8;
+                stars.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: Math.random() * 0.05 + 0.01,
+                    size: size,
+                    color: starColors[Math.floor(Math.random() * starColors.length)],
+                    alpha: Math.random(),
+                    alphaChange: (Math.random() * 0.01 + 0.002) * (Math.random() > 0.5 ? 1 : -1)
+                });
+            }
+        }
+
+        function createMeteors(count) {
+            meteors = [];
+            for(let i=0; i<count; i++){
+                meteors.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speedX: -(Math.random() * 4 + 2),
+                    speedY: Math.random() * 2 + 1,
+                    length: Math.random() * 50 + 30
+                });
+            }
+        }
+
+        function drawSpace() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for(const s of stars){
+                s.alpha += s.alphaChange;
+                if(s.alpha <= 0.05) { s.alpha = 0.05; s.alphaChange *= -1; }
+                if(s.alpha >= 1) { s.alpha = 1; s.alphaChange *= -1; }
+
+                ctx.globalAlpha = s.alpha;
+                ctx.fillStyle = s.color;
+                
+                ctx.beginPath();
+                ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+                ctx.fill();
+                
+                // Draw the glowing cross for larger stars
+                if (s.size > 1.4) {
+                    ctx.globalAlpha = s.alpha * 0.6;
+                    ctx.beginPath();
+                    ctx.moveTo(s.x - s.size * 6, s.y);
+                    ctx.lineTo(s.x + s.size * 6, s.y);
+                    ctx.moveTo(s.x, s.y - s.size * 6);
+                    ctx.lineTo(s.x, s.y + s.size * 6);
+                    ctx.strokeStyle = s.color;
+                    ctx.lineWidth = 0.3;
+                    ctx.stroke();
+                }
+
+                s.y += s.speed;
+                if(s.y > canvas.height){
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+            }
+            
+            ctx.globalAlpha = 1.0;
+            ctx.strokeStyle = '#00ffcc'; // Tinted meteors to match accent
+            ctx.lineWidth = 0.8;
+            for(const m of meteors){
+                ctx.beginPath();
+                ctx.moveTo(m.x, m.y);
+                ctx.lineTo(m.x + m.length * m.speedX / 10, m.y + m.length * m.speedY / 10);
+                ctx.stroke();
+                
+                m.x += m.speedX;
+                m.y += m.speedY;
+                
+                if(m.x < -100 || m.y > canvas.height + 100){
+                    m.x = canvas.width + Math.random() * 200;
+                    m.y = Math.random() * canvas.height / 2;
+                }
+            }
+        }
+
+        createStars(800);
+        createMeteors(2);
+
+        (function animateSpace(){
+            drawSpace();
+            requestAnimationFrame(animateSpace);
+        })();
+
+
+        // --- NEWS BROADCAST LOGIC ---
         const feeds = [
             { url: 'http://feeds.bbci.co.uk/news/world/rss.xml', category: 'WORLD', source: 'BBC' },
             { url: 'https://www.theguardian.com/world/rss', category: 'GLOBAL', source: 'THE GUARDIAN' },
@@ -403,14 +535,13 @@
             const tickerEl = document.getElementById('ticker-text');
             tickerEl.style.opacity = 0; 
             setTimeout(() => {
-                // STAND BY has been removed here!
+                // STAND BY permanently removed.
                 tickerEl.innerHTML = `BREAKING &nbsp;|&nbsp; ${tickerItems[currentTickerIndex]}`;
                 tickerEl.style.opacity = 1;
                 currentTickerIndex = (currentTickerIndex + 1) % tickerItems.length;
             }, 300); 
         }
 
-        // --- ROCKET TRANSITION LOGIC (No background images) ---
         function updateScreen() {
             if (newsLibrary.length === 0) return;
 
@@ -457,7 +588,7 @@
                 });
                 document.getElementById('queue-list').innerHTML = queueHTML;
 
-                // Fade text back in immediately (no image to wait for)
+                // Fade text back in immediately
                 contentEl.style.opacity = 1;
                 contentEl.style.transform = 'translateY(0)';
 
