@@ -131,7 +131,6 @@ function updateScreen() {
             document.getElementById('news-headline').innerText = article.title;
             document.getElementById('news-description').innerText = article.description;
             
-            updateGlobalDate(); // Update date on cycle
             updateSidebar(); 
             imgEl.style.opacity = 1; 
         }, 500); 
