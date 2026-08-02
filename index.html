@@ -153,7 +153,7 @@
             max-height: 14px;
             max-width: 60px;
             filter: brightness(0) invert(1);
-            object-fit: contain; /* Prevents squeezing into a square */
+            object-fit: contain; 
         }
 
         .queue-title {
@@ -262,10 +262,10 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.6) contrast(1.3) !important;
         }
 
-        /* Transparent Text Content Area (Moved UP and Scaled UP) */
+        /* Transparent Text Content Area */
         .story-content {
             position: absolute;
-            bottom: 80px; /* Moved higher up the screen */
+            bottom: 80px; 
             left: 0; width: 100%;
             padding: 30px 60px;
             z-index: 20; 
@@ -293,7 +293,7 @@
         .main-network-logo {
             max-height: 24px;
             max-width: 120px;
-            object-fit: contain; /* Prevents stretching */
+            object-fit: contain;
             filter: brightness(0) invert(1);
         }
 
@@ -312,7 +312,6 @@
             color: #ffffff;
         }
 
-        /* Headline Increased Size */
         .story-headline {
             font-size: 3.4rem; 
             font-weight: 900; line-height: 1.1; margin-bottom: 12px;
@@ -322,7 +321,6 @@
             letter-spacing: -0.5px;
         }
 
-        /* Description Increased Size */
         .story-description {
             font-size: 1.4rem; 
             line-height: 1.5; color: #cbd5e1; max-width: 900px;
@@ -458,7 +456,7 @@
         const canvas = document.getElementById('space-canvas');
         const ctx = canvas.getContext('2d');
         const stage = document.querySelector('.main-stage');
-        let stars = [], meteors = [];
+        let stars = [];
 
         function resizeCanvas() {
             canvas.width = stage.clientWidth;
@@ -537,13 +535,66 @@
         let broadcastTimer; 
         const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
+        // --- 50+ WEATHER CITIES (INCLUDING ALL MAJOR AFGHANISTAN PROVINCES) ---
         const weatherCities = [
-            { name: "KABUL", lat: 34.5281, lon: 69.1171 }, { name: "HERAT", lat: 34.3419, lon: 62.2031 },
-            { name: "TOKYO", lat: 35.68, lon: 139.69 }, { name: "DUBAI", lat: 25.20, lon: 55.27 },
-            { name: "LONDON", lat: 51.50, lon: -0.12 }, { name: "PARIS", lat: 48.85, lon: 2.35 },
-            { name: "NEW YORK", lat: 40.71, lon: -74.00 }, { name: "SYDNEY", lat: -33.8688, lon: 151.2093 }
+            /* Afghanistan Provinces */
+            { name: "KABUL", lat: 34.5281, lon: 69.1171 },
+            { name: "HERAT", lat: 34.3419, lon: 62.2031 },
+            { name: "KANDAHAR", lat: 31.6289, lon: 65.7371 },
+            { name: "MAZAR-I-SHARIF", lat: 36.7067, lon: 67.1103 },
+            { name: "JALALABAD", lat: 34.4265, lon: 70.4515 },
+            { name: "KUNDUZ", lat: 36.6277, lon: 68.8576 },
+            { name: "GHALAN", lat: 35.9604, lon: 68.9130 },
+            { name: "BALKH", lat: 36.7570, lon: 66.8970 },
+            { name: "GHAZNI", lat: 33.5542, lon: 68.4163 },
+            { name: "KANDAHAR", lat: 31.6289, lon: 65.7371 },
+            { name: "KHOST", lat: 33.3333, lon: 69.9167 },
+            { name: "BAMYAN", lat: 34.8210, lon: 67.8273 },
+            { name: "LASHKAR GAH", lat: 31.5938, lon: 64.3713 },
+            { name: "TALOQAN", lat: 36.7281, lon: 69.5350 },
+            { name: "SHIBERGHAN", lat: 36.6622, lon: 65.7511 },
+            { name: "PUL-I-KHUMRI", lat: 35.9442, lon: 68.7153 },
+            { name: "CHARIKAR", lat: 35.0139, lon: 69.1706 },
+            { name: "MAIMANA", lat: 35.9214, lon: 64.7554 },
+            { name: "FAIZABAD", lat: 37.1166, lon: 70.5800 },
+            { name: "ZARANJ", lat: 31.1042, lon: 61.8522 },
+            { name: "LASHKAR GAH", lat: 31.5938, lon: 64.3713 },
+            { name: "ASADABAD", lat: 34.8878, lon: 71.1475 },
+            { name: "MEHTARLAM", lat: 34.6711, lon: 70.1731 },
+            { name: "MAIDAN SHAHR", lat: 34.4047, lon: 68.8681 },
+            { name: "BARAKI BARAK", lat: 33.9786, lon: 68.9592 },
+            { name: "GARDEZ", lat: 33.5736, lon: 69.2239 },
+            { name: "AYBAK", lat: 36.2628, lon: 68.0164 },
+            { name: "SAR-E POL", lat: 36.2307, lon: 65.9287 },
+            { name: "QALA-I-NAW", lat: 34.9897, lon: 63.1283 },
+            { name: "CHAGHCHARAN", lat: 34.5292, lon: 65.2508 },
+            { name: "NILI", lat: 33.7224, lon: 66.1386 },
+            { name: "LASHKARGAH", lat: 31.5938, lon: 64.3713 },
+            { name: "TIRINKOT", lat: 32.6147, lon: 65.8825 },
+            { name: "SHARANA", lat: 32.8597, lon: 68.8053 },
+            { name: "BAZARAK", lat: 35.3150, lon: 69.5167 },
+            { name: "PUL-I-ALAM", lat: 33.9961, lon: 69.0278 },
+            
+            /* Global Hubs */
+            { name: "TOKYO", lat: 35.68, lon: 139.69 },
+            { name: "DUBAI", lat: 25.20, lon: 55.27 },
+            { name: "LONDON", lat: 51.50, lon: -0.12 },
+            { name: "PARIS", lat: 48.85, lon: 2.35 },
+            { name: "NEW YORK", lat: 40.71, lon: -74.00 },
+            { name: "SYDNEY", lat: -33.8688, lon: 151.2093 },
+            { name: "SINGAPORE", lat: 1.3521, lon: 103.8198 },
+            { name: "BERLIN", lat: 52.5200, lon: 13.4050 },
+            { name: "TOKYO", lat: 35.6762, lon: 139.6503 },
+            { name: "BEIJING", lat: 39.9042, lon: 116.4074 },
+            { name: "MOSCOW", lat: 55.7558, lon: 37.6173 },
+            { name: "SEOUL", lat: 37.5665, lon: 126.9780 },
+            { name: "TORONTO", lat: 43.6532, lon: -79.3832 },
+            { name: "SAO PAULO", lat: -23.5505, lon: -46.6333 },
+            { name: "CAIRO", lat: 30.0444, lon: 31.2357 },
+            { name: "RIYADH", lat: 24.7136, lon: 46.6753 },
+            { name: "ISTANBUL", lat: 41.0082, lon: 28.9784 },
+            { name: "HONG KONG", lat: 22.3193, lon: 114.1694 }
         ];
-        weatherCities.sort(() => Math.random() - 0.5);
         let weatherIndex = 0;
 
         async function fetchWithTimeout(resource, options = { timeout: 5000 }) {
@@ -581,6 +632,8 @@
                     `;
                 }
             } catch (e) { console.warn("Weather fetch skipped"); }
+            
+            // Increment index so it successfully cycles through all 50+ cities sequentially
             weatherIndex = (weatherIndex + 1) % weatherCities.length;
         }
 
@@ -605,24 +658,16 @@
             const satEl = document.getElementById('satellite-anim');
             const bhCore = document.getElementById('bh-core');
 
-            // 1. Fade out current text
             contentEl.style.opacity = 0;
             contentEl.style.transform = 'translateY(20px)';
-
-            // 2. Satellite breaks orbit and swoops in
             satEl.classList.add('swoop-in');
 
-            // 3. Wait for satellite swoop, pulse, and show new info
             setTimeout(() => {
-                
-                // Black hole Pulse
                 bhCore.classList.add('pulse');
                 setTimeout(() => bhCore.classList.remove('pulse'), 300);
 
-                // Update text fields
                 document.getElementById('main-category').innerText = article.category;
                 
-                // Insert SVG Logo AND Name Text (if SVG fails, it hides itself gracefully)
                 const sourceUpper = article.source.toUpperCase();
                 if (sourceLogos[sourceUpper]) {
                     document.getElementById('main-source').innerHTML = `
@@ -637,7 +682,6 @@
                 document.getElementById('main-headline').innerText = article.title;
                 document.getElementById('main-description').innerText = article.description;
                 
-                // Update Sidebar Queue
                 let queueHTML = '';
                 const len = newsLibrary.length;
                 const indices = [ currentIndex, (currentIndex + 1) % len, (currentIndex + 2) % len, (currentIndex + 3) % len, (currentIndex + 4) % len, (currentIndex + 5) % len, (currentIndex + 6) % len ];
@@ -647,7 +691,6 @@
                     let activeClass = (i === 0) ? 'active' : '';
                     let srcUpper = a.source.toUpperCase();
                     
-                    // Logo and name for the sidebar queue
                     let logoHTML = sourceLogos[srcUpper] 
                         ? `<img src="${sourceLogos[srcUpper]}" class="network-logo" alt="${a.source}" onerror="this.style.display='none';"/> <span class="logo-separator" style="margin:0 6px;">|</span> <span class="network-name-text" style="font-size:0.7rem;">${a.source}</span>`
                         : `<span class="network-name-text" style="font-size:0.7rem;">${a.source}</span>`;
@@ -660,11 +703,8 @@
                 });
                 document.getElementById('queue-list').innerHTML = queueHTML;
 
-                // Fade text back in
                 contentEl.style.opacity = 1;
                 contentEl.style.transform = 'translateY(0)';
-                
-                // Send satellite back to orbit
                 satEl.classList.remove('swoop-in');
 
             }, 1000); 
@@ -722,7 +762,7 @@
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 600000); 
+        setInterval(fetchWeather, 15000); // Rotates to a new city from the 50+ list every 15 seconds!
         setInterval(fetchAllNews, 1800000);
         fetchAllNews();
 
