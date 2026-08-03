@@ -17,14 +17,16 @@
             --accent-glow: rgba(37, 99, 235, 0.4);
             --text-main: #ffffff;
             --text-muted: #94a3b8;
-            --tv-red: #cc0000;
+            --blue-dark: #0a2540;
+            --blue-light: #0077ff;
+            --blue-glow: rgba(0, 119, 255, 0.5);
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: default; /* Changed from none for better browser usability, optional to switch back */
+            cursor: default;
         }
 
         body {
@@ -41,8 +43,9 @@
 
         .broadcast-container {
             display: flex;
-            height: calc(100vh - 45px); 
+            height: calc(100vh - 60px); /* Adjusted for thicker 60px bottom ticker */
             width: 100%;
+            overflow: hidden;
         }
 
         /* --- SIDEBAR --- */
@@ -56,6 +59,7 @@
             border-right: 1px solid rgba(37, 99, 235, 0.3);
             z-index: 50;
             position: relative;
+            flex-shrink: 0;
         }
 
         .brand-container {
@@ -109,7 +113,7 @@
             flex-direction: column;
             gap: 12px;
             position: relative;
-            overflow: hidden;
+            overflow-y: auto; /* Scrollable list when overflowed */
         }
 
         .queue-header {
@@ -127,7 +131,7 @@
             gap: 12px;
         }
 
-        .queue-item { opacity: 0.4; transition: opacity 0.3s; }
+        .queue-item { opacity: 0.5; transition: opacity 0.3s; }
         .queue-item.active {
             opacity: 1;
             border-left: 3px solid var(--accent);
@@ -156,17 +160,17 @@
 
         .queue-title {
             font-size: 0.9rem; font-weight: 600; line-height: 1.3;
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
             color: #e2e8f0;
         }
 
         .queue-smoke-overlay {
-            position: absolute;
+            position: sticky;
             bottom: 0; left: 0; right: 0;
-            height: 100px;
+            height: 40px;
             background: linear-gradient(to top, rgba(7, 12, 25, 1) 15%, transparent 100%);
             pointer-events: none;
             z-index: 10;
+            margin-top: -40px;
         }
 
         /* --- MAIN CONTENT (SPACE STAGE) --- */
@@ -174,7 +178,9 @@
             flex: 1;
             position: relative;
             background-color: transparent;
-            overflow: hidden;
+            overflow-y: auto; /* Enables reading full content smoothly */
+            display: flex;
+            flex-direction: column;
         }
 
         #space-canvas {
@@ -182,22 +188,24 @@
             top: 0; left: 0;
             width: 100%; height: 100%;
             z-index: 1;
+            pointer-events: none;
         }
 
         /* The Black Hole */
         .bh-container {
             position: absolute;
-            top: 35%; 
+            top: 28%; 
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 5; 
             opacity: 0.85;
             transition: all 0.5s ease;
+            pointer-events: none;
         }
 
         .bh-core {
-            width: 130px;
-            height: 130px;
+            width: 120px;
+            height: 120px;
             background: #000;
             border-radius: 50%;
             box-shadow: 0 0 50px 15px var(--accent-glow), inset 0 0 20px 2px rgba(37, 99, 235, 0.8);
@@ -213,8 +221,8 @@
         }
 
         .bh-accretion-disk {
-            width: 380px;
-            height: 380px;
+            width: 350px;
+            height: 350px;
             position: absolute;
             top: 50%; left: 50%;
             border-radius: 50%;
@@ -230,17 +238,18 @@
             to { transform: translate(-50%, -50%) rotateX(76deg) rotateZ(360deg); }
         }
 
-        /* --- REALISTIC SATELLITE ANIMATION --- */
+        /* --- SATELLITE ANIMATION --- */
         .orbit-system {
             position: absolute;
-            top: 35%; 
+            top: 28%; 
             left: 50%;
-            width: 400px; height: 400px;
+            width: 380px; height: 380px;
             transform: translate(-50%, -50%) rotateX(76deg);
             z-index: 10;
             transform-style: preserve-3d;
             animation: orbitAnim 12s linear infinite;
             transition: all 0.5s ease;
+            pointer-events: none;
         }
 
         .satellite-obj {
@@ -262,28 +271,29 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.6) contrast(1.3) !important;
         }
 
-        /* Transparent Text Content Area (Moved higher & made fluid) */
+        /* Content Display Area */
         .story-content {
-            position: absolute;
-            bottom: 12vh; /* Moved significantly up */
-            left: 0; width: 100%;
-            padding: 30px 60px;
+            margin-top: auto;
+            position: relative;
+            width: 100%;
+            padding: 40px 60px;
             z-index: 20; 
             transition: opacity 0.5s ease, transform 0.5s ease;
-            background: linear-gradient(to top, rgba(4,11,24,0.95) 0%, rgba(4,11,24,0.5) 70%, transparent 100%);
+            background: linear-gradient(to top, rgba(4,11,24,0.98) 30%, rgba(4,11,24,0.6) 80%, transparent 100%);
         }
 
         .story-tags { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         
         .tag { 
-            background: var(--accent);
+            background: var(--blue-light);
             color: #ffffff;
-            padding: 4px 10px; 
+            padding: 5px 12px; 
             font-size: 0.8rem; 
             font-weight: 800;
             letter-spacing: 1px;
             text-transform: uppercase; 
             border-radius: 4px; 
+            box-shadow: 0 0 10px var(--blue-glow);
         }
         
         .main-logo-container {
@@ -312,106 +322,141 @@
             color: #ffffff;
         }
 
-        /* Headline: Unclamped and Scalable */
+        /* Headline: Full and Uncut */
         .story-headline {
-            font-size: clamp(2rem, 3.5vw, 3.4rem); /* Scales beautifully down to mobile */
-            font-weight: 900; line-height: 1.15; margin-bottom: 15px;
+            font-size: clamp(1.8rem, 3.2vw, 3rem);
+            font-weight: 900; line-height: 1.2; margin-bottom: 18px;
             color: #ffffff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
-            display: block; /* Removed line-clamp to show full title */
+            display: block; 
             letter-spacing: -0.5px;
         }
 
-        /* Description: Extended Clamp and Scalable */
+        /* Description: Full Unbroken Sentences */
         .story-description {
-            font-size: clamp(1.1rem, 1.5vw, 1.4rem); 
-            line-height: 1.5; color: #cbd5e1; max-width: 1000px;
+            font-size: clamp(1.05rem, 1.4vw, 1.35rem); 
+            line-height: 1.6; color: #cbd5e1; max-width: 1050px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; /* Increased from 2 to 4 lines */
+            display: block; 
             font-weight: 400;
         }
 
-        /* --- TV STYLE BREAKING REEL --- */
+        /* --- THICKER DARK & LIGHT BLUE BREAKING REEL --- */
         .tv-ticker {
-            height: 45px;
-            background-color: #ffffff;
+            height: 60px; /* Thicker area */
+            background-color: #030a16;
             display: flex;
             align-items: center;
             z-index: 60;
-            border-top: 2px solid #880000;
+            border-top: 2px solid var(--blue-light);
+            box-shadow: 0 -5px 25px rgba(0, 119, 255, 0.25);
         }
 
         .ticker-label {
-            background-color: var(--tv-red);
+            background: linear-gradient(135deg, var(--blue-dark) 0%, var(--blue-light) 100%);
             color: #ffffff;
             font-weight: 900;
-            font-size: 1.1rem;
-            padding: 0 25px;
+            font-size: 1.15rem;
+            padding: 0 30px;
             height: 100%;
             display: flex;
             align-items: center;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
-            box-shadow: 4px 0 10px rgba(0,0,0,0.3);
+            box-shadow: 4px 0 15px rgba(0,0,0,0.5);
             z-index: 2;
+            border-right: 1px solid rgba(255, 255, 255, 0.2);
+            position: relative;
+        }
+
+        .ticker-label::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0; bottom: 0; left: 0;
+            border-right: 2px solid #ffffff;
+            animation: pulseGlow 2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { opacity: 0.3; }
+            to { opacity: 1; }
         }
 
         .ticker-scroll {
             flex: 1;
             padding: 0 25px;
-            color: #000000;
-            font-weight: 800;
-            font-size: 1.05rem;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 1.1rem;
             white-space: nowrap;
             overflow: hidden;
+            display: flex;
+            align-items: center;
         }
 
-        /* --- MOBILE & RESPONSIVE MEDIA QUERIES --- */
+        .ticker-text {
+            transition: opacity 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+
+        /* --- MOBILE & APK OPTIMIZATION --- */
         @media (max-width: 900px) {
             .broadcast-container {
                 flex-direction: column;
+                height: calc(100vh - 55px);
+                overflow-y: auto;
             }
             .sidebar {
                 width: 100%;
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: center;
+                flex-direction: column;
                 border-right: none;
                 border-bottom: 1px solid rgba(37, 99, 235, 0.3);
                 background: rgba(4, 11, 24, 0.95);
             }
             .brand-container {
-                padding: 12px 20px;
-                border-bottom: none;
-                background: transparent;
+                padding: 15px 20px;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
             }
             .weather-widget {
-                padding: 12px 20px;
-                border-bottom: none;
-                background: transparent;
-                gap: 15px;
-            }
-            .weather-city {
-                display: none; /* Hides city on small screens to save space */
+                padding: 10px 20px;
+                background: rgba(0, 0, 0, 0.2);
             }
             .queue-container {
-                display: none; /* Hides queue completely on phones for a cleaner main stage */
+                max-height: 200px; /* Let phone users scroll through upcoming items */
+                padding: 15px 20px;
             }
             
-            /* Scale down visual elements */
-            .bh-container { top: 25%; transform: translate(-50%, -50%) scale(0.65); }
-            .orbit-system { top: 25%; transform: translate(-50%, -50%) rotateX(76deg) scale(0.65); }
-            
-            /* Adjust content wrapper for small screens */
-            .story-content {
-                bottom: 0; 
-                padding: 25px 20px 30px 20px;
-                background: linear-gradient(to top, rgba(4,11,24,1) 0%, rgba(4,11,24,0.85) 60%, transparent 100%);
+            .main-stage {
+                min-height: 450px;
+                overflow-y: visible;
             }
 
-            .tv-ticker { height: 38px; }
-            .ticker-label { font-size: 0.9rem; padding: 0 15px; }
-            .ticker-scroll { font-size: 0.9rem; padding: 0 15px;}
+            /* Adjust visual centerpieces for mobile */
+            .bh-container { top: 120px; transform: translate(-50%, -50%) scale(0.55); }
+            .orbit-system { top: 120px; transform: translate(-50%, -50%) rotateX(76deg) scale(0.55); }
+            
+            /* Remove extra blank top padding on phone screens */
+            .story-content {
+                padding: 20px;
+                margin-top: 180px; /* Ensures text starts clearly under background animations */
+                background: linear-gradient(to top, rgba(4,11,24,1) 85%, transparent 100%);
+            }
+
+            .story-headline {
+                font-size: 1.5rem;
+                margin-bottom: 10px;
+            }
+
+            .story-description {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+
+            .tv-ticker { height: 55px; }
+            .ticker-label { font-size: 0.95rem; padding: 0 15px; }
+            .ticker-scroll { font-size: 0.95rem; padding: 0 12px;}
         }
     </style>
 </head>
@@ -437,7 +482,6 @@
                 <div class="queue-list-wrapper" id="queue-list">
                     <!-- Queue populates here -->
                 </div>
-                <!-- Smoke/Fade effect -->
                 <div class="queue-smoke-overlay"></div>
             </div>
         </div>
@@ -454,7 +498,7 @@
                 <div class="bh-core" id="bh-core"></div>
             </div>
 
-            <!-- Realistic Orbiting Satellite -->
+            <!-- Orbiting Satellite -->
             <div class="orbit-system">
                 <div class="satellite-obj" id="satellite-anim"></div>
             </div>
@@ -473,7 +517,7 @@
         </div>
     </div>
 
-    <!-- TV Style Bottom Ticker -->
+    <!-- Dark & Light Blue Bottom Ticker -->
     <div class="tv-ticker">
         <div class="ticker-label">BREAKING</div>
         <div class="ticker-scroll">
@@ -585,7 +629,7 @@
         let broadcastTimer; 
         const rss2jsonProxy = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-        // --- 55+ WEATHER CITIES (INCLUDING 5 AFGHAN PROVINCES) ---
+        // --- WEATHER CITIES ---
         const weatherCities = [
             { name: "KABUL", lat: 34.5281, lon: 69.1171 },
             { name: "HERAT", lat: 34.3419, lon: 62.2031 },
@@ -601,43 +645,7 @@
             { name: "SINGAPORE", lat: 1.3521, lon: 103.8198 },
             { name: "BERLIN", lat: 52.5200, lon: 13.4050 },
             { name: "TORONTO", lat: 43.6532, lon: -79.3832 },
-            { name: "BEIJING", lat: 39.9042, lon: 116.4074 },
-            { name: "HONG KONG", lat: 22.3193, lon: 114.1694 },
-            { name: "SEOUL", lat: 37.5665, lon: 126.9780 },
-            { name: "MOSCOW", lat: 55.7558, lon: 37.6173 },
-            { name: "MUMBAI", lat: 19.0760, lon: 72.8777 },
-            { name: "NEW DELHI", lat: 28.6139, lon: 77.2090 },
-            { name: "CAIRO", lat: 30.0444, lon: 31.2357 },
-            { name: "RIYADH", lat: 24.7136, lon: 46.6753 },
-            { name: "DOHA", lat: 25.2854, lon: 51.5310 },
-            { name: "ISTANBUL", lat: 41.0082, lon: 28.9784 },
-            { name: "ROME", lat: 41.9028, lon: 12.4964 },
-            { name: "MADRID", lat: 40.4168, lon: -3.7038 },
-            { name: "AMSTERDAM", lat: 52.3676, lon: 4.9041 },
-            { name: "VIENNA", lat: 48.2082, lon: 16.3738 },
-            { name: "ZURICH", lat: 47.3769, lon: 8.5417 },
-            { name: "SÃO PAULO", lat: -23.5505, lon: -46.6333 },
-            { name: "BUENOS AIRES", lat: -34.6037, lon: -58.3816 },
-            { name: "MEXICO CITY", lat: 19.4326, lon: -99.1332 },
-            { name: "LOS ANGELES", lat: 34.0522, lon: -118.2437 },
-            { name: "CHICAGO", lat: 41.8781, lon: -87.6298 },
-            { name: "SAN FRANCISCO", lat: 37.7749, lon: -122.4194 },
-            { name: "BANGKOK", lat: 13.7563, lon: 100.5018 },
-            { name: "JAKARTA", lat: -6.2088, lon: 106.8456 },
-            { name: "MANILA", lat: 14.5995, lon: 120.9842 },
-            { name: "KUALA LUMPUR", lat: 3.1390, lon: 101.6869 },
-            { name: "NAIROBI", lat: -1.2921, lon: 36.8219 },
-            { name: "JOHANNESBURG", lat: -26.2041, lon: 28.0473 },
-            { name: "LAGOS", lat: 6.5244, lon: 3.3792 },
-            { name: "CASABLANCA", lat: 33.5731, lon: -7.5898 },
-            { name: "ATHENS", lat: 37.9838, lon: 23.7275 },
-            { name: "WARSAW", lat: 52.2297, lon: 21.0122 },
-            { name: "STOCKHOLM", lat: 59.3293, lon: 18.0686 },
-            { name: "OSLO", lat: 59.9139, lon: 10.7522 },
-            { name: "COPENHAGEN", lat: 55.6761, lon: 12.5683 },
-            { name: "HELSINKI", lat: 60.1699, lon: 24.9384 },
-            { name: "WELLINGTON", lat: -41.2866, lon: 174.7756 },
-            { name: "AUCKLAND", lat: -36.8485, lon: 174.7633 }
+            { name: "BEIJING", lat: 39.9042, lon: 116.4074 }
         ];
         let weatherIndex = 0;
 
@@ -677,8 +685,26 @@
                 }
             } catch (e) { console.warn("Weather fetch skipped"); }
             
-            // Sequentially cycles through all 55+ cities continuously
             weatherIndex = (weatherIndex + 1) % weatherCities.length;
+        }
+
+        // --- SENTENCE CLEANING FUNCTION: REMOVES [...] AND INCOMPLETE SENTENCES ---
+        function cleanSentenceFormat(rawText) {
+            if (!rawText) return "Detailed report available on official network site.";
+            
+            // 1. Strip all HTML tags
+            let clean = rawText.replace(/<[^>]+>/g, '').trim();
+            
+            // 2. Remove [...] or ... trailing patterns
+            clean = clean.replace(/\[\.\.\.\]/g, '').replace(/\.\.\./g, '').trim();
+
+            // 3. Cut off at the last valid sentence terminal (. ! ?)
+            const match = clean.match(/.*[.!?]/s);
+            if (match && match[0].length > 20) {
+                return match[0].trim();
+            }
+            
+            return clean ? clean + "." : "Detailed report available on official network site.";
         }
 
         let tickerItems = [];
@@ -704,22 +730,18 @@
 
             // 1. Fade out current text
             contentEl.style.opacity = 0;
-            contentEl.style.transform = 'translateY(20px)';
+            contentEl.style.transform = 'translateY(15px)';
 
             // 2. Satellite breaks orbit and swoops in
             satEl.classList.add('swoop-in');
 
-            // 3. Wait for satellite swoop, pulse, and show new info
+            // 3. Update screen info
             setTimeout(() => {
-                
-                // Black hole Pulse
                 bhCore.classList.add('pulse');
                 setTimeout(() => bhCore.classList.remove('pulse'), 300);
 
-                // Update text fields
                 document.getElementById('main-category').innerText = article.category;
                 
-                // Insert SVG Logo AND Name Text with separator
                 const sourceUpper = article.source.toUpperCase();
                 if (sourceLogos[sourceUpper]) {
                     document.getElementById('main-source').innerHTML = `
@@ -760,7 +782,6 @@
                 contentEl.style.opacity = 1;
                 contentEl.style.transform = 'translateY(0)';
                 
-                // Send satellite back to orbit
                 satEl.classList.remove('swoop-in');
 
             }, 1000); 
@@ -780,13 +801,12 @@
                         const data = await response.json();
                         if (data.status === 'ok') {
                             const items = data.items.slice(0, 4).map(item => {
-                                let cleanDesc = item.description ? item.description.replace(/<[^>]+>/g, '').trim() : "";
-                                // Character cutoff raised to 450 to accommodate fuller, 3-4 line briefs dynamically
-                                if(cleanDesc.length > 450) cleanDesc = cleanDesc.substring(0, 450) + '...';
+                                // Apply the sentence cleaner here:
+                                let cleanDesc = cleanSentenceFormat(item.description);
 
                                 return {
                                     title: item.title,
-                                    description: cleanDesc || "Detailed report available on the official network site.",
+                                    description: cleanDesc,
                                     category: feed.category,
                                     source: feed.source
                                 };
@@ -813,13 +833,13 @@
                     }
                 }, 15000); 
             } else if (newsLibrary.length === 0) {
-                if (headEl) headEl.innerText = "API LIMIT REACHED. RETRYING...";
-                setTimeout(fetchAllNews, 30000); 
+                if (headEl) headEl.innerText = "RETRIEVING NEWS FEEDS...";
+                setTimeout(fetchAllNews, 15000); 
             }
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 15000); // Rotates weather city every 15 seconds
+        setInterval(fetchWeather, 15000); 
         setInterval(fetchAllNews, 1800000);
         fetchAllNews();
 
