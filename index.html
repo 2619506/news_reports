@@ -41,6 +41,27 @@
             font-family: 'Inter', sans-serif; 
         }
 
+        /* --- CUSTOM SCROLLBAR FOR PREMIUM APP FEEL --- */
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--blue-light);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffffff;
+        }
+        /* Firefox scrollbar support */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: var(--blue-light) rgba(0, 0, 0, 0.2);
+        }
+
         .broadcast-container {
             display: flex;
             height: calc(100vh - 60px); /* Adjusted for thicker 60px bottom ticker */
