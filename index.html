@@ -24,11 +24,10 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            cursor: none; 
+            cursor: default; /* Changed from none for better browser usability, optional to switch back */
         }
 
         body {
-            /* Dynamic viewport sizing for true fullscreen */
             width: 100vw;
             height: 100vh;
             margin: 0;
@@ -42,7 +41,6 @@
 
         .broadcast-container {
             display: flex;
-            /* Auto-calculates height to leave exact room for the TV ticker */
             height: calc(100vh - 45px); 
             width: 100%;
         }
@@ -68,7 +66,7 @@
 
         .brand-logo {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.5rem;
+            font-size: clamp(2rem, 2.5vw, 2.5rem);
             font-weight: 900;
             letter-spacing: 2px;
             color: var(--text-main);
@@ -89,7 +87,7 @@
         }
 
         .weather-city {
-            font-size: 1rem;
+            font-size: clamp(0.85rem, 1vw, 1rem);
             font-weight: 800;
             color: #ffffff;
             text-transform: uppercase;
@@ -189,11 +187,12 @@
         /* The Black Hole */
         .bh-container {
             position: absolute;
-            top: 40%; 
+            top: 35%; 
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 5; 
             opacity: 0.85;
+            transition: all 0.5s ease;
         }
 
         .bh-core {
@@ -234,13 +233,14 @@
         /* --- REALISTIC SATELLITE ANIMATION --- */
         .orbit-system {
             position: absolute;
-            top: 40%; 
+            top: 35%; 
             left: 50%;
             width: 400px; height: 400px;
             transform: translate(-50%, -50%) rotateX(76deg);
             z-index: 10;
             transform-style: preserve-3d;
             animation: orbitAnim 12s linear infinite;
+            transition: all 0.5s ease;
         }
 
         .satellite-obj {
@@ -262,10 +262,10 @@
             filter: drop-shadow(0 10px 20px rgba(0,0,0,0.9)) drop-shadow(0 0 15px rgba(255, 255, 255, 0.3)) brightness(1.6) contrast(1.3) !important;
         }
 
-        /* Transparent Text Content Area (Moved UP and Scaled UP) */
+        /* Transparent Text Content Area (Moved higher & made fluid) */
         .story-content {
             position: absolute;
-            bottom: 80px; 
+            bottom: 12vh; /* Moved significantly up */
             left: 0; width: 100%;
             padding: 30px 60px;
             z-index: 20; 
@@ -312,22 +312,22 @@
             color: #ffffff;
         }
 
-        /* Headline Increased Size */
+        /* Headline: Unclamped and Scalable */
         .story-headline {
-            font-size: 3.4rem; 
-            font-weight: 900; line-height: 1.1; margin-bottom: 12px;
+            font-size: clamp(2rem, 3.5vw, 3.4rem); /* Scales beautifully down to mobile */
+            font-weight: 900; line-height: 1.15; margin-bottom: 15px;
             color: #ffffff;
             text-shadow: 2px 2px 5px rgba(0,0,0,0.9);
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            display: block; /* Removed line-clamp to show full title */
             letter-spacing: -0.5px;
         }
 
-        /* Description Increased Size */
+        /* Description: Extended Clamp and Scalable */
         .story-description {
-            font-size: 1.4rem; 
-            line-height: 1.5; color: #cbd5e1; max-width: 900px;
+            font-size: clamp(1.1rem, 1.5vw, 1.4rem); 
+            line-height: 1.5; color: #cbd5e1; max-width: 1000px;
             text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
-            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+            display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; /* Increased from 2 to 4 lines */
             font-weight: 400;
         }
 
@@ -364,6 +364,54 @@
             font-size: 1.05rem;
             white-space: nowrap;
             overflow: hidden;
+        }
+
+        /* --- MOBILE & RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 900px) {
+            .broadcast-container {
+                flex-direction: column;
+            }
+            .sidebar {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border-right: none;
+                border-bottom: 1px solid rgba(37, 99, 235, 0.3);
+                background: rgba(4, 11, 24, 0.95);
+            }
+            .brand-container {
+                padding: 12px 20px;
+                border-bottom: none;
+                background: transparent;
+            }
+            .weather-widget {
+                padding: 12px 20px;
+                border-bottom: none;
+                background: transparent;
+                gap: 15px;
+            }
+            .weather-city {
+                display: none; /* Hides city on small screens to save space */
+            }
+            .queue-container {
+                display: none; /* Hides queue completely on phones for a cleaner main stage */
+            }
+            
+            /* Scale down visual elements */
+            .bh-container { top: 25%; transform: translate(-50%, -50%) scale(0.65); }
+            .orbit-system { top: 25%; transform: translate(-50%, -50%) rotateX(76deg) scale(0.65); }
+            
+            /* Adjust content wrapper for small screens */
+            .story-content {
+                bottom: 0; 
+                padding: 25px 20px 30px 20px;
+                background: linear-gradient(to top, rgba(4,11,24,1) 0%, rgba(4,11,24,0.85) 60%, transparent 100%);
+            }
+
+            .tv-ticker { height: 38px; }
+            .ticker-label { font-size: 0.9rem; padding: 0 15px; }
+            .ticker-scroll { font-size: 0.9rem; padding: 0 15px;}
         }
     </style>
 </head>
@@ -539,13 +587,11 @@
 
         // --- 55+ WEATHER CITIES (INCLUDING 5 AFGHAN PROVINCES) ---
         const weatherCities = [
-            // Afghanistan Provinces
             { name: "KABUL", lat: 34.5281, lon: 69.1171 },
             { name: "HERAT", lat: 34.3419, lon: 62.2031 },
             { name: "KANDAHAR", lat: 31.6133, lon: 65.7101 },
             { name: "MAZAR-I-SHARIF", lat: 36.7068, lon: 67.1103 },
             { name: "JALALABAD", lat: 34.4264, lon: 70.4515 },
-            // Global Capitals & Financial Hubs
             { name: "TOKYO", lat: 35.6762, lon: 139.6503 },
             { name: "NEW YORK", lat: 40.7128, lon: -74.0060 },
             { name: "LONDON", lat: 51.5074, lon: -0.1278 },
@@ -735,7 +781,8 @@
                         if (data.status === 'ok') {
                             const items = data.items.slice(0, 4).map(item => {
                                 let cleanDesc = item.description ? item.description.replace(/<[^>]+>/g, '').trim() : "";
-                                if(cleanDesc.length > 300) cleanDesc = cleanDesc.substring(0, 300) + '...';
+                                // Character cutoff raised to 450 to accommodate fuller, 3-4 line briefs dynamically
+                                if(cleanDesc.length > 450) cleanDesc = cleanDesc.substring(0, 450) + '...';
 
                                 return {
                                     title: item.title,
@@ -772,7 +819,7 @@
         }
 
         fetchWeather();
-        setInterval(fetchWeather, 15000); // Rotates weather city every 10 minutes
+        setInterval(fetchWeather, 15000); // Rotates weather city every 15 seconds
         setInterval(fetchAllNews, 1800000);
         fetchAllNews();
 
